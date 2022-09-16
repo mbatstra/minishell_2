@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:07:01 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/15 18:38:32 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/16 13:49:48 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 #include "minishell.h"
 #include "libft.h"
 
+// initialize string array and copy envp
 char	**env_init(char **envp)
 {
 	char	**new_env;
 	int		i;
 
-	i = 0;	
+	i = 0;
 	new_env = (char **)malloc((arr_len(envp) + 1) * sizeof(char *));
 	if (!new_env)
 		return (NULL);
@@ -37,7 +38,8 @@ char	**env_init(char **envp)
 	return (new_env);
 }
 
-char	*env_getval(char **envp, char *name)
+// get the value for any env var by name
+char	*env_getval(char **envp, const char *name)
 {
 	int	i;
 
@@ -49,7 +51,9 @@ char	*env_getval(char **envp, char *name)
 	return (NULL);
 }
 
-void	env_setval(char **envp, char *name, char *val)
+// set the val of name env var
+// name and val are not freed in this function
+void	env_setval(char **envp, const char *name, const char *val)
 {
 	char	*new;
 	int		i;
@@ -62,7 +66,7 @@ void	env_setval(char **envp, char *name, char *val)
 	new = (char *)malloc((ft_strlen(name) + ft_strlen(val) + 2) * sizeof(char));
 	if (new == NULL)
 		return ;
-	ft_memcpy(new, name, ft_strlen(name));
+	ft_memmove(new, name, ft_strlen(name));
 	new[ft_strlen(name)] = '=';
 	ft_strlcpy(new + ft_strlen(name) + 1, val, ft_strlen(val) + 1);
 	free(envp[i]);

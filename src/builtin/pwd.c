@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/15 15:18:51 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/15 16:16:11 by mbatstra         ###   ########.fr       */
+/*   Created: 2022/09/16 14:15:35 by mbatstra          #+#    #+#             */
+/*   Updated: 2022/09/16 14:16:12 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdio.h>
-#include "libft.h"
+#include <stdlib.h>
 
-int	builtin_cd(const char *path, char **envp)
+int	builtin_pwd(void)
 {
-	(void) envp;
-	if (chdir(path) != 0)
+	char	*path;
+
+	path = NULL;
+	path = getcwd(path, 1);
+	if (path == NULL)
 	{
-		perror("cd");
+		perror("pwd");
 		return (1);
 	}
-	return (0);
+	else
+	{
+		printf("%s\n", path);
+		free(path);
+		return (0);
+	}
 }

@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/14 17:30:39 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/16 14:04:19 by mbatstra         ###   ########.fr       */
+/*   Created: 2022/09/16 14:16:25 by mbatstra          #+#    #+#             */
+/*   Updated: 2022/09/16 14:17:07 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <stdio.h>
-#include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+// error messages? should output be buffered?
+int	builtin_echo(const char *str, int nflag)
 {
-	char	**new_env;
-
-	(void) argc;
-	(void) argv;
-	new_env = env_init(envp);
-	printf("-----\n");
-	builtin_pwd();
-	printf("-----\n");
-	builtin_env(new_env);
-	builtin_cd(NULL, new_env);
-	printf("-----\n");
-	builtin_pwd();
-	printf("-----\n");
-	builtin_env(new_env);
-	// system("leaks minishell");
-	return (0);
+	if (nflag)
+	{
+		if (printf("%s\n", str) > 0)
+			return (0);
+		else
+			return (1);
+	}
+	else
+	{
+		if (printf("%s", str) > 0)
+			return (0);
+		else
+			return (1);
+	}
 }
