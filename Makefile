@@ -12,7 +12,8 @@ UNPREFIXED_SRC = main.c \
 	builtin/echo.c \
 	builtin/exit.c \
 	env/env.c \
-	env/env_util.c
+	env/env_util.c \
+	lexer.c
 
 TEST_SRC = test/test.c
 
@@ -32,13 +33,13 @@ all: $(LIBFT) $(NAME)
 test: $(TEST_NAME)
 
 $(LIBFT):
-	$(MAKE) -C $(LIB)libft/
+	$(MAKE) -C $(LIB)libft/ WITH_BONUS=1
 
 $(NAME): $(OBJ) $(INC)*
 	$(CC) $(OBJ) $(LIBFT) -I$(INC) -o $(NAME)
 
 $(BUILD_DIR)%.o: $(SRC_DIR)%.c | $(BUILD_DIR) $(BUILD_SUBDIRS)
-	$(CC) $(FLAGS) -lreadline -I$(INC) -c $< -o $@
+	$(CC) $(FLAGS) -I$(INC) -c $< -o $@
 
 $(TEST_NAME): $(LIBFT) $(TEST_SRC) $(filter-out main.c, $(SRC))
 	$(CC) $(TEST_SRC) $(LIBFT) $(filter-out src/main.c, $(SRC)) $(CRITERION) -I$(INC) -I$(TEST_INC) -o $(TEST_NAME) 
