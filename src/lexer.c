@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:22:08 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/18 16:35:08 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/18 16:40:07 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	lexer(t_list **tokens, char *cmd_line)
 		return (1);
 	while (spl_line[i] != NULL)
 	{
-		ft_lstadd_back(tokens, ft_lstnew(spl_line[i])); 
+		ft_lstadd_back(tokens, ft_lstnew(spl_line[i])); //add tokens instead
 		// add return value to add_back to check if allocation success
 		i++;
 	}
