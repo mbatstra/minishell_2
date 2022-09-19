@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:07:01 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/16 13:49:48 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:17:11 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,53 +15,49 @@
 #include "libft.h"
 
 // initialize string array and copy envp
-char	**env_init(char **envp)
+void	env_init(char **envp, t_list **new_env)
 {
-	char	**new_env;
+	t_list	*temp;
 	int		i;
 
 	i = 0;
-	new_env = (char **)malloc((arr_len(envp) + 1) * sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	arr_init(new_env, arr_len(envp) + 1);
 	while (envp[i] != NULL)
 	{
-		new_env[i] = ft_strdup(envp[i]);
-		if (new_env[i] == NULL)
+		temp = ft_lstnew(ft_strdup(envp[i]));
+		if (temp == NULL)
 		{
-			arr_clear(new_env);
-			return (NULL);
+			ft_lstclear(new_env, &free);
+			return ;
 		}
+		ft_lstadd_back(new_env, temp);
 		i++;
 	}
-	return (new_env);
 }
 
 // get the value for any env var by name
-char	*env_getval(char **envp, const char *name)
+char	*env_getval(t_list **envp, const char *name)
 {
-	int	i;
+	t_list	*node;
 
-	i = 0;
-	while (envp[i] != NULL && ft_strncmp(envp[i], name, ft_strlen(name)))
-		i++;
-	if (envp[i] != NULL)
-		return (ft_strchr(envp[i], '=') + 1);
+	node = *envp;
+	while (node != NULL && ft_strncmp(node->content, name, ft_strlen(name)))
+		node = node->next;
+	if (node != NULL)
+		return (ft_strchr(node->content, '=') + 1);
 	return (NULL);
 }
 
 // set the val of name env var
 // name and val are not freed in this function
-void	env_setval(char **envp, const char *name, const char *val)
+void	env_setval(t_list **envp, const char *name, const char *val)
 {
+	t_list	*node;
 	char	*new;
-	int		i;
 
-	i = 0;
-	while (envp[i] != NULL && ft_strncmp(envp[i], name, ft_strlen(name)))
-		i++;
-	if (envp[i] == NULL)
+	node = *envp;
+	while (node != NULL && ft_strncmp(node->content, name, ft_strlen(name)))
+		node = node->next;
+	if (node == NULL)
 		return ;
 	new = (char *)malloc((ft_strlen(name) + ft_strlen(val) + 2) * sizeof(char));
 	if (new == NULL)
@@ -69,6 +65,6 @@ void	env_setval(char **envp, const char *name, const char *val)
 	ft_memmove(new, name, ft_strlen(name));
 	new[ft_strlen(name)] = '=';
 	ft_strlcpy(new + ft_strlen(name) + 1, val, ft_strlen(val) + 1);
-	free(envp[i]);
-	envp[i] = new;
+	free(node->content);
+	node->content = new;
 }

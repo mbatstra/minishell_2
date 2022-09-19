@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 15:18:51 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/16 14:09:01 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:47:11 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 // path == NULL means no arg
 // will not free if path was alloc'd outside this func
-int	builtin_cd(char *path, char **envp)
+int	builtin_cd(char *path, t_list **envp)
 {
 	int	is_freeable;
 

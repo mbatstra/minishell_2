@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:46:34 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/06 17:46:35 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:32:04 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*link;
 
+	if (new == NULL)
+		return ;
 	if (*lst == NULL)
 		*lst = new;
 	else

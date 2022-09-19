@@ -12,7 +12,6 @@ UNPREFIXED_SRC = main.c \
 	builtin/echo.c \
 	builtin/exit.c \
 	env/env.c \
-	env/env_util.c \
 	lexer.c
 
 TEST_SRC = test/test.c
@@ -23,7 +22,8 @@ SRC = $(addprefix $(SRC_DIR), $(UNPREFIXED_SRC))
 INC = inc/
 TEST_INC = test/criterion--git/include
 
-FLAGS = -Wall -Wextra -Werror 
+FLAGS = -fsanitize=address -g 
+#FLAGS = -Wall -Wextra -Werror 
 
 LIB = lib/
 LIBFT = lib/libft/libft.a
@@ -36,7 +36,7 @@ $(LIBFT):
 	$(MAKE) -C $(LIB)libft/ WITH_BONUS=1
 
 $(NAME): $(OBJ) $(INC)*
-	$(CC) $(OBJ) $(LIBFT) -I$(INC) -o $(NAME)
+	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -I$(INC) -o $(NAME)
 
 $(BUILD_DIR)%.o: $(SRC_DIR)%.c | $(BUILD_DIR) $(BUILD_SUBDIRS)
 	$(CC) $(FLAGS) -I$(INC) -c $< -o $@

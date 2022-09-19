@@ -6,27 +6,39 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:39 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/16 14:04:19 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:18:36 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include "minishell.h"
+#include "libft.h"
+
+void	db_ptlist(t_list **lst)
+{
+	t_list	*node;
+
+	node = *lst;
+	while (node != NULL)
+	{
+		printf("%s\n", node->content);
+		node = node->next;
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	**new_env;
+	t_list	*new_env;
 
 	(void) argc;
 	(void) argv;
-	new_env = env_init(envp);
+	env_init(envp, &new_env);
 	printf("-----\n");
 	builtin_pwd();
 	printf("-----\n");
 	builtin_env(new_env);
-	builtin_cd(NULL, new_env);
-	printf("-----\n");
+	builtin_cd(NULL, &new_env);
 	builtin_pwd();
 	printf("-----\n");
 	builtin_env(new_env);
