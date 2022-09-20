@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/19 17:16:46 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/20 18:17:31 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ enum e_types {
 	RDR_RDIN,
 	RDR_APP,
 	PIPE,
-	ARG,
-	CMD
+	WORD
 };
 
 typedef struct s_token {
@@ -54,16 +53,13 @@ int		lexer(t_list **tokens, char *cmd_line);
 
 // functions for expandign and setting env vars
 void	env_init(char **envp, t_list **new_env);
-char	*env_getval(t_list **envp, const char *name);
 void	env_setval(t_list **envp, const char *name, const char *val);
-
-// utilities for env functions
-// void	arr_clear(char **arr);
-// void	arr_init(char **arr, int len);
-// int		arr_len(char **arr);
+char	*env_getval(t_list **envp, const char *name);
 
 // builtins
 void	builtin_exit(void);
+int		builtin_export(t_list **envp, char *nameval);
+int		builtin_unset(t_list **envp, char *name);
 int		builtin_cd(char *path, t_list **envp);
 int		builtin_pwd(void);
 int		builtin_echo(char *str, int nflag);

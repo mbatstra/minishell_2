@@ -11,6 +11,8 @@ UNPREFIXED_SRC = main.c \
 	builtin/cd.c \
 	builtin/echo.c \
 	builtin/exit.c \
+	builtin/export.c \
+	builtin/unset.c \
 	env/env.c \
 	lexer.c
 
@@ -22,8 +24,8 @@ SRC = $(addprefix $(SRC_DIR), $(UNPREFIXED_SRC))
 INC = inc/
 TEST_INC = test/criterion--git/include
 
-FLAGS = -fsanitize=address -g 
-#FLAGS = -Wall -Wextra -Werror 
+#FLAGS = -fsanitize=address -g 
+FLAGS = -Wall -Wextra -Werror 
 
 LIB = lib/
 LIBFT = lib/libft/libft.a

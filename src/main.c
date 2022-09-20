@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:39 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/19 17:18:36 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/20 20:29:37 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,12 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	(void) argv;
 	env_init(envp, &new_env);
-	printf("-----\n");
-	builtin_pwd();
-	printf("-----\n");
+	builtin_export(&new_env, "TEST=test");
 	builtin_env(new_env);
-	builtin_cd(NULL, &new_env);
-	builtin_pwd();
-	printf("-----\n");
+	printf("\n-----\n");
+	builtin_export(&new_env, "TEST=haha=haha");
+	builtin_unset(&new_env, "SHELL");
 	builtin_env(new_env);
-	// system("leaks minishell");
+	system("leaks -q minishell");
 	return (0);
 }
