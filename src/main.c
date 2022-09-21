@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:39 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/20 20:29:37 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/21 17:00:12 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,20 @@ void	db_ptlist(t_list **lst)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_list	*new_env;
+	// t_list	*new_env;
 
 	(void) argc;
 	(void) argv;
-	env_init(envp, &new_env);
-	builtin_export(&new_env, "TEST=test");
-	builtin_env(new_env);
-	printf("\n-----\n");
-	builtin_export(&new_env, "TEST=haha=haha");
-	builtin_unset(&new_env, "SHELL");
-	builtin_env(new_env);
-	system("leaks -q minishell");
+	(void) envp;
+	builtin_pwd();
+	printf("%s\n", expand_relpath("src"));
+	// env_init(envp, &new_env);
+	// builtin_export(&new_env, "TEST=test");
+	// builtin_env(new_env);
+	// printf("\n-----\n");
+	// builtin_export(&new_env, "TEST=haha=haha");
+	// builtin_unset(&new_env, "SHELL");
+	// builtin_env(new_env);
+	// system("leaks -q minishell");
 	return (0);
 }

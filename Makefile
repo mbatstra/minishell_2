@@ -3,7 +3,7 @@ TEST_NAME = test/unit_test
 
 SRC_DIR = src/
 BUILD_DIR = build/
-BUILD_SUBDIRS = build/builtin build/env
+BUILD_SUBDIRS = build/builtin build/env build/expand
 
 UNPREFIXED_SRC = main.c \
 	builtin/env.c \
@@ -14,6 +14,7 @@ UNPREFIXED_SRC = main.c \
 	builtin/export.c \
 	builtin/unset.c \
 	env/env.c \
+	expand/rel_path.c \
 	lexer.c
 
 TEST_SRC = test/test.c

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 14:15:35 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/16 14:16:12 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:33:16 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ int	builtin_pwd(void)
 		perror("pwd");
 		return (1);
 	}
-	else
-	{
-		printf("%s\n", path);
-		free(path);
-		return (0);
-	}
+	printf("%s\n", path);
+	free(path);
+	return (0);
 }
