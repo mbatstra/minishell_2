@@ -1,47 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parent_dir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/14 17:30:39 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/23 15:30:38 by mbatstra         ###   ########.fr       */
+/*   Created: 2022/09/22 15:31:49 by mbatstra          #+#    #+#             */
+/*   Updated: 2022/09/22 17:16:20 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include "minishell.h"
 #include "libft.h"
 
-void	db_ptlist(t_list **lst)
+char	*expand_parent_dir(t_list *envp)
 {
-	t_list	*node;
+	char	*pwd;
+	char	*tail;
+	char	*parent_dir;
 
-	node = *lst;
-	while (node != NULL)
+	pwd = env_getval(envp, "PWD");
+	if (pwd == NULL)
 	{
-		printf("%s\n", node->content);
-		node = node->next;
+		free(pwd);
+		return (NULL);
 	}
-}
-
-int	main(void)
-{
-	char	*input;
-
-	while (1)
-	{
-		input = readline("minishell-$ ");
-		if (input == NULL)
-			printf("error\n");
-		add_history(input);
-		printf("%s\n", input);
-		// lex and parse
-		free(input);
-	}
-	return (0);
+	tail = pwd + ft_strlen(pwd);
+	while (tail > pwd && *tail != '/')
+		tail--;
+	if (tail != pwd)
+		parent_dir = ft_strndup(pwd, tail - pwd);
+	else
+		parent_dir = ft_strdup("/");
+	return (parent_dir);
 }

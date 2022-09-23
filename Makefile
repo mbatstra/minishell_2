@@ -15,6 +15,7 @@ UNPREFIXED_SRC = main.c \
 	builtin/unset.c \
 	env/env.c \
 	expand/rel_path.c \
+	expand/parent_dir.c \
 	lexer.c
 
 TEST_SRC = test/test.c
@@ -39,7 +40,7 @@ $(LIBFT):
 	$(MAKE) -C $(LIB)libft/ WITH_BONUS=1
 
 $(NAME): $(OBJ) $(INC)*
-	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -I$(INC) -o $(NAME)
+	$(CC) $(OBJ) $(LIBFT) -lreadline -I$(INC) -o $(NAME)
 
 $(BUILD_DIR)%.o: $(SRC_DIR)%.c | $(BUILD_DIR) $(BUILD_SUBDIRS)
 	$(CC) $(FLAGS) -I$(INC) -c $< -o $@

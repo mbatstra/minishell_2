@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/21 16:53:03 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:15:17 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ int		lexer(t_list **tokens, char *cmd_line);
 
 // expansion
 char	*expand_relpath(char *relp);
+char	*expand_parent_dir(t_list *envp);
 
 // functions for expandign and setting env vars
 void	env_init(char **envp, t_list **new_env);
 void	env_setval(t_list **envp, const char *name, const char *val);
-char	*env_getval(t_list **envp, const char *name);
+char	*env_getval(t_list *envp, const char *name);
 
 // builtins
 void	builtin_exit(void);

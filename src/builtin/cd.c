@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 15:18:51 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/21 16:26:28 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:32:23 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 
 // path == NULL means no arg
 // will not free if path was alloc'd outside this func
+// parent dir (..) env vars and relative paths should be expanded
+// 		*BEFORE* calling any builtin
 int	builtin_cd(char *path, t_list **envp)
 {
 	int	is_freeable;
@@ -24,7 +26,7 @@ int	builtin_cd(char *path, t_list **envp)
 	is_freeable = 0;
 	if (path == NULL)
 	{
-		path = ft_strdup(env_getval(envp, "HOME"));
+		path = ft_strdup(env_getval(*envp, "HOME"));
 		is_freeable = 1;
 	}
 	if (path == NULL)
@@ -34,7 +36,7 @@ int	builtin_cd(char *path, t_list **envp)
 		perror("cd");
 		return (1);
 	}
-	env_setval(envp, "OLDPWD", env_getval(envp, "PWD"));
+	env_setval(envp, "OLDPWD", env_getval(*envp, "PWD"));
 	env_setval(envp, "PWD", path);
 	if (is_freeable)
 		free(path);
