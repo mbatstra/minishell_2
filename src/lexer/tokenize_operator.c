@@ -1,0 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize_operator.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/26 16:02:15 by mbatstra          #+#    #+#             */
+/*   Updated: 2022/09/26 18:31:29 by mbatstra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include "minishell.h"
+#include "libft.h"
+
+static void	lexer_tokenize_pipe(t_token *token, int *i, t_lexer_flags *flags)
+{
+	flags->last_exit = lexer_value_append(token, '|');
+	*i += 1;
+}
+
+static void	lexer_tokenize_rdrin(t_token *token, char *cmd, \
+								int *i, t_lexer_flags *flags)
+{
+	if (cmd[*i + 1] == '<')
+	{
+		flags->last_exit = lexer_value_append(token, '<');
+		flags->last_exit = lexer_value_append(token, '<'); 
+		*i += 2;
+		return ;
+	}
+	flags->last_exit = lexer_value_append(token, '<');
+	i++;
+}
+
+static void	lexer_tokenize_rdrout(t_token *token, char *cmd, \
+								int *i, t_lexer_flags *flags)
+{
+	if (cmd[*i + 1] == '>')
+	{
+		flags->last_exit = lexer_value_append(token, '>');
+		flags->last_exit = lexer_value_append(token, '>');
+		*i += 2;
+		return ;
+	}
+	flags->last_exit = lexer_value_append(token, '>');
+	i++;
+}
+
+void	lexer_tokenize_operator(t_token *token, char *cmd, \
+								int *i, t_lexer_flags *flags)
+{
+	if (cmd[*i] == '|')
+	{
+		lexer_tokenize_pipe(token, i, flags);
+		return ;
+	}
+	if (cmd[*i] == '<')
+	{
+		lexer_tokenize_rdrin(token, cmd, i, flags);
+		return ;
+	}
+	if (cmd[*i] == '>')
+	{
+		lexer_tokenize_rdrout(token, cmd, i, flags);
+		return ;
+	}
+}

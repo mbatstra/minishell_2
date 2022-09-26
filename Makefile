@@ -3,7 +3,7 @@ TEST_NAME = test/unit_test
 
 SRC_DIR = src/
 BUILD_DIR = build/
-BUILD_SUBDIRS = build/builtin build/env build/expand
+BUILD_SUBDIRS = build/builtin build/env build/expand build/lexer
 
 UNPREFIXED_SRC = main.c \
 	builtin/env.c \
@@ -16,7 +16,9 @@ UNPREFIXED_SRC = main.c \
 	env/env.c \
 	expand/rel_path.c \
 	expand/parent_dir.c \
-	lexer.c
+	lexer/lexer.c \
+	lexer/tokenize_word.c \
+	lexer/tokenize_operator.c
 
 TEST_SRC = test/test.c
 
@@ -26,8 +28,8 @@ SRC = $(addprefix $(SRC_DIR), $(UNPREFIXED_SRC))
 INC = inc/
 TEST_INC = test/criterion--git/include
 
-#FLAGS = -fsanitize=address -g 
-FLAGS = -Wall -Wextra -Werror 
+FLAGS = -fsanitize=address -g 
+#FLAGS = -Wall -Wextra -Werror 
 
 LIB = lib/
 LIBFT = lib/libft/libft.a
@@ -40,7 +42,7 @@ $(LIBFT):
 	$(MAKE) -C $(LIB)libft/ WITH_BONUS=1
 
 $(NAME): $(OBJ) $(INC)*
-	$(CC) $(OBJ) $(LIBFT) -lreadline -I$(INC) -o $(NAME)
+	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -lreadline -I$(INC) -o $(NAME)
 
 $(BUILD_DIR)%.o: $(SRC_DIR)%.c | $(BUILD_DIR) $(BUILD_SUBDIRS)
 	$(CC) $(FLAGS) -I$(INC) -c $< -o $@

@@ -5,6 +5,7 @@ ft_isalpha.c \
 ft_isascii.c \
 ft_isdigit.c \
 ft_isprint.c \
+ft_iswspace.c \
 ft_abs.c \
 ft_strlen.c \
 ft_memset.c \

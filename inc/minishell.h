@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/22 17:15:17 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/26 18:23:25 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ typedef struct s_token {
 	char			*value;
 }			t_token;
 
+typedef struct s_lexer_flags {
+	int	is_single_quoted;
+	int	is_double_quoted;
+	int	is_delim;
+	int	last_exit;
+}			t_lexer_flags;
+
 typedef struct s_io_table {
 	int	in;
 	int	out;
@@ -49,7 +56,13 @@ typedef struct s_cmd {
 }			t_cmd;
 
 // lexing and parsing
-int		lexer(t_list **tokens, char *cmd_line);
+int		lexer_tokenize(t_list **tokens, char *cmd_line);
+int		lexer_value_append(t_token *token, char value);
+int		lexer_is_operator_char(char c);
+void	lexer_tokenize_word(t_token *token, char *cmd, \
+							int *i, t_lexer_flags *flags);
+void	lexer_tokenize_operator(t_token *token, char *cmd, \
+								int *i, t_lexer_flags *flags);
 
 // expansion
 char	*expand_relpath(char *relp);

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:39 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/23 15:30:38 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/26 18:32:29 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ void	db_ptlist(t_list **lst)
 
 int	main(void)
 {
+	t_list	*tokens;
 	char	*input;
 
+	lexer_tokenize(&tokens, "ls -la");
 	while (1)
 	{
 		input = readline("minishell-$ ");
