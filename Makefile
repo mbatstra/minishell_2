@@ -17,6 +17,7 @@ UNPREFIXED_SRC = main.c \
 	expand/rel_path.c \
 	expand/parent_dir.c \
 	lexer/lexer.c \
+	lexer/lexer_utils.c \
 	lexer/tokenize_word.c \
 	lexer/tokenize_operator.c
 
@@ -28,7 +29,7 @@ SRC = $(addprefix $(SRC_DIR), $(UNPREFIXED_SRC))
 INC = inc/
 TEST_INC = test/criterion--git/include
 
-FLAGS = -fsanitize=address -g 
+#FLAGS = -fsanitize=address -g 
 #FLAGS = -Wall -Wextra -Werror 
 
 LIB = lib/

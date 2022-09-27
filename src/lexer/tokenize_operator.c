@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 16:02:15 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/26 18:31:29 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/27 18:48:45 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static void	lexer_tokenize_pipe(t_token *token, int *i, t_lexer_flags *flags)
 {
-	flags->last_exit = lexer_value_append(token, '|');
+	flags->last_exit = lexer_value_append(token, "|", 1);
 	*i += 1;
 }
 
@@ -26,13 +26,12 @@ static void	lexer_tokenize_rdrin(t_token *token, char *cmd, \
 {
 	if (cmd[*i + 1] == '<')
 	{
-		flags->last_exit = lexer_value_append(token, '<');
-		flags->last_exit = lexer_value_append(token, '<'); 
+		flags->last_exit = lexer_value_append(token, "<<", 2);
 		*i += 2;
 		return ;
 	}
-	flags->last_exit = lexer_value_append(token, '<');
-	i++;
+	flags->last_exit = lexer_value_append(token, "<", 1);
+	*i += 1;
 }
 
 static void	lexer_tokenize_rdrout(t_token *token, char *cmd, \
@@ -40,13 +39,12 @@ static void	lexer_tokenize_rdrout(t_token *token, char *cmd, \
 {
 	if (cmd[*i + 1] == '>')
 	{
-		flags->last_exit = lexer_value_append(token, '>');
-		flags->last_exit = lexer_value_append(token, '>');
+		flags->last_exit = lexer_value_append(token, ">>", 2);
 		*i += 2;
 		return ;
 	}
-	flags->last_exit = lexer_value_append(token, '>');
-	i++;
+	flags->last_exit = lexer_value_append(token, ">", 1);
+	*i += 1;
 }
 
 void	lexer_tokenize_operator(t_token *token, char *cmd, \

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/26 18:23:25 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/27 19:31:06 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ typedef struct s_cmd {
 
 // lexing and parsing
 int		lexer_tokenize(t_list **tokens, char *cmd_line);
-int		lexer_value_append(t_token *token, char value);
+int		lexer_value_append(t_token *token, char *value, int val_len);
 int		lexer_is_operator_char(char c);
+void	lexer_clear_token(void *token);
 void	lexer_tokenize_word(t_token *token, char *cmd, \
 							int *i, t_lexer_flags *flags);
 void	lexer_tokenize_operator(t_token *token, char *cmd, \

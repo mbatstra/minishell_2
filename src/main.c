@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:39 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/26 18:32:29 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:02:49 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,31 @@ void	db_ptlist(t_list **lst)
 	node = *lst;
 	while (node != NULL)
 	{
-		printf("%s\n", node->content);
+		printf("%s\n", ((t_token *)node->content)->value);
 		node = node->next;
 	}
 }
 
 int	main(void)
 {
-	t_list	*tokens;
 	char	*input;
+	t_list	*tokens;
 
-	lexer_tokenize(&tokens, "ls -la");
-	while (1)
-	{
-		input = readline("minishell-$ ");
-		if (input == NULL)
-			printf("error\n");
-		add_history(input);
-		printf("%s\n", input);
-		// lex and parse
-		free(input);
-	}
+	tokens = NULL;
+	lexer_tokenize(&tokens, "ls -la > my_file");
+	db_ptlist(&tokens);
+	ft_lstclear(&tokens, &lexer_clear_token);
+	tokens = NULL;
+	system("leaks -q minishell");
+	// while (1)
+	// {
+	// 	input = readline("minishell-$ ");
+	// 	if (input == NULL)
+	// 		printf("error\n");
+	// 	add_history(input);
+	// 	printf("%s\n", input);
+	// 	// lex and parse
+	// 	free(input);
+	// }
 	return (0);
 }

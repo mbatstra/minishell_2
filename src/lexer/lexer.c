@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:22:08 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/26 18:27:31 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/27 20:53:39 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ static void	init_flags(t_lexer_flags *flags)
 static void	delimit(t_list **tokens, t_token **token, t_lexer_flags *flags)
 {
 	if (flags->last_exit)
-		// deal with it
+	{
+		ft_lstclear(tokens, &lexer_clear_token);
+		lexer_clear_token(*token);
+	}
 	if (flags->is_delim)
 	{
 		// set type
@@ -45,25 +48,6 @@ static void	delimit(t_list **tokens, t_token **token, t_lexer_flags *flags)
 		*token = init_token();
 		init_flags(flags);
 	}
-}
-
-int	lexer_is_operator_char(char c)
-{
-	return (c == '<' || c == '>' || c == '|');
-}
-
-int	lexer_value_append(t_token *token, char value)
-{
-	char	*new;
-
-	new = (char *)ft_calloc(ft_strlen(token->value) + 2, sizeof(char));
-	if (new == NULL)
-		return (1);
-	ft_strlcpy(new, token->value, ft_strlen(token->value) + 1);
-	free(token->value);
-	new[ft_strlen(token->value) + 1] = value;
-	token->value = new;
-	return (0);
 }
 
 int	lexer_tokenize(t_list **tokens, char *cmd_line)

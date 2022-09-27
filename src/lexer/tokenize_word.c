@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 16:41:52 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/26 18:31:14 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/09/27 19:00:11 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	lexer_tokenize_quote(t_token *token, char *cmd, \
 			flags->is_double_quoted = 0;
 		else
 			flags->is_double_quoted = 1;
-		flags->last_exit = lexer_value_append(token, '"');
+		flags->last_exit = lexer_value_append(token, "\"", 1);
 		*i += 1;
 	}
 	if (cmd[*i] == '\'')
@@ -33,7 +33,7 @@ static void	lexer_tokenize_quote(t_token *token, char *cmd, \
 			flags->is_single_quoted = 0;
 		else
 			flags->is_single_quoted = 1;
-		flags->last_exit = lexer_value_append(token, '\'');
+		flags->last_exit = lexer_value_append(token, "'", 1);
 		*i += 1;
 	}
 }
@@ -45,19 +45,23 @@ static void	lexer_tokenize_delim(t_token *token, char *cmd, \
 	{
 		if (flags->is_double_quoted || flags->is_single_quoted)
 		{
-			flags->last_exit = lexer_value_append(token, cmd[*i]);
+			flags->last_exit = lexer_value_append(token, cmd + *i, 1);
 			*i += 1;
 		}
 		else
+		{
+			while (ft_iswspace(cmd[*i]))
+				*i += 1;
 			flags->is_delim = 1;
+		}
 	}
 }
 
 static void	lexer_tokenize_char(t_token *token, char *cmd, \
 								int *i, t_lexer_flags *flags)
 {
-	flags->last_exit = lexer_value_append(token, cmd[*i]);
-	i++;
+	flags->last_exit = lexer_value_append(token, cmd + *i, 1);
+	*i += 1;
 }
 
 void	lexer_tokenize_word(t_token *token, char *cmd, \
@@ -70,5 +74,7 @@ void	lexer_tokenize_word(t_token *token, char *cmd, \
 		if (flags->is_delim)
 			return ;
 		lexer_tokenize_char(token, cmd, i, flags);
+		if (cmd[*i] == '\0')
+			flags->is_delim = 1;
 	}
 }
