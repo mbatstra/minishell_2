@@ -60,6 +60,10 @@ static void	lexer_tokenize_delim(t_token *token, char *cmd, \
 static void	lexer_tokenize_char(t_token *token, char *cmd, \
 								int *i, t_lexer_flags *flags)
 {
+	if (!flags->is_single_quoted && cmd[*i] == '$')
+		token->env_expansion = 1;
+	if (!flags->is_single_quoted && !flags->is_double_quoted && cmd[*i] == '~')
+		token->tilde_expansion = 1;
 	flags->last_exit = lexer_value_append(token, cmd + *i, 1);
 	*i += 1;
 }

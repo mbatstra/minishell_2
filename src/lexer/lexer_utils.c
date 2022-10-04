@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "minishell.h"
 #include "libft.h"
 
@@ -23,7 +24,7 @@ int	lexer_value_append(t_token *token, char *value, int val_len)
 {
 	char	*new;
 
-	new = (char *)malloc(ft_strlen(token->value) + val_len + 1); 
+	new = (char *)malloc(ft_strlen(token->value) + val_len + 1);
 	if (new == NULL)
 		return (1);
 	ft_strlcpy(new, token->value, ft_strlen(token->value) + 1);
@@ -31,6 +32,28 @@ int	lexer_value_append(t_token *token, char *value, int val_len)
 	free(token->value);
 	token->value = new;
 	return (0);
+}
+
+void	lexer_token_identifier(t_token *token)
+{
+	if (token->value[0] == '<')
+	{
+		if (ft_strlen(token->value) == 1)
+			token->type = RDR_IN;
+		else
+			token->type = RDR_RDIN;
+	}
+	else if (token->value[0] == '>')
+	{
+		if (ft_strlen(token->value) == 1)
+			token->type = RDR_OUT;
+		else
+			token->type = RDR_APP;
+	}
+	else if (token->value[0] == '|')
+		token->type = PIPE;
+	else
+		token->type = WORD;
 }
 
 void	lexer_clear_token(void *token)

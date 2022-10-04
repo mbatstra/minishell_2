@@ -18,7 +18,7 @@ int	builtin_env(t_list *envp)
 {
 	while (envp != NULL)
 	{
-		if (printf("%s\n", envp->content) < 0)
+		if (printf("%s\n", (char *)envp->content) < 0)
 			return (1);
 		envp = envp->next;
 	}

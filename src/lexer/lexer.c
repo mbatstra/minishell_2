@@ -23,19 +23,23 @@ static t_token	*init_token(void)
 	if (token == NULL)
 		return (NULL);
 	token->value = NULL;
+	token->env_expansion = 0;
+	token->tilde_expansion = 0;
 	return (token);
 }
 
 static void	init_flags(t_lexer_flags *flags)
 {
 	flags->is_double_quoted = 0;
-	flags->is_double_quoted = 0;
+	flags->is_single_quoted = 0;
 	flags->is_delim = 0;
 	flags->last_exit = 0;
 }
 
 static void	delimit(t_list **tokens, t_token **token, t_lexer_flags *flags)
 {
+	t_list	*new;
+
 	if (flags->last_exit)
 	{
 		ft_lstclear(tokens, &lexer_clear_token);
@@ -43,8 +47,14 @@ static void	delimit(t_list **tokens, t_token **token, t_lexer_flags *flags)
 	}
 	if (flags->is_delim)
 	{
-		// set type
-		ft_lstadd_back(tokens, ft_lstnew(*token));
+		if (ft_strlen((*token)->value) == 0)
+			lexer_clear_token(*token);
+		else
+		{
+			lexer_token_identifier(*token);
+			new = ft_lstnew(*token);
+			ft_lstadd_back(tokens, new);
+		}
 		*token = init_token();
 		init_flags(flags);
 	}
@@ -67,5 +77,6 @@ int	lexer_tokenize(t_list **tokens, char *cmd_line)
 			lexer_tokenize_word(token, cmd_line, &i, &flags);
 		delimit(tokens, &token, &flags);
 	}
+	lexer_clear_token(token);
 	return (0);
 }

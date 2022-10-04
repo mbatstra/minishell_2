@@ -3,7 +3,7 @@ TEST_NAME = test/unit_test
 
 SRC_DIR = src/
 BUILD_DIR = build/
-BUILD_SUBDIRS = build/builtin build/env build/expand build/lexer
+BUILD_SUBDIRS = build/builtin build/env build/expand build/lexer build/parser
 
 UNPREFIXED_SRC = main.c \
 	builtin/env.c \
@@ -30,7 +30,7 @@ INC = inc/
 TEST_INC = test/criterion--git/include
 
 #FLAGS = -fsanitize=address -g 
-#FLAGS = -Wall -Wextra -Werror 
+FLAGS = -Wall -Wextra -Werror 
 
 LIB = lib/
 LIBFT = lib/libft/libft.a

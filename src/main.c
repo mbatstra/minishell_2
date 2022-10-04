@@ -24,7 +24,11 @@ void	db_ptlist(t_list **lst)
 	node = *lst;
 	while (node != NULL)
 	{
-		printf("%s\n", ((t_token *)node->content)->value);
+		printf("%s: type: %d, env_exp: %d, tilde_exp: %d\n", \
+			((t_token *)node->content)->value, \
+			((t_token *)node->content)->type, \
+			((t_token *)node->content)->env_expansion, \
+			((t_token *)node->content)->tilde_expansion);
 		node = node->next;
 	}
 }
@@ -34,21 +38,17 @@ int	main(void)
 	char	*input;
 	t_list	*tokens;
 
-	tokens = NULL;
-	lexer_tokenize(&tokens, "ls -la > my_file");
-	db_ptlist(&tokens);
-	ft_lstclear(&tokens, &lexer_clear_token);
-	tokens = NULL;
-	system("leaks -q minishell");
-	// while (1)
-	// {
-	// 	input = readline("minishell-$ ");
-	// 	if (input == NULL)
-	// 		printf("error\n");
-	// 	add_history(input);
-	// 	printf("%s\n", input);
-	// 	// lex and parse
-	// 	free(input);
-	// }
+	while (1)
+	{
+		input = readline("minishell-$ ");
+		if (input == NULL)
+			printf("error\n");
+		add_history(input);
+		tokens = NULL;
+		lexer_tokenize(&tokens, input);
+		db_ptlist(&tokens);
+		ft_lstclear(&tokens, &lexer_clear_token);
+		free(input);
+	}
 	return (0);
 }

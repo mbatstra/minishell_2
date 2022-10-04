@@ -30,6 +30,8 @@ enum e_types {
 typedef struct s_token {
 	enum e_types	type;
 	char			*value;
+	int				env_expansion;
+	int				tilde_expansion;
 }			t_token;
 
 typedef struct s_lexer_flags {
@@ -40,9 +42,9 @@ typedef struct s_lexer_flags {
 }			t_lexer_flags;
 
 typedef struct s_io_table {
-	int	in;
-	int	out;
-	int	err;
+	char	*in;
+	char	*out;
+	char	*err;
 }			t_io_table;
 
 typedef struct s_simplecmd {
@@ -60,6 +62,7 @@ int		lexer_tokenize(t_list **tokens, char *cmd_line);
 int		lexer_value_append(t_token *token, char *value, int val_len);
 int		lexer_is_operator_char(char c);
 void	lexer_clear_token(void *token);
+void	lexer_token_identifier(t_token *token);
 void	lexer_tokenize_word(t_token *token, char *cmd, \
 							int *i, t_lexer_flags *flags);
 void	lexer_tokenize_operator(t_token *token, char *cmd, \

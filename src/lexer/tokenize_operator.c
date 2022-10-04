@@ -19,6 +19,8 @@ static void	lexer_tokenize_pipe(t_token *token, int *i, t_lexer_flags *flags)
 {
 	flags->last_exit = lexer_value_append(token, "|", 1);
 	*i += 1;
+	if (!flags->is_double_quoted && !flags->is_single_quoted)
+		flags->is_delim = 1;
 }
 
 static void	lexer_tokenize_rdrin(t_token *token, char *cmd, \
@@ -28,10 +30,14 @@ static void	lexer_tokenize_rdrin(t_token *token, char *cmd, \
 	{
 		flags->last_exit = lexer_value_append(token, "<<", 2);
 		*i += 2;
-		return ;
 	}
-	flags->last_exit = lexer_value_append(token, "<", 1);
-	*i += 1;
+	else
+	{
+		flags->last_exit = lexer_value_append(token, "<", 1);
+		*i += 1;
+	}
+	if (!flags->is_double_quoted && !flags->is_single_quoted)
+		flags->is_delim = 1;
 }
 
 static void	lexer_tokenize_rdrout(t_token *token, char *cmd, \
@@ -41,10 +47,14 @@ static void	lexer_tokenize_rdrout(t_token *token, char *cmd, \
 	{
 		flags->last_exit = lexer_value_append(token, ">>", 2);
 		*i += 2;
-		return ;
 	}
-	flags->last_exit = lexer_value_append(token, ">", 1);
-	*i += 1;
+	else
+	{
+		flags->last_exit = lexer_value_append(token, ">", 1);
+		*i += 1;
+	}
+	if (!flags->is_double_quoted && !flags->is_single_quoted)
+		flags->is_delim = 1;
 }
 
 void	lexer_tokenize_operator(t_token *token, char *cmd, \
