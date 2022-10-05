@@ -3,7 +3,7 @@ TEST_NAME = test/unit_test
 
 SRC_DIR = src/
 BUILD_DIR = build/
-BUILD_SUBDIRS = build/builtin build/env build/expand build/lexer build/parser
+BUILD_SUBDIRS = build/builtin build/env build/expand build/lexer build/parse
 
 UNPREFIXED_SRC = main.c \
 	builtin/env.c \
@@ -19,7 +19,10 @@ UNPREFIXED_SRC = main.c \
 	lexer/lexer.c \
 	lexer/lexer_utils.c \
 	lexer/tokenize_word.c \
-	lexer/tokenize_operator.c
+	lexer/tokenize_operator.c \
+	parse/parse.c \
+	parse/parse_util.c \
+	parse/parse_redir.c
 
 TEST_SRC = test/test.c
 

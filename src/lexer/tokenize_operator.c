@@ -6,12 +6,11 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 16:02:15 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/27 18:48:45 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:56:07 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include "minishell.h"
 #include "libft.h"
 

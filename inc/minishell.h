@@ -6,22 +6,22 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/27 19:31:06 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/05 21:32:47 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define STDIN 0
-# define STDOUT 1
-# define STDERR 2
+# define IN 0
+# define OUT 1
+# define ERR 2
 
 # include "libft.h"
 
 enum e_types {
 	RDR_IN,
+	HEREDOC,
 	RDR_OUT,
-	RDR_RDIN,
 	RDR_APP,
 	PIPE,
 	WORD
@@ -41,12 +41,6 @@ typedef struct s_lexer_flags {
 	int	last_exit;
 }			t_lexer_flags;
 
-typedef struct s_io_table {
-	char	*in;
-	char	*out;
-	char	*err;
-}			t_io_table;
-
 typedef struct s_simplecmd {
 	int		argc;
 	char	**argv;
@@ -54,19 +48,28 @@ typedef struct s_simplecmd {
 
 typedef struct s_cmd {
 	t_simplecmd	**simplecmds;
-	t_io_table	io;
+	t_token		**in;
+	t_token		**out;
+	t_token		**err;
 }			t_cmd;
 
-// lexing and parsing
-int		lexer_tokenize(t_list **tokens, char *cmd_line);
-int		lexer_value_append(t_token *token, char *value, int val_len);
-int		lexer_is_operator_char(char c);
+// lexing 
+t_token	*lexer_token_copy(t_token *token);
 void	lexer_clear_token(void *token);
 void	lexer_token_identifier(t_token *token);
 void	lexer_tokenize_word(t_token *token, char *cmd, \
 							int *i, t_lexer_flags *flags);
 void	lexer_tokenize_operator(t_token *token, char *cmd, \
 								int *i, t_lexer_flags *flags);
+int		lexer_tokenize(t_list **tokens, char *cmd_line);
+int		lexer_value_append(t_token *token, char *value, int val_len);
+int		lexer_is_operator_char(char c);
+
+// parsing
+t_cmd	*parse_init_cmd(void);
+void	parse_tokens(t_cmd *cmd_table, t_list **tokens);
+void	parse_clear_cmd(t_cmd *cmd);
+int		parse_redir(t_cmd *cmd_table, t_list *tokens);
 
 // expansion
 char	*expand_relpath(char *relp);
@@ -78,6 +81,7 @@ void	env_setval(t_list **envp, const char *name, const char *val);
 char	*env_getval(t_list *envp, const char *name);
 
 // builtins
+// unset and export should work for multiple vars!!!
 void	builtin_exit(void);
 int		builtin_export(t_list **envp, char *nameval);
 int		builtin_unset(t_list **envp, char *name);

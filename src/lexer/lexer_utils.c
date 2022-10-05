@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 19:22:51 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/27 20:37:03 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:17:22 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,27 @@ int	lexer_value_append(t_token *token, char *value, int val_len)
 	return (0);
 }
 
+t_token	*lexer_token_copy(t_token *token)
+{
+	t_token	*new_token;
+
+	if (token == NULL)
+		return (NULL);
+	new_token = (t_token *)malloc(sizeof(t_token));
+	if (new_token == NULL)
+		return (NULL);
+	new_token->value = ft_strdup(token->value);
+	if (new_token->value == NULL)
+	{
+		free(new_token);
+		return (NULL);
+	}
+	new_token->type = token->type;
+	new_token->env_expansion = token->env_expansion;
+	new_token->tilde_expansion = token->tilde_expansion;
+	return (new_token);
+}
+
 void	lexer_token_identifier(t_token *token)
 {
 	if (token->value[0] == '<')
@@ -41,7 +62,7 @@ void	lexer_token_identifier(t_token *token)
 		if (ft_strlen(token->value) == 1)
 			token->type = RDR_IN;
 		else
-			token->type = RDR_RDIN;
+			token->type = HEREDOC;
 	}
 	else if (token->value[0] == '>')
 	{

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:39 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/27 21:02:49 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/05 21:29:32 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ int	main(void)
 {
 	char	*input;
 	t_list	*tokens;
+	t_cmd	*cmd_table;
 
+	cmd_table = NULL;
 	while (1)
 	{
 		input = readline("minishell-$ ");
@@ -47,6 +49,9 @@ int	main(void)
 		tokens = NULL;
 		lexer_tokenize(&tokens, input);
 		db_ptlist(&tokens);
+		cmd_table = parse_init_cmd();
+		parse_tokens(cmd_table, &tokens);
+		parse_clear_cmd(cmd_table);
 		ft_lstclear(&tokens, &lexer_clear_token);
 		free(input);
 	}
