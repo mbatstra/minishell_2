@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:22:08 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/27 20:53:39 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:28:52 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ static t_token	*init_token(void)
 	if (token == NULL)
 		return (NULL);
 	token->value = NULL;
-	token->env_expansion = 0;
-	token->tilde_expansion = 0;
+	token->expand = 0;
 	return (token);
 }
 

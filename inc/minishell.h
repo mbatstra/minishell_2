@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/05 21:32:47 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:26:46 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ enum e_types {
 typedef struct s_token {
 	enum e_types	type;
 	char			*value;
-	int				env_expansion;
-	int				tilde_expansion;
+	int				expand;
 }			t_token;
 
 typedef struct s_lexer_flags {
@@ -66,10 +65,11 @@ int		lexer_value_append(t_token *token, char *value, int val_len);
 int		lexer_is_operator_char(char c);
 
 // parsing
-t_cmd	*parse_init_cmd(void);
+void	parse_init_cmd(t_cmd *cmd);
 void	parse_tokens(t_cmd *cmd_table, t_list **tokens);
 void	parse_clear_cmd(t_cmd *cmd);
-int		parse_redir(t_cmd *cmd_table, t_list *tokens);
+void	parse_clear_tok_arr(t_token **tok_arr);
+int		parse_redir(t_cmd *cmd_table, t_list *tok);
 
 // expansion
 char	*expand_relpath(char *relp);

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:49:36 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/26 18:30:17 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/07 13:33:22 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memset(void *b, int c, size_t len);
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
+void	ft_lst_delnode(t_list **head, t_list *node, void (*del)(void *));
 void	ft_lstadd_front(t_list **lst, t_list *new);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstiter(t_list *lst, void (*f)(void *));

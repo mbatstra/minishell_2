@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 16:41:52 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/27 19:00:11 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:27:39 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static void	lexer_tokenize_char(t_token *token, char *cmd, \
 								int *i, t_lexer_flags *flags)
 {
 	if (!flags->is_single_quoted && cmd[*i] == '$')
-		token->env_expansion = 1;
+		token->expand = 1;
 	if (!flags->is_single_quoted && !flags->is_double_quoted && cmd[*i] == '~')
-		token->tilde_expansion = 1;
+		token->expand = 1;
 	flags->last_exit = lexer_value_append(token, cmd + *i, 1);
 	*i += 1;
 }

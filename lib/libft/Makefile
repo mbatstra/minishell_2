@@ -46,7 +46,8 @@ ft_lstadd_back_bonus.c \
 ft_lstclear_bonus.c \
 ft_lstdelone_bonus.c \
 ft_lstmap_bonus.c \
-ft_lstiter_bonus.c
+ft_lstiter_bonus.c \
+ft_lst_delnode_bonus.c
 
 FLAGS = -Wall -Wextra -Werror
 

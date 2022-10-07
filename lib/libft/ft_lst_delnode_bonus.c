@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   ft_lst_delnode_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 12:09:16 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/07 15:17:59 by mbatstra         ###   ########.fr       */
+/*   Created: 2022/10/07 13:18:46 by mbatstra          #+#    #+#             */
+/*   Updated: 2022/10/07 13:26:34 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "minishell.h"
 #include "libft.h"
 
-void	parse_tokens(t_cmd *cmd_table, t_list **tokens)
+void	ft_lst_delnode(t_list **head, t_list *node, void (*del)(void *))
 {
-	t_list	*node;
-	int		error;
+	t_list	*temp;
 
-	node = *tokens;
-	while (node != NULL)
-	{
-		if (((t_token *)node->content)->type < PIPE)
-			error = parse_redir(cmd_table, node);
-		if (error)
-		{
-			printf("Some error message\n");
-			return ;
-		}
-		node = node->next;
-	}
+	if (head == NULL || *head == NULL || node == NULL)
+		return ;
+	temp = *head;
+	while (temp->next != node && temp->next != NULL)
+		temp = temp->next;
+	if (temp->next == NULL)
+		return ;
+	temp->next = node->next;
+	ft_lstdelone(node, del);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parse_word.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 12:09:16 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/07 15:17:59 by mbatstra         ###   ########.fr       */
+/*   Created: 2022/10/07 15:53:52 by mbatstra          #+#    #+#             */
+/*   Updated: 2022/10/07 16:07:58 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	parse_tokens(t_cmd *cmd_table, t_list **tokens)
+int	parse_word(t_cmd *cmd_table, t_list *tok)
 {
-	t_list	*node;
-	int		error;
-
-	node = *tokens;
-	while (node != NULL)
-	{
-		if (((t_token *)node->content)->type < PIPE)
-			error = parse_redir(cmd_table, node);
-		if (error)
-		{
-			printf("Some error message\n");
-			return ;
-		}
-		node = node->next;
-	}
+	int	num_pipes;
 }
