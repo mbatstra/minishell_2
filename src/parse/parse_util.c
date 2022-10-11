@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 12:56:12 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/07 14:04:09 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/11 15:56:57 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,32 @@ void	parse_clear_cmd(t_cmd *cmd)
 	parse_clear_tok_arr(cmd->in);
 	parse_clear_tok_arr(cmd->out);
 	parse_clear_tok_arr(cmd->err);
+}
+
+t_token	**parse_append_arr(t_token **arr, t_token *redir)
+{
+	t_token	**new_arr;
+	int		i;
+
+	i = 0;
+	while (arr[i] != NULL)
+		i++;
+	new_arr = (t_token **)malloc((i + 2) * sizeof(t_token *));
+	if (new_arr == NULL)
+		return (NULL);
+	i = 0;
+	while (arr[i] != NULL)
+	{
+		new_arr[i] = lexer_token_copy(arr[i]);
+		if (new_arr[i] == NULL)
+		{
+			parse_clear_tok_arr(new_arr);
+			return (NULL);
+		}
+		i++;
+	}
+	new_arr[i] = redir;
+	new_arr[i + 1] = NULL;
+	parse_clear_tok_arr(arr);
+	return (new_arr);
 }

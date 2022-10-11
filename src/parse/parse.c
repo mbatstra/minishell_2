@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 12:09:16 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/07 15:17:59 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/11 18:58:41 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,12 @@
 
 void	parse_tokens(t_cmd *cmd_table, t_list **tokens)
 {
-	t_list	*node;
-	int		error;
+	int	error;
 
-	node = *tokens;
-	while (node != NULL)
+	error = parse_redir(cmd_table, tokens);
+	if (error)
 	{
-		if (((t_token *)node->content)->type < PIPE)
-			error = parse_redir(cmd_table, node);
-		if (error)
-		{
-			printf("Some error message\n");
-			return ;
-		}
-		node = node->next;
+		printf("Some error message\n");
+		return ;
 	}
 }

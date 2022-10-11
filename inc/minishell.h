@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/07 15:26:46 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/11 19:07:35 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,12 @@ int		lexer_value_append(t_token *token, char *value, int val_len);
 int		lexer_is_operator_char(char c);
 
 // parsing
+t_token	**parse_append_arr(t_token **arr, t_token *redir);
 void	parse_init_cmd(t_cmd *cmd);
 void	parse_tokens(t_cmd *cmd_table, t_list **tokens);
 void	parse_clear_cmd(t_cmd *cmd);
 void	parse_clear_tok_arr(t_token **tok_arr);
-int		parse_redir(t_cmd *cmd_table, t_list *tok);
+int		parse_redir(t_cmd *cmd_table, t_list **tokens);
 
 // expansion
 char	*expand_relpath(char *relp);
@@ -82,6 +83,7 @@ char	*env_getval(t_list *envp, const char *name);
 
 // builtins
 // unset and export should work for multiple vars!!!
+// exit should return last exit code
 void	builtin_exit(void);
 int		builtin_export(t_list **envp, char *nameval);
 int		builtin_unset(t_list **envp, char *name);
