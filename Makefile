@@ -22,7 +22,8 @@ UNPREFIXED_SRC = main.c \
 	lexer/tokenize_operator.c \
 	parse/parse.c \
 	parse/parse_util.c \
-	parse/parse_redir.c
+	parse/parse_redir.c \
+	parse/parse_word.c
 
 TEST_SRC = test/test.c
 

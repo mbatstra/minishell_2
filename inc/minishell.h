@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:30:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/11 19:07:35 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:03:40 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ t_token	**parse_append_arr(t_token **arr, t_token *redir);
 void	parse_init_cmd(t_cmd *cmd);
 void	parse_tokens(t_cmd *cmd_table, t_list **tokens);
 void	parse_clear_cmd(t_cmd *cmd);
+void	parse_clear_arr(char **arr, int argc);
 void	parse_clear_tok_arr(t_token **tok_arr);
 int		parse_redir(t_cmd *cmd_table, t_list **tokens);
+int		parse_word(t_cmd *cmd_table, t_list **tokens);
 
 // expansion
 char	*expand_relpath(char *relp);

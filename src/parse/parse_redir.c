@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:04:31 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/11 19:04:25 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:32:37 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ int	parse_redir(t_cmd *cmd_table, t_list **tokens)
 			new_tok->type = ((t_token *)current->content)->type;
 			error = parse_add_rdr_to_cmd(cmd_table, new_tok);
 			skip = current->next->next;
-			ft_lst_delnode(tokens, current, &lexer_clear_token);
 			ft_lst_delnode(tokens, current->next, &lexer_clear_token);
+			ft_lst_delnode(tokens, current, &lexer_clear_token);
 			current = skip;
 		}
 		else

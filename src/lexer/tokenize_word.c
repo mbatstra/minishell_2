@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 16:41:52 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/07 15:27:39 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/12 21:33:07 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 #include "minishell.h"
 #include "libft.h"
 
+static int	lexer_quote_isclosed(char *cmd, int start)
+{
+	int	i;
+
+	i = start + 1;
+	while (cmd[i] != '\0')
+	{
+		if (cmd[i] == cmd[start])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 static void	lexer_tokenize_quote(t_token *token, char *cmd, \
 								int *i, t_lexer_flags *flags)
 {
@@ -22,7 +36,7 @@ static void	lexer_tokenize_quote(t_token *token, char *cmd, \
 	{
 		if (flags->is_double_quoted)
 			flags->is_double_quoted = 0;
-		else
+		else if (lexer_quote_isclosed(cmd, *i))
 			flags->is_double_quoted = 1;
 		flags->last_exit = lexer_value_append(token, "\"", 1);
 		*i += 1;
@@ -31,7 +45,7 @@ static void	lexer_tokenize_quote(t_token *token, char *cmd, \
 	{
 		if (flags->is_single_quoted)
 			flags->is_single_quoted = 0;
-		else
+		else if (lexer_quote_isclosed(cmd, *i))
 			flags->is_single_quoted = 1;
 		flags->last_exit = lexer_value_append(token, "'", 1);
 		*i += 1;

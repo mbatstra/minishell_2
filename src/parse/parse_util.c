@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 12:56:12 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/11 15:56:57 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:35:33 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,34 @@ void	parse_clear_tok_arr(t_token **tok_arr)
 	free(tok_arr);
 }
 
+void	parse_clear_arr(char **arr, int argc)
+{
+	int	i;
+
+	i = 0;
+	while (i < argc)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
 void	parse_clear_cmd(t_cmd *cmd)
 {
 	int	i_cmd;
-	int	i_tok;
 
 	i_cmd = 0;
-	i_tok = 0;
 	if (cmd->simplecmds != NULL)
 	{
 		while (cmd->simplecmds[i_cmd] != NULL)
 		{
+			parse_clear_arr(cmd->simplecmds[i_cmd]->argv, \
+							cmd->simplecmds[i_cmd]->argc);
 			free(cmd->simplecmds[i_cmd]);
 			i_cmd++;
 		}
+		free(cmd->simplecmds);
 	}
 	parse_clear_tok_arr(cmd->in);
 	parse_clear_tok_arr(cmd->out);
