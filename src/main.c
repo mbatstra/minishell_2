@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 17:30:39 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/13 18:37:38 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/13 19:06:23 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,23 +76,29 @@ void	db_ptcmd(t_simplecmd **cmd_table)
 int	main(void)
 {
 	t_simplecmd	**cmd_table;
-	char		*input;
 	t_list		*tokens;
+	char		*input;
+	int			error;
 
 	while (1)
 	{
+		error = 0;
 		input = readline("minishell-$ ");
 		if (input == NULL)
 			printf("error\n");
 		add_history(input);
 		tokens = NULL;
-		lexer_tokenize(&tokens, input);
-		cmd_table = parse_cmd_init(tokens);
-		parse_tokens(cmd_table, &tokens);
-		db_ptcmd(cmd_table);
-		// db_ptlist(&tokens);
-		parse_clear_cmd_table(cmd_table);
+		error = lexer_tokenize(&tokens, input);
+		if (!error)
+		{
+			cmd_table = parse_cmd_init(tokens);
+			error = parse_tokens(cmd_table, &tokens);
+			db_ptcmd(cmd_table);
+			parse_clear_cmd_table(cmd_table);
+		}
 		ft_lstclear(&tokens, &lexer_clear_token);
+		if (error)
+			printf("Allocation failure\n");
 		free(input);
 	}
 	return (0);

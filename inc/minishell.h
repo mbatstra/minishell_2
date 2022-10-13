@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 17:30:49 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/13 18:22:39 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/13 19:07:53 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		lexer_is_operator_char(char c);
 // parsing
 t_simplecmd	**parse_cmd_init(t_list *tokens);
 void		parse_clear_cmd_table(t_simplecmd **cmd_table);
-void		parse_tokens(t_simplecmd **cmd_table, t_list **tokens);
+int			parse_tokens(t_simplecmd **cmd_table, t_list **tokens);
 int			parse_redir(t_simplecmd **cmd_table, t_list **tokens);
 int			parse_word(t_simplecmd **cmd_table, t_list **tokens);
 
