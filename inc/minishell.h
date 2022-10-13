@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
+/*                                                        ::::::::            */
 /*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/14 17:30:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/12 17:03:40 by mbatstra         ###   ########.fr       */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/09/14 17:30:49 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/10/13 18:22:39 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,10 @@ typedef struct s_lexer_flags {
 }			t_lexer_flags;
 
 typedef struct s_simplecmd {
-	int		argc;
-	char	**argv;
+	t_list	**arg;
+	t_list	**in;
+	t_list	**out;
 }			t_simplecmd;
-
-typedef struct s_cmd {
-	t_simplecmd	**simplecmds;
-	t_token		**in;
-	t_token		**out;
-	t_token		**err;
-}			t_cmd;
 
 // lexing 
 t_token	*lexer_token_copy(t_token *token);
@@ -65,14 +59,11 @@ int		lexer_value_append(t_token *token, char *value, int val_len);
 int		lexer_is_operator_char(char c);
 
 // parsing
-t_token	**parse_append_arr(t_token **arr, t_token *redir);
-void	parse_init_cmd(t_cmd *cmd);
-void	parse_tokens(t_cmd *cmd_table, t_list **tokens);
-void	parse_clear_cmd(t_cmd *cmd);
-void	parse_clear_arr(char **arr, int argc);
-void	parse_clear_tok_arr(t_token **tok_arr);
-int		parse_redir(t_cmd *cmd_table, t_list **tokens);
-int		parse_word(t_cmd *cmd_table, t_list **tokens);
+t_simplecmd	**parse_cmd_init(t_list *tokens);
+void		parse_clear_cmd_table(t_simplecmd **cmd_table);
+void		parse_tokens(t_simplecmd **cmd_table, t_list **tokens);
+int			parse_redir(t_simplecmd **cmd_table, t_list **tokens);
+int			parse_word(t_simplecmd **cmd_table, t_list **tokens);
 
 // expansion
 char	*expand_relpath(char *relp);

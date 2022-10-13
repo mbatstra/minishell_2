@@ -23,7 +23,7 @@ UNPREFIXED_SRC = main.c \
 	parse/parse.c \
 	parse/parse_util.c \
 	parse/parse_redir.c \
-	parse/parse_word.c
+	parse/parse_word.c \
 
 TEST_SRC = test/test.c
 
@@ -33,8 +33,8 @@ SRC = $(addprefix $(SRC_DIR), $(UNPREFIXED_SRC))
 INC = inc/
 TEST_INC = test/criterion--git/include
 
-#FLAGS = -fsanitize=address -g 
-FLAGS = -Wall -Wextra -Werror 
+FLAGS = -fsanitize=address -g 
+#FLAGS = -Wall -Wextra -Werror 
 
 LIB = lib/
 LIBFT = lib/libft/libft.a
@@ -46,6 +46,12 @@ test: $(TEST_NAME)
 $(LIBFT):
 	$(MAKE) -C $(LIB)libft/ WITH_BONUS=1
 
+$(BUILD_DIR):
+	mkdir $@
+
+$(BUILD_SUBDIRS):
+	mkdir $@
+
 $(NAME): $(OBJ) $(INC)*
 	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -lreadline -I$(INC) -o $(NAME)
 
@@ -54,12 +60,6 @@ $(BUILD_DIR)%.o: $(SRC_DIR)%.c | $(BUILD_DIR) $(BUILD_SUBDIRS)
 
 $(TEST_NAME): $(LIBFT) $(TEST_SRC) $(filter-out main.c, $(SRC))
 	$(CC) $(TEST_SRC) $(LIBFT) $(filter-out src/main.c, $(SRC)) $(CRITERION) -I$(INC) -I$(TEST_INC) -o $(TEST_NAME) 
-
-$(BUILD_DIR):
-	mkdir $@
-
-$(BUILD_SUBDIRS):
-	mkdir $@
 
 clean:
 	rm -f $(OBJ)

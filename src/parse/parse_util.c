@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
+/*                                                        ::::::::            */
 /*   parse_util.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 12:56:12 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/12 17:35:33 by mbatstra         ###   ########.fr       */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/04 12:56:12 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/10/13 17:56:59 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,88 +15,86 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	parse_init_cmd(t_cmd *cmd)
+static void	parse_clear_cmd(t_simplecmd *cmd)
 {
-	cmd->simplecmds = NULL;
-	cmd->in = NULL;
-	cmd->out = NULL;
-	cmd->err = NULL;
+	ft_lstclear(cmd->arg, &free);
+	ft_lstclear(cmd->in, &lexer_clear_token);
+	ft_lstclear(cmd->out, &lexer_clear_token);
+	free(cmd->arg);
+	free(cmd->in);
+	free(cmd->out);
+	free(cmd);
 }
 
-void	parse_clear_tok_arr(t_token **tok_arr)
+static t_simplecmd	*parse_simplecmd_init(void)
+{
+	t_simplecmd	*cmd;
+
+	cmd = (t_simplecmd *)malloc(sizeof(t_simplecmd));
+	if (cmd == NULL)
+		return (NULL);
+	cmd->arg = (t_list **)malloc(sizeof(t_list *));
+	cmd->in = (t_list **)malloc(sizeof(t_list *));
+	cmd->out = (t_list **)malloc(sizeof(t_list *));
+	if (cmd->arg == NULL || cmd->in == NULL || cmd->out == NULL)
+	{
+		parse_clear_cmd(cmd);
+		return (NULL);
+	}
+	*(cmd->arg) = NULL;
+	*(cmd->in) = NULL;
+	*(cmd->out) = NULL;
+	return (cmd);
+}
+
+void	parse_clear_cmd_table(t_simplecmd **cmd_table)
 {
 	int	i;
 
-	if (tok_arr == NULL)
-		return ;
 	i = 0;
-	while (tok_arr[i] != NULL)
+	while (cmd_table[i] != NULL)
 	{
-		lexer_clear_token(tok_arr[i]);
+		parse_clear_cmd(cmd_table[i]);
 		i++;
 	}
-	free(tok_arr[i]);
-	free(tok_arr);
+	free(cmd_table);
 }
 
-void	parse_clear_arr(char **arr, int argc)
+static int	parse_count_pipes(t_list *tokens)
 {
-	int	i;
+	int	numpipes;
 
-	i = 0;
-	while (i < argc)
+	numpipes = 0;
+	while (tokens != NULL)
 	{
-		free(arr[i]);
-		i++;
+		if (((t_token *)tokens->content)->type == PIPE)
+			numpipes++;
+		tokens = tokens->next;
 	}
-	free(arr);
+	return (numpipes);
 }
 
-void	parse_clear_cmd(t_cmd *cmd)
+t_simplecmd	**parse_cmd_init(t_list *tokens)
 {
-	int	i_cmd;
+	t_simplecmd	**cmd_table;
+	int			numpipes;
+	int			i;
 
-	i_cmd = 0;
-	if (cmd->simplecmds != NULL)
-	{
-		while (cmd->simplecmds[i_cmd] != NULL)
-		{
-			parse_clear_arr(cmd->simplecmds[i_cmd]->argv, \
-							cmd->simplecmds[i_cmd]->argc);
-			free(cmd->simplecmds[i_cmd]);
-			i_cmd++;
-		}
-		free(cmd->simplecmds);
-	}
-	parse_clear_tok_arr(cmd->in);
-	parse_clear_tok_arr(cmd->out);
-	parse_clear_tok_arr(cmd->err);
-}
-
-t_token	**parse_append_arr(t_token **arr, t_token *redir)
-{
-	t_token	**new_arr;
-	int		i;
-
-	i = 0;
-	while (arr[i] != NULL)
-		i++;
-	new_arr = (t_token **)malloc((i + 2) * sizeof(t_token *));
-	if (new_arr == NULL)
+	numpipes = parse_count_pipes(tokens);
+	cmd_table = (t_simplecmd **)malloc((numpipes + 2) * sizeof(t_simplecmd *));
+	if (cmd_table == NULL)
 		return (NULL);
 	i = 0;
-	while (arr[i] != NULL)
+	while (i < numpipes + 1)
 	{
-		new_arr[i] = lexer_token_copy(arr[i]);
-		if (new_arr[i] == NULL)
+		cmd_table[i] = parse_simplecmd_init();
+		if (cmd_table[i] == NULL)
 		{
-			parse_clear_tok_arr(new_arr);
+			parse_clear_cmd_table(cmd_table);
 			return (NULL);
 		}
 		i++;
 	}
-	new_arr[i] = redir;
-	new_arr[i + 1] = NULL;
-	parse_clear_tok_arr(arr);
-	return (new_arr);
+	cmd_table[i] = NULL;
+	return (cmd_table);
 }

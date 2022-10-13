@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
+/*                                                        ::::::::            */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/05 15:04:31 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/12 20:32:37 by mbatstra         ###   ########.fr       */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/05 15:04:31 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/10/13 18:35:23 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,70 +18,53 @@
 // in parsing context redirections are stored as tokens where
 // type is the operator and value the operand/argument
 
-static t_token	**parse_arr_init(t_token *content)
+static int	add_rdr_to_cmd(t_simplecmd *cmd, t_token *tok)
 {
-	t_token	**arr;
+	t_list	*node;
 
-	arr = (t_token **)malloc(2 * sizeof(t_token *));
-	if (arr == NULL)
-		return (NULL);
-	arr[0] = content;
-	arr[1] = NULL;
-	return (arr);
-}
-
-static int	parse_add_rdr_to_cmd(t_cmd *cmd_table, t_token *token)
-{
-	if (token->type < RDR_OUT)
-	{
-		if (cmd_table->in == NULL)
-		{
-			cmd_table->in = parse_arr_init(token);
-			if (cmd_table->in == NULL)
-				return (1);
-			return (0);
-		}
-		cmd_table->in = parse_append_arr(cmd_table->in, token);
-		if (cmd_table->in == NULL)
-			return (1);
-		return (0);
-	}
-	if (cmd_table->out == NULL)
-	{
-		cmd_table->out = parse_arr_init(token);
-		if (cmd_table->out == NULL)
-			return (1);
-		return (0);
-	}
-	cmd_table->out = parse_append_arr(cmd_table->out, token);
-	if (cmd_table->out == NULL)
+	node = ft_lstnew(tok);
+	if (node == NULL)
 		return (1);
+	if (tok->type < RDR_OUT)
+		ft_lstadd_back(cmd->in, node);
+	else
+		ft_lstadd_back(cmd->out, node);
 	return (0);
 }
 
-int	parse_redir(t_cmd *cmd_table, t_list **tokens)
-{	
+static int	append_rdr(t_list **current, t_list **tokens, t_simplecmd *cmd)
+{
 	t_token	*new_tok;
-	t_list	*current;
 	t_list	*skip;
 	int		error;
 
+	new_tok = lexer_token_copy((*current)->next->content);
+	if (new_tok == NULL)
+		return (1);
+	new_tok->type = ((t_token *)(*current)->content)->type;
+	error = add_rdr_to_cmd(cmd, new_tok);
+	skip = (*current)->next->next;
+	ft_lst_delnode(tokens, (*current)->next, &lexer_clear_token);
+	ft_lst_delnode(tokens, (*current), &lexer_clear_token);
+	(*current) = skip;
+	return (error);
+}
+
+int	parse_redir(t_simplecmd **cmd_table, t_list **tokens)
+{	
+	t_list	*current;
+	int		error;
+	int		i_cmd;
+
 	current = *tokens;
 	error = 0;
+	i_cmd = 0;
 	while (current != NULL && current->next != NULL && !error)
 	{
+		if (((t_token *)current->content)->type == PIPE)
+			i_cmd++;
 		if (((t_token *)current->content)->type < PIPE)
-		{
-			new_tok = lexer_token_copy(current->next->content);
-			if (new_tok == NULL)
-				return (1);
-			new_tok->type = ((t_token *)current->content)->type;
-			error = parse_add_rdr_to_cmd(cmd_table, new_tok);
-			skip = current->next->next;
-			ft_lst_delnode(tokens, current->next, &lexer_clear_token);
-			ft_lst_delnode(tokens, current, &lexer_clear_token);
-			current = skip;
-		}
+			error = append_rdr(&current, tokens, cmd_table[i_cmd]);
 		else
 			current = current->next;
 	}
