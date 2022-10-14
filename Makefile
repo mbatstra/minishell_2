@@ -41,7 +41,7 @@ LIB = lib/
 LIBFT = lib/libft/libft.a
 CRITERION = test/criterion--git/libcriterion.dylib
 
-all: $(LIBFT) $(NAME)
+all: $(LIBFT) $(BUILD_DIR) $(NAME)
 test: $(TEST_NAME)
 
 $(LIBFT):
