@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 19:22:51 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/07 15:29:36 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:19:03 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ t_token	*lexer_token_copy(t_token *token)
 		return (NULL);
 	}
 	new_token->type = token->type;
-	new_token->expand = token->expand;
 	return (new_token);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:22:08 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/07 15:28:52 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/14 15:24:03 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static t_token	*init_token(void)
 	if (token == NULL)
 		return (NULL);
 	token->value = NULL;
-	token->expand = 0;
 	return (token);
 }
 
@@ -67,8 +66,10 @@ int	lexer_tokenize(t_list **tokens, char *cmd_line)
 
 	i = 0;
 	token = init_token();
+	if (token == NULL)
+		return (1);
 	init_flags(&flags);
-	while (cmd_line[i] != '\0')
+	while (cmd_line[i] != '\0' && !flags.last_exit)
 	{
 		if (lexer_is_operator_char(cmd_line[i]))
 			lexer_tokenize_operator(token, cmd_line, &i, &flags);
@@ -76,6 +77,8 @@ int	lexer_tokenize(t_list **tokens, char *cmd_line)
 			lexer_tokenize_word(token, cmd_line, &i, &flags);
 		delimit(tokens, &token, &flags);
 	}
+	if (!flags.last_exit)
+		flags.last_exit = lexer_error(*tokens);
 	lexer_clear_token(token);
-	return (0);
+	return (flags.last_exit);
 }

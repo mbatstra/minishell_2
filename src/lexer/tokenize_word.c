@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 16:41:52 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/12 21:33:07 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:21:04 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,6 @@ static void	lexer_tokenize_delim(t_token *token, char *cmd, \
 	}
 }
 
-static void	lexer_tokenize_char(t_token *token, char *cmd, \
-								int *i, t_lexer_flags *flags)
-{
-	if (!flags->is_single_quoted && cmd[*i] == '$')
-		token->expand = 1;
-	if (!flags->is_single_quoted && !flags->is_double_quoted && cmd[*i] == '~')
-		token->expand = 1;
-	flags->last_exit = lexer_value_append(token, cmd + *i, 1);
-	*i += 1;
-}
-
 void	lexer_tokenize_word(t_token *token, char *cmd, \
 							int *i, t_lexer_flags *flags)
 {
@@ -91,7 +80,8 @@ void	lexer_tokenize_word(t_token *token, char *cmd, \
 		lexer_tokenize_delim(token, cmd, i, flags);
 		if (flags->is_delim)
 			return ;
-		lexer_tokenize_char(token, cmd, i, flags);
+		flags->last_exit = lexer_value_append(token, cmd + *i, 1);
+		*i += 1;
 		if (cmd[*i] == '\0')
 			flags->is_delim = 1;
 	}

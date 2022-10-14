@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:18:46 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/07 13:26:34 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/14 17:16:05 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ void	ft_lst_delnode(t_list **head, t_list *node, void (*del)(void *))
 
 	if (head == NULL || *head == NULL || node == NULL)
 		return ;
+	if (*head == node)
+	{
+		*head = node->next;
+		ft_lstdelone(node, del);
+		return ;
+	}
 	temp = *head;
 	while (temp->next != node && temp->next != NULL)
 		temp = temp->next;

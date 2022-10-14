@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
+/*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
-/*                                                     +:+                    */
-/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/09/14 17:30:39 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/13 19:06:23 by mbatstra         ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/14 13:06:34 by mbatstra          #+#    #+#             */
+/*   Updated: 2022/10/14 17:17:30 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ void	db_ptlist(t_list **lst)
 	node = *lst;
 	while (node != NULL)
 	{
-		printf("%s: type: %d, exp: %d\n", \
+		printf("%s: type: %d\n", \
 			((t_token *)node->content)->value, \
-			((t_token *)node->content)->type, \
-			((t_token *)node->content)->expand);
+			((t_token *)node->content)->type);
 		node = node->next;
 	}
 }
@@ -97,7 +96,7 @@ int	main(void)
 			parse_clear_cmd_table(cmd_table);
 		}
 		ft_lstclear(&tokens, &lexer_clear_token);
-		if (error)
+		if (error == 1)
 			printf("Allocation failure\n");
 		free(input);
 	}

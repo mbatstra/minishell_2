@@ -17,6 +17,7 @@ UNPREFIXED_SRC = main.c \
 	expand/rel_path.c \
 	expand/parent_dir.c \
 	lexer/lexer.c \
+	lexer/lexer_error.c \
 	lexer/lexer_utils.c \
 	lexer/tokenize_word.c \
 	lexer/tokenize_operator.c \
