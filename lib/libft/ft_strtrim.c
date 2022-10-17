@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strtrim.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/06 17:48:50 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/06 17:48:52 by mbatstra         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   ft_strtrim.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/09/06 17:48:50 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/10/15 16:23:09 by cicekyuzbas   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	is_inset(char c, char const *set)
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	size_t	new_len;
-	size_t	ret_value;
 	char	*new_str;
 
 	while (is_inset(*s1, set))
@@ -41,7 +40,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 		new_len--;
 	new_str = (char *) malloc((new_len + 1) * sizeof(char));
 	if (!new_str)
-		return (new_str);
-	ret_value = ft_strlcpy(new_str, s1, new_len + 1);
+	ft_strlcpy(new_str, s1, new_len + 1);
 	return (new_str);
 }

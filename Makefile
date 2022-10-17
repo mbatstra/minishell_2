@@ -3,7 +3,7 @@ TEST_NAME = test/unit_test
 
 SRC_DIR = src/
 BUILD_DIR = build/
-BUILD_SUBDIRS = build/builtin build/env build/expand build/lexer build/parse
+BUILD_SUBDIRS = build/builtin build/env build/expand build/lexer build/parse build/exec
 
 UNPREFIXED_SRC = main.c \
 	builtin/env.c \
@@ -25,6 +25,13 @@ UNPREFIXED_SRC = main.c \
 	parse/parse_util.c \
 	parse/parse_redir.c \
 	parse/parse_word.c \
+	exec/execute.c\
+	exec/heredoc.c\
+	exec/protect.c\
+	exec/command.c\
+	exec/builtin.c\
+	exec/fork.c\
+	exec/redirection.c\
 
 TEST_SRC = test/test.c
 
@@ -35,40 +42,50 @@ INC = inc/
 TEST_INC = test/criterion--git/include
 
 #FLAGS = -fsanitize=address -g 
-FLAGS = -Wall -Wextra -Werror 
+FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 LIB = lib/
 LIBFT = lib/libft/libft.a
 CRITERION = test/criterion--git/libcriterion.dylib
 
+RESET		=	"\033[0m"
+RED			=	"\033[0;31m"
+GREEN		=	"\033[1;32m"
+YELLOW		=	"\033[0;33m"
+
 all: $(LIBFT) $(BUILD_DIR) $(NAME)
 test: $(TEST_NAME)
 
 $(LIBFT):
-	$(MAKE) -C $(LIB)libft/ WITH_BONUS=1
+	@$(MAKE) -C $(LIB)libft/ WITH_BONUS=1
 
 $(BUILD_DIR):
-	mkdir $@
+	@mkdir $@
 
 $(BUILD_SUBDIRS):
-	mkdir $@
+	@mkdir $@
 
 $(NAME): $(OBJ) $(INC)*
-	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -lreadline -I$(INC) -o $(NAME)
+	@echo $(YELLOW)"Object files created..."$(RESET)
+	@echo $(GREEN)"Minishell is ready!"$(RESET)
+	@$(CC) $(FLAGS) $(OBJ) $(LIBFT) -lreadline -I$(INC) -o $(NAME)
 
 $(BUILD_DIR)%.o: $(SRC_DIR)%.c | $(BUILD_DIR) $(BUILD_SUBDIRS)
-	$(CC) $(FLAGS) -I$(INC) -c $< -o $@
+	@printf $(YELLOW)"%-33.33s\r"$(RESET) $@
+	@$(CC) $(FLAGS) -I$(INC) -c $< -o $@
 
 $(TEST_NAME): $(LIBFT) $(TEST_SRC) $(filter-out main.c, $(SRC))
 	$(CC) $(TEST_SRC) $(LIBFT) $(filter-out src/main.c, $(SRC)) $(CRITERION) -I$(INC) -I$(TEST_INC) -o $(TEST_NAME) 
 
 clean:
-	rm -f $(OBJ)
-	$(MAKE) clean -C $(LIB)libft/
+	@rm -rdf $(BUILD_DIR)
+	@$(MAKE) clean -C $(LIB)libft/
+	@echo $(RED)"Object files deleted"$(RESET)
 
 fclean: clean
-	rm -f $(NAME)
-	$(MAKE) fclean -C $(LIB)libft/
+	@rm -f $(NAME)
+	@$(MAKE) fclean -C $(LIB)libft/
+	@echo $(RED)"$(NAME) executable deleted"$(RESET)
 
 re: fclean all
 

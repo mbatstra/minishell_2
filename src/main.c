@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/14 13:06:34 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/14 17:17:30 by mbatstra         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/14 13:06:34 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/10/17 16:14:44 by cicekyuzbas   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include "minishell.h"
 #include "libft.h"
+#include "exec.h"
 
 void	db_ptlist(t_list **lst)
 {
@@ -46,7 +47,7 @@ void	db_ptcmd(t_simplecmd **cmd_table)
 		printf("arg: ");
 		while (arg != NULL)
 		{
-			printf("%s\t", arg->content);
+			printf("%s\t", (char *)(arg->content));
 			arg = arg->next;
 		}
 		printf("\n");
@@ -72,13 +73,26 @@ void	db_ptcmd(t_simplecmd **cmd_table)
 	}
 }
 
-int	main(void)
+void	check_leaks()
+{
+	system("leaks minishell");
+}
+
+int	main(int argc, char **av, char **env)
 {
 	t_simplecmd	**cmd_table;
 	t_list		*tokens;
+	t_list		*new_env;
 	char		*input;
 	int			error;
+	int			exit_code;
+	(void)argc;
+	(void)av;
+	(void)env;
 
+	exit_code = 0;
+	new_env = NULL;
+	env_init(env, &new_env);
 	while (1)
 	{
 		error = 0;
@@ -92,13 +106,15 @@ int	main(void)
 		{
 			cmd_table = parse_cmd_init(tokens);
 			error = parse_tokens(cmd_table, &tokens);
-			db_ptcmd(cmd_table);
+			// db_ptcmd(cmd_table);
+			exit_code = execute(cmd_table, &new_env, exit_code);
 			parse_clear_cmd_table(cmd_table);
 		}
 		ft_lstclear(&tokens, &lexer_clear_token);
 		if (error == 1)
 			printf("Allocation failure\n");
 		free(input);
+	// atexit(check_leaks);
 	}
 	return (0);
 }

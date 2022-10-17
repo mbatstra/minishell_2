@@ -53,19 +53,23 @@ FLAGS = -Wall -Wextra -Werror
 
 OBJ = $(SRC:.c=.o)
 
+RESET		=	"\033[0m"
+YELLOW		=	"\033[0;33m"
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar -ru $(NAME) $(OBJ)
+	@ar rc $(NAME) $(OBJ)
 
 %.o: %.c
-	gcc $(FLAGS) -c $<
+	@printf $(YELLOW)"%-33.33s\r"$(RESET) $@
+	@gcc $(FLAGS) -c $<
 
 clean:
-	rm -f $(OBJ) $(BONUS_OBJ)
-
+	@rm -f $(OBJ)
+	
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 

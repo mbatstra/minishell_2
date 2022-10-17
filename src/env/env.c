@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/15 17:07:01 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/22 15:35:26 by mbatstra         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   env.c                                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/09/15 17:07:01 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/10/15 18:01:18 by cicekyuzbas   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,26 @@ void	env_setval(t_list **envp, const char *name, const char *val)
 	ft_strlcpy(new + ft_strlen(name) + 1, val, ft_strlen(val) + 1);
 	free(node->content);
 	node->content = new;
+}
+
+//turns linked list to **char
+char	**envp_array(t_list *env_lst)
+{
+	int		i;
+	int		lst_size;
+	char	**envp;
+
+	lst_size = ft_lstsize(env_lst);
+	envp = (char **)malloc(sizeof(envp) * (lst_size + 1));
+	if (!envp)
+		exit(-1);
+	i = 0;
+	while (env_lst)
+	{
+		envp[i] = ft_strdup(env_lst->content);
+		i++;
+		env_lst = env_lst->next;
+	}
+	envp[i] = NULL;
+	return (envp);
 }

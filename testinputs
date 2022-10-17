@@ -1,0 +1,13 @@
+ls -l | grep codam
+ls -l > out_file | grep codam
+< in1 ls -l > out_file | grep codam
+ls > out_file -l -a | grep codam
+ls >> append_file -l -a
+ls > out_file -l -a | grep codam
+"<<e1 cat > outfile "
+ls -l | grep codam > out_file | < in_file wc -l -a > out_file_2
+ls -l |  grep cicek > out_file |  wc > out_file_2 -l < in_file
+grep < in1 codam >> outfile -i
+** export exp1="s -l" 
+** export exp2="ep"
+l$exp1 | gr$exp2 uni | wc -l
