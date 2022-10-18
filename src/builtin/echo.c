@@ -6,32 +6,82 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 14:16:25 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/18 15:43:45 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/18 19:54:28 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include "exec.h"
 
 // error messages? should output be buffered?
-int	builtin_echo(const char *str, int nflag)
+// int	builtin_echo(const char *str, int nflag)
+// {
+// 	if (nflag)
+// 	{
+// 		if (!str)
+// 		{
+// 			printf("\n");
+// 			return (0);
+// 		}
+// 		else if (printf("%s\n", str) > 0)
+// 			return (0);
+// 		else
+// 			return (1);
+// 	}
+// 	else
+// 	{
+// 		if (printf("%s", str) > 0)
+// 			return (0);
+// 		else
+// 			return (1);
+// 	}
+// }
+
+void	write_echo(t_list *arg, int i)
 {
-	if (nflag)
+	char	*command;
+	int		x;
+
+	while (i > 0)
 	{
-		if (!str)
+		arg = arg->next;
+		i--;
+	}
+	while (arg)
+	{
+		command = (char *)(arg->content);
+		x = 0;
+		if (!ft_str_cmp("\"\"", command))
 		{
-			printf("\n");
-			return (0);
+			while (command[x])
+			{
+				ft_putchar_fd(command[x], 1);
+				x++;
+			}
 		}
-		else if (printf("%s\n", str) > 0)
-			return (0);
-		else
-			return (1);
+		if (arg->next)
+			ft_putchar_fd(' ', 1);
+		arg = arg->next;
 	}
-	else
+}
+
+int	builtin_echo(t_list *arg)
+{
+	int		new_line;
+	int		i;
+	t_list	*tmp;
+
+	new_line = 1;
+	i = 1;
+	tmp = arg;
+	while (ft_str_cmp((char *)(tmp->next->content), "-n"))
 	{
-		if (printf("%s", str) > 0)
-			return (0);
-		else
-			return (1);
+		new_line = 0;
+		i++;
+		tmp = tmp->next;
 	}
+	write_echo(arg, i);
+	if (new_line)
+		ft_putchar_fd('\n', 1);
+	return (0);
 }

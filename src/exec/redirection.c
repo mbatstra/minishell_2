@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/17 21:00:48 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/18 18:41:44 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	set_infile(t_simplecmd *cmds)
 			}
 			protect_dup2(id, STDIN_FILENO);
 			protect_close(id);
+			if (rdr_in->type == HEREDOC)
+				unlink(rdr_in->value);
 		}
 		in = in->next;
 	}
@@ -41,7 +43,7 @@ void	set_outfile(t_simplecmd *cmds)
 {
 	t_token	*rdr_out;
 	t_list	*out;
-	int	fd;
+	int		fd;
 
 	out = *(cmds->out);
 	while (out)

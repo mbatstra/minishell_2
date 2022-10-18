@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 13:06:27 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/16 14:45:35 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/18 19:31:31 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int			builtin_export(t_list **envp, char *nameval);
 int			builtin_unset(t_list **envp, char *name);
 int			builtin_cd(char *path, t_list **envp);
 int			builtin_pwd(void);
-int			builtin_echo(char *str, int nflag);
+int			builtin_echo(t_list *arg);
 int			builtin_env(t_list *envp);
 
 #endif 

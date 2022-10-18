@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/17 20:59:15 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/18 18:37:09 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ char	*join_protect(char *s1, char *s2)
 		perror("Malloc failed");
 		exit (-1);
 	}
-	//printf("join protect = %s\n", s3);
 	return (s3);
 }
 
@@ -41,7 +40,6 @@ char	*strdup_protect(char *s1)
 		perror("Malloc failed");
 		exit (-1);
 	}
-	//printf("strdup protect = %s\n", s2);
 	return (s2);
 }
 

@@ -6,41 +6,12 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/18 16:21:26 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/18 18:59:07 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
-#include <stdbool.h>
-
-// void	free_parse_list_element(t_simplecmd **cmds)
-// {
-// 	size_t		i;
-
-// 	i = 0;
-// 	while (((t_pipeline *)(pipeline))->command[i] != NULL)
-// 	{
-// 		free(((t_pipeline *)(pipeline))->command[i]);
-// 		i++;
-// 	}
-// 	free(((t_pipeline *)(pipeline))->command);
-// 	ft_lstclear(&((t_pipeline *)(pipeline))->redirection,
-// 		free_redirection_element);
-// 	free((t_pipeline *)(pipeline));
-// }
-
-// void	clear_data(t_simplecmd **cmds)
-// {
-// 	int i;
-// 	i = 0;
-// 	while (cmds[i])
-// 	{
-// 		ft_lstclear(**cmds, free_parse_list_element);
-// 		i++;
-// 	}
-// 	// ft_lstclear(*cmds, free_parse_list_element);
-// }
 
 void	print_error(char *command, char *text)
 {
@@ -80,19 +51,22 @@ void	choose_execute(t_simplecmd *cmds, t_list **env)
 {
 	t_list	*in;
 	t_list	*out;
+	t_list	*arg;
 
 	in = *(cmds->in);
 	out = *(cmds->out);
-	// printf("in->%s\n",((t_token *)in->content)->value);
-	// printf("out->%s\n",((t_token *)out->content)->value);
+	arg = *(cmds->arg);
 	if (in)
 		set_infile(cmds);
 	if (out)
 		set_outfile(cmds);
-	if (is_builtin(cmds))
-		execute_builtin(cmds, env, 0);
-	else
-		ft_execve(cmds, env);
+	if (arg)
+	{	
+		if (is_builtin(cmds))
+			execute_builtin(cmds, env, 0);
+		else
+			ft_execve(cmds, env);
+	}
 }
 
 void	ft_fork(t_simplecmd **cmds, t_list **env, int *last_pid)
@@ -124,8 +98,9 @@ void	ft_fork(t_simplecmd **cmds, t_list **env, int *last_pid)
 	}
 }
 
-int	is_pipe(t_simplecmd **cmds)
+int	execute(t_simplecmd **cmds, t_list **envp, int exit_code)
 {
+	int		last_pid;
 	t_list	*arg;
 	t_list	*in;
 	t_list	*out;
@@ -133,17 +108,8 @@ int	is_pipe(t_simplecmd **cmds)
 	arg = *(cmds[0]->arg);
 	in = *(cmds[0]->in);
 	out = *(cmds[0]->out);
-	if ((in || out || arg->next))
-	{
-		return (1);
-	}
-	return (0);
-}
-
-int	execute(t_simplecmd **cmds, t_list **envp, int exit_code)
-{
-	int	last_pid;
-
+	if (!arg && !in && !out)
+		return (0);
 	if (!heredoc(cmds))
 		return (-1);
 	if (builtin_and_redirection(cmds) || !is_builtin(*cmds))
@@ -155,10 +121,5 @@ int	execute(t_simplecmd **cmds, t_list **envp, int exit_code)
 	}
 	else
 		exit_code = execute_builtin(*cmds, envp, exit_code);
-	// // printf("%d\n", exit_code);
-	// // clear_data(&cmds);
 	return (exit_code);
 }
-
-	// if (!is_pipe(cmds) && is_builtin(*cmds))
-	// 	exit_code = execute_builtin(*cmds, envp, exit_code);

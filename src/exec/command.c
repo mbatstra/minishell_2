@@ -6,7 +6,7 @@
 /*   By: cicekyuzbas <cyuzbas@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/03 21:36:18 by cicekyuzbas   #+#    #+#                 */
-/*   Updated: 2022/10/16 17:49:54 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/18 17:35:52 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ static char	*find_path(char *cmd, t_list **envp)
 
 void ft_execve(t_simplecmd *simplecmd, t_list **envp)
 {
-	char 	*path;
-	char 	**envp_arr;
-	char 	**cmd_arr;
+	char	*path;
+	char	**envp_arr;
+	char	**cmd_arr;
 	t_list	**arg;
-	
+
 	arg = simplecmd->arg;
 	cmd_arr = envp_array(*arg);
 	envp_arr = envp_array(*envp);
@@ -86,7 +86,6 @@ void ft_execve(t_simplecmd *simplecmd, t_list **envp)
 	{
 		execve(cmd_arr[0], cmd_arr, envp_arr);
 		printf("error with execve\n");
-		//strjoin all argv's or put in a loop when printing?
 		perror(cmd_arr[0]);
 		// ft_putstr_fd(simplecmd->argv[0], 2);
 		// ft_putendl_fd(": No such file or directory", 2);
@@ -96,7 +95,6 @@ void ft_execve(t_simplecmd *simplecmd, t_list **envp)
 	{
 		path = find_path(cmd_arr[0], envp);
 		// printf("cmdarr=%s - path=%s\n", cmd_arr[0], path);
-		
 		execve(path, cmd_arr, envp_arr);
 		printf("error with execve\n");
 	}

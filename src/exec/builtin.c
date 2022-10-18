@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/18 16:18:50 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/18 19:31:08 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,10 @@ int	execute_builtin(t_simplecmd *cmds, t_list **env, int exit_code)
 	char	*command_next;
 
 	arg = *(cmds->arg);
-	// i = (int *)(arg->next->next->content);
 	if (!arg->next)
 		command_next = NULL;
 	else
 		command_next = (char *)(arg->next->content);
-	printf("command = %s\n", (char *)(arg->content));
 	if (ft_str_cmp((char *)(arg->content), "cd"))
 		exit_code = builtin_cd(command_next, env);
 	else if (ft_str_cmp((char *)(arg->content), "pwd"))
@@ -115,7 +113,7 @@ int	execute_builtin(t_simplecmd *cmds, t_list **env, int exit_code)
 	else if (ft_str_cmp((char *)(arg->content), "exit"))
 		builtin_exit(); //cmds, &exit_code
 	else if (ft_str_cmp((char *)(arg->content), "echo"))
-		exit_code = builtin_echo(command_next, 1); //flag
+		exit_code = builtin_echo(arg);
 	else if (ft_str_cmp((char *)(arg->content), "env"))
 		exit_code = builtin_env(*env);
 	else if (ft_str_cmp((char *)(arg->content), "export"))
