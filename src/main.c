@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 13:06:34 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/17 16:14:44 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/18 14:08:58 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	db_ptcmd(t_simplecmd **cmd_table)
 	}
 }
 
-void	check_leaks()
+void	check_leaks(void)
 {
 	system("leaks minishell");
 }
@@ -86,10 +86,9 @@ int	main(int argc, char **av, char **env)
 	char		*input;
 	int			error;
 	int			exit_code;
+
 	(void)argc;
 	(void)av;
-	(void)env;
-
 	exit_code = 0;
 	new_env = NULL;
 	env_init(env, &new_env);

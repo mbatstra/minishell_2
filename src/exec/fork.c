@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/17 20:56:36 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/18 13:57:58 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	last_child(t_simplecmd *cmds, t_list **env, int fd[2], int *lastid)
 void	one_command(t_simplecmd *cmds, t_list **env, int *lastpid)
 {
 	t_list	*arg;
-	
+
 	arg = *(cmds->arg);
 	*lastpid = fork();
 	if (*lastpid == -1)
@@ -84,9 +84,6 @@ void	one_command(t_simplecmd *cmds, t_list **env, int *lastpid)
 
 void	fork_start(int i, t_simplecmd **cmds, t_list **env, t_fd *fd)
 {
-	// t_list	*arg;
-
-	// arg = *(cmds[i]->arg);
 	if (i == 0 && !cmds[i + 1])
 		one_command(cmds[i], env, fd->last_pid);
 	else if (i == 0)

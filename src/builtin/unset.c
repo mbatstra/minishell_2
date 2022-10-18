@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/20 15:11:42 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/20 20:26:31 by mbatstra         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   unset.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/09/20 15:11:42 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/10/18 15:46:10 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	builtin_unset(t_list **envp, char *name)
 	t_list	*node;
 	t_list	*prev;
 
+	if (!name)
+		return (1);
 	node = *envp;
 	prev = *envp;
 	match_node(&node, &prev, name);

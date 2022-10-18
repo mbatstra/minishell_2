@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/17 21:10:06 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/18 16:21:26 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 // void	clear_data(t_simplecmd **cmds)
 // {
 // 	int i;
-	
 // 	i = 0;
 // 	while (cmds[i])
 // 	{
@@ -81,13 +80,13 @@ void	choose_execute(t_simplecmd *cmds, t_list **env)
 {
 	t_list	*in;
 	t_list	*out;
-	
+
 	in = *(cmds->in);
 	out = *(cmds->out);
 	// printf("in->%s\n",((t_token *)in->content)->value);
 	// printf("out->%s\n",((t_token *)out->content)->value);
 	if (in)
-		set_infile(cmds); 
+		set_infile(cmds);
 	if (out)
 		set_outfile(cmds);
 	if (is_builtin(cmds))
@@ -125,22 +124,41 @@ void	ft_fork(t_simplecmd **cmds, t_list **env, int *last_pid)
 	}
 }
 
-int execute(t_simplecmd **cmds, t_list **envp, int exit_code)
+int	is_pipe(t_simplecmd **cmds)
+{
+	t_list	*arg;
+	t_list	*in;
+	t_list	*out;
+
+	arg = *(cmds[0]->arg);
+	in = *(cmds[0]->in);
+	out = *(cmds[0]->out);
+	if ((in || out || arg->next))
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int	execute(t_simplecmd **cmds, t_list **envp, int exit_code)
 {
 	int	last_pid;
 
 	if (!heredoc(cmds))
 		return (-1);
-	if(builtin_and_redirection(cmds) || !is_builtin(*cmds))
+	if (builtin_and_redirection(cmds) || !is_builtin(*cmds))
 	{
 		last_pid = 0;
 		ft_fork(cmds, envp, &last_pid);
 		exit_code = wait_children(last_pid);
 		// g_interactive = 1;
 	}
-	else if(is_builtin(*cmds))
+	else
 		exit_code = execute_builtin(*cmds, envp, exit_code);
-	// printf("%d\n", exit_code);
-	// clear_data(&cmds);
+	// // printf("%d\n", exit_code);
+	// // clear_data(&cmds);
 	return (exit_code);
 }
+
+	// if (!is_pipe(cmds) && is_builtin(*cmds))
+	// 	exit_code = execute_builtin(*cmds, envp, exit_code);

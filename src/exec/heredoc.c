@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/17 21:08:27 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/18 14:04:32 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static void	set_heredoc(t_simplecmd **cmds)
 		j++;
 	}
 }
-
 
 static void	write_to_heredoc(t_list *lst, t_token *redirection)
 {
@@ -86,9 +85,8 @@ static void	child_heredoc(t_simplecmd **cmds)
 {
 	size_t	i;
 	int		j;
-	char	*eof;
+	char	*delim;
 	t_list	*in;
-	t_token	*rdr;
 
 	i = 0;
 	j = 0;
@@ -97,14 +95,13 @@ static void	child_heredoc(t_simplecmd **cmds)
 		in = *(cmds[j]->in);
 		while (in)
 		{
-			rdr = in->content;
-			if (rdr->type == HEREDOC)
+			if (((t_token *)in->content)->type == HEREDOC)
 			{
-				eof = strdup_protect(rdr->value);
-				rdr->value = join_protect("/tmp/heredoc_",
-						protect_itoa(i));
-				handle_heredoc(rdr, eof);
-				i ++;
+				delim = strdup_protect(((t_token *)in->content)->value);
+				((t_token *)in->content)->value = join_protect("/tmp/heredoc_", \
+									protect_itoa(i));
+				handle_heredoc(((t_token *)in->content), delim);
+				i++;
 			}
 			in = in->next;
 		}

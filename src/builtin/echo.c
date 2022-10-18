@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 14:16:25 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/17 17:06:41 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/18 15:43:45 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@ int	builtin_echo(const char *str, int nflag)
 {
 	if (nflag)
 	{
-		if (printf("%s\n", str) > 0)
+		if (!str)
+		{
+			printf("\n");
+			return (0);
+		}
+		else if (printf("%s\n", str) > 0)
 			return (0);
 		else
 			return (1);
