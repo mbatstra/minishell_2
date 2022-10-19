@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/18 14:04:32 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/19 17:51:32 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void	set_heredoc(t_simplecmd **cmds)
 {
 	size_t	i;
 	size_t	j;
-	t_token	*rdr;
 	t_list	*in;
+	char	*a;
 
 	i = 0;
 	j = 0;
@@ -26,12 +26,12 @@ static void	set_heredoc(t_simplecmd **cmds)
 		in = *(cmds[j]->in);
 		while (in)
 		{
-			rdr = in->content;
-			if (rdr->type == HEREDOC)
+			if (((t_token *)in->content)->type == HEREDOC)
 			{
-				free(rdr->value);
-				rdr->value = join_protect("/tmp/heredoc_",
-						protect_itoa(i));
+				a = protect_itoa(i);
+				free(((t_token *)in->content)->value);
+				((t_token *)in->content)->value = join_protect("/tmp/hdoc_", a);
+				free(a);
 				i++;
 			}
 			in = in->next;
@@ -74,7 +74,10 @@ static void	handle_heredoc(t_token *redirection, char *eof)
 		if (read_txt == NULL)
 			break ;
 		else if (ft_str_cmp(eof, read_txt))
+		{
+			free(read_txt);
 			break ;
+		}
 		ft_lstadd_back(&here_doc_input_list, ft_lstnew(read_txt));
 	}
 	free(eof);
@@ -98,8 +101,8 @@ static void	child_heredoc(t_simplecmd **cmds)
 			if (((t_token *)in->content)->type == HEREDOC)
 			{
 				delim = strdup_protect(((t_token *)in->content)->value);
-				((t_token *)in->content)->value = join_protect("/tmp/heredoc_", \
-									protect_itoa(i));
+				((t_token *)in->content)->value = join_protect("/tmp/hdoc_", \
+				protect_itoa(i));
 				handle_heredoc(((t_token *)in->content), delim);
 				i++;
 			}
@@ -112,8 +115,8 @@ static void	child_heredoc(t_simplecmd **cmds)
 
 int	heredoc(t_simplecmd **cmds)
 {
-	int	pid;
 	// int	exit_status;
+	int	pid;
 
 	pid = fork();
 	if (pid == -1)

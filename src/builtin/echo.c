@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 14:16:25 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/18 19:54:28 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/19 13:07:23 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,11 @@ int	builtin_echo(t_list *arg)
 	new_line = 1;
 	i = 1;
 	tmp = arg;
+	if (!arg->next)
+	{
+		printf("\n");
+		return (0);
+	}
 	while (ft_str_cmp((char *)(tmp->next->content), "-n"))
 	{
 		new_line = 0;
