@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/18 18:59:07 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/20 14:32:10 by cicekyuzbas   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,6 @@ int	execute(t_simplecmd **cmds, t_list **envp, int exit_code)
 	}
 	else
 		exit_code = execute_builtin(*cmds, envp, exit_code);
+	
 	return (exit_code);
 }

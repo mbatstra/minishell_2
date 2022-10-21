@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/18 19:31:08 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/20 14:38:11 by cicekyuzbas   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	execute_builtin(t_simplecmd *cmds, t_list **env, int exit_code)
 	else if (ft_str_cmp((char *)(arg->content), "pwd"))
 		exit_code = builtin_pwd();
 	else if (ft_str_cmp((char *)(arg->content), "exit"))
-		builtin_exit(); //cmds, &exit_code
+		builtin_exit(arg, &exit_code);
 	else if (ft_str_cmp((char *)(arg->content), "echo"))
 		exit_code = builtin_echo(arg);
 	else if (ft_str_cmp((char *)(arg->content), "env"))
@@ -125,14 +125,12 @@ int	execute_builtin(t_simplecmd *cmds, t_list **env, int exit_code)
 
 int	builtin_and_redirection(t_simplecmd **cmds)
 {
-	t_list	*arg;
 	t_list	*in;
 	t_list	*out;
 
-	arg = *(cmds[0]->arg);
 	in = *(cmds[0]->in);
 	out = *(cmds[0]->out);
-	if ((in || out || arg->next) && is_builtin(cmds[0]))
+	if ((in || out || cmds[1]) && is_builtin(cmds[0]))
 		return (1);
 	return (0);
 }

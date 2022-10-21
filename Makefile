@@ -42,7 +42,7 @@ INC = inc/
 TEST_INC = test/criterion--git/include
 
 #FLAGS = -fsanitize=address -g 
-FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+FLAGS = -Wall -Wextra -Werror
 
 LIB = lib/
 LIBFT = lib/libft/libft.a
@@ -66,7 +66,7 @@ $(BUILD_SUBDIRS):
 	@mkdir $@
 
 $(NAME): $(OBJ) $(INC)*
-	@echo $(YELLOW)"Object files created..."$(RESET)
+	@echo $(YELLOW)"Object files created...!"$(RESET)
 	@echo $(GREEN)"Minishell is ready!\n"$(RESET)
 	@$(CC) $(FLAGS) $(OBJ) $(LIBFT) -lreadline -I$(INC) -o $(NAME)
 	@echo $(GREEN)"               *------------------------------------------------------------------------------------------------------*"$(RESET)
