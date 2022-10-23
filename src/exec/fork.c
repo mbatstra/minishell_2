@@ -62,11 +62,11 @@ void	last_child(t_simplecmd *cmds, t_list **env, int fd[2], int *lastid)
 	}
 }
 
-void	one_command(t_simplecmd *cmds, t_list **env, int *lastpid)
+void	single_command(t_simplecmd *cmds, t_list **env, int *lastpid)
 {
-	t_list	*arg;
+	// t_list	*arg;
 
-	arg = *(cmds->arg);
+	// arg = *(cmds->arg);
 	// (void)lastpid;
 	*lastpid = fork();
 	if (*lastpid == -1)
@@ -76,23 +76,23 @@ void	one_command(t_simplecmd *cmds, t_list **env, int *lastpid)
 		choose_execute(cmds, env);
 		exit(0);
 	}
-	else
-	{ 
-		if (arg)
-		{
-			if (ft_str_cmp((char *)(arg->content), "cd")
-				|| (ft_str_cmp((char *)(arg->content), "export")
-					&& arg->next->content)
-				|| ft_str_cmp((char *)(arg->content), "unset"))
-				execute_builtin(cmds, env, 0);
-		}
-	}
+	// else
+	// { 
+	// 	if (arg)
+	// 	{
+	// 		if (ft_strcmp((char *)(arg->content), "cd") == 0
+	// 			|| ((ft_strcmp((char *)(arg->content), "export") == 0)
+	// 				&& arg->next->content)
+	// 			|| ft_strcmp((char *)(arg->content), "unset") == 0)
+	// 			execute_builtin(cmds, env, 0);
+	// 	}
+	// }
 }
 
-void	fork_start(int i, t_simplecmd **cmds, t_list **env, t_fd *fd)
+void	ft_fork(int i, t_simplecmd **cmds, t_list **env, t_fd *fd)
 {
 	if (i == 0 && !cmds[i + 1])
-		one_command(cmds[i], env, fd->last_pid);
+		single_command(cmds[i], env, fd->last_pid);
 	else if (i == 0)
 		first_child(cmds[i], env, fd->fdpipe);
 	else if (!cmds[i + 1])

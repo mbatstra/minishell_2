@@ -53,13 +53,14 @@ int		builtin_and_redirection(t_simplecmd **cmds);
 int		execute_builtin(t_simplecmd *cmds, t_list **env, int exit_code);
 int		is_builtin(t_simplecmd *cmds);
 void	choose_execute(t_simplecmd *cmds, t_list **env);
-int		ft_str_cmp(char *s1, char *s2);
+int		ft_strcmp(const char *s1, const char *s2);
+// int		ft_str_cmp(char *s1, char *s2);
 
-void	fork_start(int i, t_simplecmd **cmds, t_list **env, t_fd *fd);
-void	one_command(t_simplecmd *cmds, t_list **env, int *lastpid);
-void	first_child(t_simplecmd *cmds, t_list **env, int fd[2]);
-void	middle_child(t_simplecmd *cmds, t_list **env, int fd[2], int fd_end);
-void	last_child(t_simplecmd *cmds, t_list **env, int fd[2], int *lastid);
+void	ft_fork(int i, t_simplecmd **cmds, t_list **env, t_fd *fd);
+// void	single_command(t_simplecmd *cmds, t_list **env, int *lastpid);
+// void	first_child(t_simplecmd *cmds, t_list **env, int fd[2]);
+// void	middle_child(t_simplecmd *cmds, t_list **env, int fd[2], int fd_end);
+// void	last_child(t_simplecmd *cmds, t_list **env, int fd[2], int *lastid);
 
 char	*protect_itoa(int i);
 char	*strdup_protect(char *s1);

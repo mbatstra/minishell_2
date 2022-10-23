@@ -79,8 +79,8 @@ char		*env_getval(t_list *envp, const char *name);
 // unset and export should work for multiple vars!!!
 // exit should return last exit code
 void		builtin_exit(t_list *arg, int *exit_code);
-int			builtin_export(t_list **envp, char *nameval);
-int			builtin_unset(t_list **envp, char *name);
+int			builtin_export(t_list **envp, t_list *arg);
+int			builtin_unset(t_list **envp, t_list *arg);
 int			builtin_cd(char *path, t_list **envp);
 int			builtin_pwd(void);
 int			builtin_echo(t_list *arg);

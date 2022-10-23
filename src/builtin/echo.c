@@ -51,7 +51,7 @@ void	write_echo(t_list *arg, int i)
 	{
 		command = (char *)(arg->content);
 		x = 0;
-		if (!ft_str_cmp("\"\"", command))
+		if (ft_strcmp("\"\"", command) != 0)
 		{
 			while (command[x])
 			{
@@ -79,7 +79,7 @@ int	builtin_echo(t_list *arg)
 		printf("\n");
 		return (0);
 	}
-	while (ft_str_cmp((char *)(tmp->next->content), "-n"))
+	while (ft_strcmp((char *)(tmp->next->content), "-n") == 0)
 	{
 		new_line = 0;
 		i++;

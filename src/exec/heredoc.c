@@ -73,7 +73,7 @@ static void	handle_heredoc(t_token *redirection, char *eof)
 		read_txt = readline("> ");
 		if (read_txt == NULL)
 			break ;
-		else if (ft_str_cmp(eof, read_txt))
+		else if (ft_strcmp(eof, read_txt) == 0)
 		{
 			free(read_txt);
 			break ;

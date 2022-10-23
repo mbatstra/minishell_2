@@ -32,6 +32,7 @@ UNPREFIXED_SRC = main.c \
 	exec/builtin.c\
 	exec/fork.c\
 	exec/redirection.c\
+	exec/exec_utils.c\
 
 TEST_SRC = test/test.c
 

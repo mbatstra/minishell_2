@@ -15,6 +15,8 @@
 #include "minishell.h"
 #include "libft.h"
 
+// add invalid name function
+
 static int	is_defined(t_list **envp, char *nameval)
 {
 	t_list	*node;
@@ -72,31 +74,37 @@ static void	free_spl_nameval(char **spl_nameval)
 	free(spl_nameval);
 }
 
-int	builtin_export(t_list **envp, char *nameval)
+int	builtin_export(t_list **envp, t_list *arg)
 {
 	t_list	*node;
 	char	*dup;
 	char	**spl_nameval;
+	char	*nameval;
 
-	if (!nameval)
+	if (!arg->next)
 		return (write_export_env(*envp));
-	if (is_defined(envp, nameval))
+	while (arg->next)
 	{
-		spl_nameval = nameval_split(nameval);
-		if (spl_nameval == NULL)
+		nameval = (char *)(arg->next->content);
+		if (is_defined(envp, nameval))
+		{
+			spl_nameval = nameval_split(nameval);
+			if (spl_nameval == NULL)
+				return (1);
+			env_setval(envp, spl_nameval[0], spl_nameval[1]);
+			free_spl_nameval(spl_nameval);
+			return (0);
+		}
+		dup = ft_strdup(nameval);
+		node = ft_lstnew(dup);
+		if (node == NULL)
+		{
+			free(dup);
 			return (1);
-		env_setval(envp, spl_nameval[0], spl_nameval[1]);
-		free_spl_nameval(spl_nameval);
-		return (0);
+		}
+		ft_lstadd_back(envp, node);
+		arg = arg->next;
 	}
-	dup = ft_strdup(nameval);
-	node = ft_lstnew(dup);
-	if (node == NULL)
-	{
-		free(dup);
-		return (1);
-	}
-	ft_lstadd_back(envp, node);
 	return (0);
 }
 

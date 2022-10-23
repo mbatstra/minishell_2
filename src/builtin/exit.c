@@ -32,7 +32,7 @@ void	builtin_exit(t_list *arg, int *exit_code)
 {
 	if (!arg->next)
 	{
-		ft_putendl_fd("exit1", STDIN_FILENO);
+		ft_putendl_fd("exit", STDIN_FILENO);
 		exit((unsigned char)*exit_code);
 	}
 	else if (arg->next->next
@@ -42,13 +42,12 @@ void	builtin_exit(t_list *arg, int *exit_code)
 	{
 		if (!check_valid_argument((char *)(arg->next->content)))
 		{
-			print_error("exit2", "numeric argument required");
+			print_error("exit", "numeric argument required");
 			*exit_code = 255;
 			exit((unsigned char)255);
 		}
 		*exit_code = ft_atoi((char *)(arg->next->content));
-		ft_putendl_fd("exit3", STDIN_FILENO);
-		exit(42);
+		ft_putendl_fd("exit", STDIN_FILENO);
 		exit((unsigned char)*exit_code);
 	}
 }
