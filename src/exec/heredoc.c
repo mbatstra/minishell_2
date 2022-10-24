@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/19 17:51:32 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/24 14:43:55 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ static void	child_heredoc(t_simplecmd **cmds)
 
 int	heredoc(t_simplecmd **cmds)
 {
-	// int	exit_status;
 	int	pid;
+	// int	exit_status;
 
 	pid = fork();
 	if (pid == -1)

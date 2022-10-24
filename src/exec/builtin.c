@@ -6,32 +6,12 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/20 14:38:11 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/24 14:43:18 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
-
-// int	ft_str_cmp(char *s1, char *s2)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!s1 || !s2)
-// 		return (FALSE);
-// 	while (s1[i])
-// 	{
-// 		if (!s2[i])
-// 			return (FALSE);
-// 		if (s1[i] != s2[i])
-// 			return (FALSE);
-// 		i++;
-// 	}
-// 	if (s2[i])
-// 		return (FALSE);
-// 	return (TRUE);
-// }
 
 // int	ft_strcmp(const char *s1, const char *s2)
 // {

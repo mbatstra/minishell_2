@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 14:20:54 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/20 14:27:47 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/24 14:51:57 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,3 @@ void	builtin_exit(t_list *arg, int *exit_code)
 		exit((unsigned char)*exit_code);
 	}
 }
-

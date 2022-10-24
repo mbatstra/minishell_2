@@ -51,22 +51,27 @@ ft_lst_delnode_bonus.c
 
 FLAGS = -Wall -Wextra -Werror
 
-OBJ = $(SRC:.c=.o)
+BUILD_DIR	=	obj/
+
+OBJ = $(addprefix $(BUILD_DIR), $(SRC:.c=.o))
 
 RESET		=	"\033[0m"
 YELLOW		=	"\033[0;33m"
 
-all: $(NAME)
+all: $(BUILD_DIR) $(NAME)
+
+$(BUILD_DIR):
+	@mkdir $@
 
 $(NAME): $(OBJ)
 	@ar rc $(NAME) $(OBJ)
 
-%.o: %.c
+$(BUILD_DIR)%.o: $(SRC_DIR)%.c | $(BUILD_DIR)
 	@printf $(YELLOW)"%-33.33s\r"$(RESET) $@
-	@gcc $(FLAGS) -c $<
+	@gcc $(FLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(OBJ)
+	@rm -rdf $(BUILD_DIR)
 	
 fclean: clean
 	@rm -f $(NAME)

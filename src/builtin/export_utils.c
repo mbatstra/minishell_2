@@ -1,42 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   fdchecks.c                                         :+:    :+:            */
+/*   export_utils.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/24 14:42:35 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/24 14:42:35 by cyuzbas       ########   odam.nl         */
+/*   Created: 2022/10/24 15:44:27 by cyuzbas       #+#    #+#                 */
+/*   Updated: 2022/10/24 15:45:00 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <fcntl.h>
-#include <limits.h>
-#include <errno.h>
+#include "minishell.h"
+#include "libft.h"
 
-int
-	main(void)
+static void	free_spl_nameval(char **spl_nameval)
 {
-	int	i;
-	int	count;
-
-	count = 0;
-	i = 0;
-	while (i < OPEN_MAX)
-	{
-		if (fcntl(i, F_GETFD) < 0)
-		{
-			if (errno != EBADF)
-				fprintf(stderr, "Error\n");
-		}
-		else
-		{
-			printf("%d OPEN; ", i);
-			count++;
-		}
-		i++;
-	}
-	printf("\n%d/%d open\n", count, OPEN_MAX);
-	return (0);
+	free(spl_nameval[0]);
+	free(spl_nameval[1]);
+	free(spl_nameval);
 }

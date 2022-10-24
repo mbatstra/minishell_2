@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/06 17:48:50 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/15 16:23:09 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/24 20:07:02 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 		new_len--;
 	new_str = (char *) malloc((new_len + 1) * sizeof(char));
 	if (!new_str)
-	ft_strlcpy(new_str, s1, new_len + 1);
+		ft_strlcpy(new_str, s1, new_len + 1);
 	return (new_str);
 }
