@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 13:06:34 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/14 17:17:30 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/25 19:31:30 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,22 @@ void	db_ptcmd(t_simplecmd **cmd_table)
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	t_simplecmd	**cmd_table;
 	t_list		*tokens;
+	t_list		*env;
 	char		*input;
 	int			error;
 
+	(void) argc;
+	(void) argv;
+	env_init(envp, &env);
 	while (1)
 	{
 		error = 0;
 		input = readline("minishell-$ ");
-		if (input == NULL)
+		if (input == NULL)	// handle this
 			printf("error\n");
 		add_history(input);
 		tokens = NULL;
@@ -91,7 +95,7 @@ int	main(void)
 		if (!error)
 		{
 			cmd_table = parse_cmd_init(tokens);
-			error = parse_tokens(cmd_table, &tokens);
+			error = parse_tokens(cmd_table, &tokens, env);
 			db_ptcmd(cmd_table);
 			parse_clear_cmd_table(cmd_table);
 		}

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 13:06:27 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/14 13:48:22 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/25 19:30:56 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,10 @@ int			lexer_error(t_list *tokens);
 // parsing
 t_simplecmd	**parse_cmd_init(t_list *tokens);
 void		parse_clear_cmd_table(t_simplecmd **cmd_table);
-int			parse_tokens(t_simplecmd **cmd_table, t_list **tokens);
+int			parse_tokens(t_simplecmd **cmd, t_list **tokens, t_list *envp);
 int			parse_redir(t_simplecmd **cmd_table, t_list **tokens);
 int			parse_word(t_simplecmd **cmd_table, t_list **tokens);
+int			parse_expand(t_list *tokens, t_list *envp);
 
 // expansion
 char		*expand_relpath(char *relp);
@@ -73,7 +74,7 @@ char		*expand_parent_dir(t_list *envp);
 // functions for expandign and setting env vars
 void		env_init(char **envp, t_list **new_env);
 void		env_setval(t_list **envp, const char *name, const char *val);
-char		*env_getval(t_list *envp, const char *name);
+char		*env_getval(t_list *envp, const char *name, int namelen);
 
 // builtins
 // unset and export should work for multiple vars!!!

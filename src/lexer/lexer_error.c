@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:06:45 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/14 18:03:12 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/24 15:35:52 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,35 @@ static int	lexer_error_redir(t_list *tokens)
 		{
 			if (tokens->next == NULL)
 			{
-				printf("syntax error near unexpected token `newline'\n"); 
+				printf("syntax error near unexpected token `newline'\n");
 				return (2);
 			}
 			else if (((t_token *)tokens->next->content)->type != WORD)
+			{
+				printf("syntax error near unexpected token `%s'\n", \
+								((t_token *)tokens->next->content)->value);
+				return (2);
+			}
+		}
+		tokens = tokens->next;
+	}
+	return (0);
+}
+
+static int	lexer_iter_pipes(t_list *tokens)
+{
+	while (tokens->next != NULL)
+	{
+		if (((t_token *)tokens->next->content)->type == PIPE)
+		{
+			if (((t_token *)tokens->content)->type != WORD || \
+				tokens->next->next == NULL)
+			{
+				printf("syntax error near unexpected token `newline'\n");
+				return (2);
+			}
+			else if (((t_token *)tokens->content)->type != WORD || \
+					((t_token *)tokens->next->next->content)->type == PIPE)
 			{
 				printf("syntax error near unexpected token `%s'\n", \
 								((t_token *)tokens->next->content)->value);
@@ -52,27 +77,7 @@ static int	lexer_error_pipe(t_list *tokens)
 		printf("syntax error near unexpected token `|'\n");
 		return (2);
 	}
-	while (tokens->next != NULL)
-	{
-		if (((t_token *)tokens->next->content)->type == PIPE)
-		{
-			if (((t_token *)tokens->content)->type != WORD || \
-				tokens->next->next == NULL)
-			{
-				printf("syntax error near unexpected token `newline'\n"); 
-				return (2);
-			}
-			else if (((t_token *)tokens->content)->type != WORD || \
-					((t_token *)tokens->next->next->content)->type != WORD)
-			{
-				printf("syntax error near unexpected token `%s'\n", \
-								((t_token *)tokens->next->content)->value);
-				return (2);
-			}
-		}
-		tokens = tokens->next;
-	}
-	return (0);
+	return (lexer_iter_pipes(tokens));
 }
 
 int	lexer_error(t_list *tokens)

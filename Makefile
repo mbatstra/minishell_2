@@ -25,6 +25,7 @@ UNPREFIXED_SRC = main.c \
 	parse/parse_util.c \
 	parse/parse_redir.c \
 	parse/parse_word.c \
+	parse/parse_expand.c \
 
 TEST_SRC = test/test.c
 
@@ -35,7 +36,7 @@ INC = inc/
 TEST_INC = test/criterion--git/include
 
 #FLAGS = -fsanitize=address -g 
-FLAGS = -Wall -Wextra -Werror 
+#FLAGS = -Wall -Wextra -Werror 
 
 LIB = lib/
 LIBFT = lib/libft/libft.a
