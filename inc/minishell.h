@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 13:06:27 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/26 15:51:58 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/26 18:16:01 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ void		env_setval(t_list **envp, const char *name, const char *val);
 char		*env_getval(t_list *envp, const char *name, int namelen);
 
 // builtins
-// unset and export should work for multiple vars!!!
-// exit should return last exit code
 void		builtin_exit(t_list *arg, int *exit_code);
 int			builtin_export(t_list **envp, t_list *arg);
 int			builtin_unset(t_list **envp, t_list *arg);

@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   unset.c                                            :+:    :+:            */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                     +:+                    */
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:11:42 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/18 15:46:10 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 19:02:45 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "libft.h"
 
 static int	invalid_name(char *name)
@@ -19,8 +20,7 @@ static int	invalid_name(char *name)
 	i = 0;
 	while (name[i])
 	{
-		if (ft_isdigit(name[0]) || (!ft_isalpha(name[i]) && \
-				!ft_isdigit(name[i]) && name[i] != '_'))
+		if (!ft_isalnum(name[i]) && name[i] != '_')
 			return (1);
 		i++;
 	}
@@ -45,6 +45,14 @@ static void	match_node(t_list **node, t_list **prev, char *name)
 	}
 }
 
+static int	pt_name_error(char *name)
+{
+	ft_putstr_fd("minishell: unset: `", 2);
+	ft_putstr_fd(name, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (1);
+}
+
 int	builtin_unset(t_list **envp, t_list *arg)
 {
 	t_list	*node;
@@ -53,23 +61,22 @@ int	builtin_unset(t_list **envp, t_list *arg)
 
 	if (!arg->next)
 		return (1);
-	name = (char *)(arg->next->content);
-	if (invalid_name(name))
+	while (arg->next != NULL)
 	{
-		ft_putstr_fd("minishell: unset: `", 2);
-		ft_putstr_fd(name, 2);
-		ft_putstr_fd("': not a valid identifier\n", 2);
-		return (1);
+		name = (char *)(arg->next->content);
+		if (invalid_name(name))
+			return (pt_name_error(name));
+		node = *envp;
+		prev = *envp;
+		match_node(&node, &prev, name);
+		if (node == NULL)
+			return (1);
+		else if (node == prev)
+			(*envp)->next = node->next;
+		else
+			prev->next = node->next;
+		ft_lstdelone(node, &free);
+		arg = arg->next;
 	}
-	node = *envp;
-	prev = *envp;
-	match_node(&node, &prev, name);
-	if (node == NULL)
-		return (1);
-	else if (node == prev)
-		(*envp)->next = node->next;
-	else
-		prev->next = node->next;
-	ft_lstdelone(node, &free);
 	return (0);
 }

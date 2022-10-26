@@ -1,0 +1,16 @@
+total 120
+drwxr-xr-x  15 mbatstra  piscine    510 Oct 26 16:16 .
+drwxr-xr-x  61 mbatstra  piscine   2142 Oct 26 15:42 ..
+drwxr-xr-x  15 mbatstra  piscine    510 Oct 26 15:52 .git
+-rw-r--r--   1 mbatstra  piscine     72 Oct  4 12:02 .gitignore
+-rw-r--r--   1 mbatstra  piscine   3702 Oct 26 13:19 Makefile
+drwxr-xr-x   9 mbatstra  piscine    306 Oct 26 16:14 build
+-rw-r--r--   1 mbatstra  piscine   1268 Oct 26 12:50 fdchecks.c
+-rw-r--r--   1 mbatstra  piscine      0 Oct 26 16:16 file
+drwxr-xr-x   6 mbatstra  piscine    204 Oct 26 15:51 inc
+drwxr-xr-x   3 mbatstra  piscine    102 Sep 16 14:50 lib
+-rwxr-xr-x   1 mbatstra  piscine  39748 Oct 26 16:14 minishell
+drwxr-xr-x  10 mbatstra  piscine    340 Oct 26 15:51 src
+drwxr-xr-x   5 mbatstra  piscine    170 Oct 25 14:54 test
+-rw-r--r--   1 mbatstra  piscine   3454 Oct 26 12:50 testinputs
+-rw-r--r--   1 mbatstra  piscine    104 Oct 26 15:41 todo

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:20:25 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/26 15:51:46 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/26 16:26:07 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*parse_expand_env(char *old_val, t_list *envp)
 	dllr = has_expansion(old_val);
 	if (dllr == NULL)
 		return (old_val);
-	while (ft_isalnum(dllr[old_sublen]))
+	while (ft_isalnum(dllr[old_sublen]) || dllr[old_sublen] == '_')
 		old_sublen++;
 	new_sub = env_getval(envp, dllr + 1, old_sublen - 1);
 	new_val = ft_replsubstr(old_val, new_sub, dllr, old_sublen);
