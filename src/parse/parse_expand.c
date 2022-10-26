@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:20:25 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/25 19:35:14 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:51:46 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static char	*rm_quotes(char *str)
 	return (new_str);
 }
 
-static char	*expand_env(char *old_val, t_list *envp)
+char	*parse_expand_env(char *old_val, t_list *envp)
 {
 	char	*dllr;
 	char	*new_val;
@@ -104,7 +104,7 @@ static char	*expand_env(char *old_val, t_list *envp)
 	new_val = ft_replsubstr(old_val, new_sub, dllr, old_sublen);
 	if (new_val == NULL)
 		return (NULL);
-	return (expand_env(new_val, envp));
+	return (parse_expand_env(new_val, envp));
 }
 
 int	parse_expand(t_list *tokens, t_list *envp)
@@ -117,7 +117,7 @@ int	parse_expand(t_list *tokens, t_list *envp)
 		tok = ((t_token *)tokens->content);
 		if (tok->type == WORD)
 		{
-			new_val = expand_env(tok->value, envp);
+			new_val = parse_expand_env(tok->value, envp);
 			if (new_val == NULL)
 				return (1);
 			if (new_val != tok->value)

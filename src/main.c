@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                     +:+                    */
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 13:06:34 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/26 11:10:38 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 15:51:04 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ int	main(int argc, char **av, char **env)
 		{
 			cmd_table = parse_cmd_init(tokens);
 			error = parse_tokens(cmd_table, &tokens, new_env);
-			// db_ptcmd(cmd_table);
 			exit_code = execute(cmd_table, &new_env, exit_code);
 			parse_clear_cmd_table(cmd_table);
 		}
