@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 13:06:34 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/26 11:10:38 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 20:12:05 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void	db_ptcmd(t_simplecmd **cmd_table)
 	}
 }
 
-void	check_leaks(void)
-{
-	system("leaks minishell");
-}
+// void	check_leaks(void)
+// {
+// 	system("leaks minishell");
+// }
 
-int	main(int argc, char **av, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_simplecmd	**cmd_table;
 	t_list		*tokens;
@@ -88,7 +88,7 @@ int	main(int argc, char **av, char **env)
 	int			exit_code;
 
 	(void)argc;
-	(void)av;
+	(void)argv;
 	exit_code = 0;
 	new_env = NULL;
 	env_init(env, &new_env);
@@ -113,7 +113,6 @@ int	main(int argc, char **av, char **env)
 		if (error == 1)
 			printf("Allocation failure\n");
 		free(input);
-	// atexit(check_leaks);
 	}
 	return (0);
 }

@@ -6,68 +6,12 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/20 14:32:10 by cicekyuzbas   ########   odam.nl         */
+/*   Updated: 2022/10/26 15:46:15 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
-
-// void	print_error(char *command, char *text)
-// {
-// 	ft_putstr_fd("minishell: ", 2);
-// 	ft_putstr_fd(command, 2);
-// 	ft_putstr_fd(": ", 2);
-// 	if (text == NULL)
-// 		ft_putstr_fd(strerror(errno), 2);
-// 	else
-// 		ft_putstr_fd(text, 2);
-// 	ft_putstr_fd("\n", 2);
-// }
-
-// int	wait_children(int last_process_pid)
-// {
-// 	int	pid;
-// 	int	last_process_exit_status;
-// 	int	status;
-
-// 	pid = 1;
-// 	last_process_exit_status = 0;
-// 	while (pid > 0)
-// 	{
-// 		pid = wait(&status);
-// 		if (pid == last_process_pid)
-// 		{
-// 			if (WIFEXITED(status))
-// 				last_process_exit_status = WEXITSTATUS(status);
-// 			else if (WIFSIGNALED(status))
-// 				last_process_exit_status = WTERMSIG(status) + 128;
-// 		}
-// 	}
-// 	return (last_process_exit_status);
-// }
-
-// void	choose_execute(t_simplecmd *cmds, t_list **env)
-// {
-// 	t_list	*in;
-// 	t_list	*out;
-// 	t_list	*arg;
-
-// 	in = *(cmds->in);
-// 	out = *(cmds->out);
-// 	arg = *(cmds->arg);
-// 	if (in)
-// 		set_infile(cmds);
-// 	if (out)
-// 		set_outfile(cmds);
-// 	if (arg)
-// 	{	
-// 		if (is_builtin(cmds))
-// 			execute_builtin(cmds, env, 0);
-// 		else
-// 			ft_execve(cmds, env);
-// 	}
-// }
 
 void	exec_pipe(t_simplecmd **cmds, t_list **env, int *last_pid)
 {
@@ -82,7 +26,6 @@ void	exec_pipe(t_simplecmd **cmds, t_list **env, int *last_pid)
 		if (cmds[idx + 1] != NULL)
 			if (pipe(fd.fdpipe) == -1)
 				exit(1);
-		// g_interactive = 0;
 		ft_fork(idx, cmds, env, &fd);
 		if (fd.fd_end != -1)
 		{
@@ -114,17 +57,11 @@ int	execute(t_simplecmd **cmds, t_list **envp, int exit_code)
 		return (-1);
 	if (builtin_and_redirection(cmds) || !is_builtin(*cmds))
 	{
-		printf("pipe exist\n");
 		last_pid = 0;
 		exec_pipe(cmds, envp, &last_pid);
 		exit_code = wait_children(last_pid);
-		// g_interactive = 1;
 	}
 	else
-	{
-		printf("builtin alone\n");
 		exit_code = execute_builtin(*cmds, envp, exit_code);
-	}
-	
 	return (exit_code);
 }

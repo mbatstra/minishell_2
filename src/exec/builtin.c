@@ -6,24 +6,12 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/24 14:43:18 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 14:45:58 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
-
-// int	ft_strcmp(const char *s1, const char *s2)
-// {
-// 	while (*s1 != '\0' || *s2 != '\0')
-// 	{
-// 		if (*s1 != *s2)
-// 			return ((unsigned char)*s1 - (unsigned char)*s2);
-// 		s1++;
-// 		s2++;
-// 	}
-// 	return (0);
-// }
 
 int	is_builtin(t_simplecmd *cmds)
 {

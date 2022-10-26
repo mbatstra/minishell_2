@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/24 14:43:33 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 20:35:16 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,20 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-void	print_error(char *command, char *text)
+void	error_exit(int exit_code, char *cmd, char *message)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(message, 2);
+	exit(exit_code);
+}
+
+void	print_error(char *command, char *arg, char *text)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": ", 2);
+	if (arg != NULL)
+		ft_putstr_fd(arg, 2);
 	if (text == NULL)
 		ft_putstr_fd(strerror(errno), 2);
 	else

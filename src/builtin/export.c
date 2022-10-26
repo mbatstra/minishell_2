@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 14:37:33 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/24 15:45:48 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 18:24:02 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include <stdio.h>
 #include "minishell.h"
 #include "libft.h"
-
-// add invalid name function
+#include "exec.h"
 
 static int	is_defined(t_list **envp, char *nameval)
 {
@@ -56,45 +55,60 @@ static char	**nameval_split(char *nameval)
 	return (spl_nameval);
 }
 
-static int	write_export_env(t_list *envp)
+static int	invalid_name(char *name)
 {
-	while (envp)
+	int			i;
+
+	i = 0;
+	while (name[i])
 	{
-		ft_putstr_fd("declare -x ", 1);
-		printf("%s\n", (char *)envp->content);
-		envp = envp->next;
+		if (name[i] == '=' && i > 0)
+			break ;
+		if (ft_isdigit(name[0])
+			|| (!ft_isalpha(name[i]) && !ft_isdigit(name[i]) && name[i] != '_'))
+		{
+			print_error("export: `", name, "': not a valid identifier");
+			return (1);
+		}
+		i++;
 	}
-	return (1);
+	return (0);
 }
 
-static void	free_spl_nameval(char **spl_nameval)
+int	check_export(char *nameval, t_list **envp)
 {
-	free(spl_nameval[0]);
-	free(spl_nameval[1]);
-	free(spl_nameval);
+	int		exit_code;
+	char	**spl_nameval;
+
+	if (invalid_name(nameval))
+	{
+		exit_code = 1;
+	}
+	if (is_defined(envp, nameval))
+	{
+		spl_nameval = nameval_split(nameval);
+		if (spl_nameval == NULL)
+			return (1);
+		env_setval(envp, spl_nameval[0], spl_nameval[1]);
+		free_spl_nameval(spl_nameval);
+		return (0);
+	}
+	return (exit_code);
 }
 
 int	builtin_export(t_list **envp, t_list *arg)
 {
 	t_list	*node;
 	char	*dup;
-	char	**spl_nameval;
 	char	*nameval;
+	int		exit_code;
 
 	if (!arg->next)
 		return (write_export_env(*envp));
 	while (arg->next)
 	{
 		nameval = (char *)(arg->next->content);
-		if (is_defined(envp, nameval))
-		{
-			spl_nameval = nameval_split(nameval);
-			if (spl_nameval == NULL)
-				return (1);
-			env_setval(envp, spl_nameval[0], spl_nameval[1]);
-			free_spl_nameval(spl_nameval);
-			return (0);
-		}
+		exit_code = check_export(nameval, envp);
 		dup = ft_strdup(nameval);
 		node = ft_lstnew(dup);
 		if (node == NULL)
@@ -105,38 +119,5 @@ int	builtin_export(t_list **envp, t_list *arg)
 		ft_lstadd_back(envp, node);
 		arg = arg->next;
 	}
-	return (0);
+	return (exit_code);
 }
-
-// int	builtin_export(t_list **envp, char *nameval)
-// {
-// 	t_list	*node;
-// 	char	*dup;
-// 	char	**spl_nameval;
-
-// 	if (!nameval)
-// 	{
-// 		write_export_env(*envp);
-// 		return (1);
-// 	}
-// 	if (is_defined(envp, nameval))
-// 	{
-// 		spl_nameval = nameval_split(nameval);
-// 		if (spl_nameval == NULL)
-// 			return (1);
-// 		env_setval(envp, spl_nameval[0], spl_nameval[1]);
-// 		free(spl_nameval[0]);
-// 		free(spl_nameval[1]);
-// 		free(spl_nameval);
-// 		return (0);
-// 	}
-// 	dup = ft_strdup(nameval);
-// 	node = ft_lstnew(dup);
-// 	if (node == NULL)
-// 	{
-// 		free(dup);
-// 		return (1);
-// 	}
-// 	ft_lstadd_back(envp, node);
-// 	return (0);
-// }

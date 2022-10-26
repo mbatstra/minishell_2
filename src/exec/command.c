@@ -6,7 +6,7 @@
 /*   By: cicekyuzbas <cyuzbas@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/03 21:36:18 by cicekyuzbas   #+#    #+#                 */
-/*   Updated: 2022/10/26 11:42:41 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 20:40:25 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,46 +56,31 @@ static char	*find_path(char *cmd, t_list **envp)
 	path = env_getval(*envp, "PATH", 4);
 	if (!path)
 		return (0);
-	// printf("%s\n", path);
 	paths = ft_split(path, ':');
 	full_path = join_path(paths, cmd);
-	// printf("%s\n", full_path);
 	if (full_path)
 		return (full_path);
 	free(full_path);
 	return (0);
 }
 
-void ft_execve(t_simplecmd *simplecmd, t_list **envp)
+void	ft_execve(t_simplecmd *simplecmd, t_list **envp)
 {
 	char	*path;
 	char	**envp_arr;
 	char	**cmd_arr;
-	t_list	**arg;
 
-	arg = simplecmd->arg;
-	cmd_arr = envp_array(*arg);
+	cmd_arr = envp_array(*(simplecmd->arg));
 	envp_arr = envp_array(*envp);
-	if (simplecmd == NULL)
-	{
-		execve("", cmd_arr, envp_arr);
-		printf("Null path : error with execve\n");
-		return ;
-	}
-	else if (ft_strchr(cmd_arr[0], '/') != 0)
+	if (ft_strchr(cmd_arr[0], '/') != 0)
 	{
 		execve(cmd_arr[0], cmd_arr, envp_arr);
-		printf("error with execve\n");
-		perror(cmd_arr[0]);
-		// ft_putstr_fd(simplecmd->argv[0], 2);
-		// ft_putendl_fd(": No such file or directory", 2);
-		// exit (127);
+		error_exit(127, cmd_arr[0], ": No such file or directory\n");
 	}
 	else if (envp[0])
 	{
 		path = find_path(cmd_arr[0], envp);
-		// printf("cmdarr=%s - path=%s\n", cmd_arr[0], path);
 		execve(path, cmd_arr, envp_arr);
-		printf("error with execve\n");
+		error_exit(127, cmd_arr[0], ": command not found\n");
 	}
 }

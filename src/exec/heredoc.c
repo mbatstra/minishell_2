@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/24 14:43:55 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 17:25:14 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	write_to_heredoc(t_list *lst, t_token *redirection)
 	id = open(redirection->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (id < 0)
 	{
-		print_error(redirection->value, NULL);
+		print_error(redirection->value, NULL, NULL);
 		exit(1);
 	}
 	while (lst)
@@ -125,7 +125,6 @@ int	heredoc(t_simplecmd **cmds)
 		child_heredoc(cmds);
 	// exit_status = wait_children(pid);
 	wait_children(pid);
-	// g_interactive = 1;
 	set_heredoc(cmds);
 	return (TRUE);
 }
