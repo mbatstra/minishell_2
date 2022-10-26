@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 13:08:35 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/14 16:59:20 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/24 15:50:24 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ int	parse_word(t_simplecmd **cmd_table, t_list **tokens)
 	int		i_cmd;
 	int		error;
 
-	if (tokens == NULL || *tokens == NULL)
-		return (1); // not necessarily an error?
+	if (tokens == NULL)
+		return (1);
+	if (*tokens == NULL)
+		return (0);
 	node = *tokens;
 	i_cmd = 0;
 	error = 0;

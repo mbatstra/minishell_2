@@ -6,7 +6,7 @@
 /*   By: cicekyuzbas <cyuzbas@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/03 21:36:18 by cicekyuzbas   #+#    #+#                 */
-/*   Updated: 2022/10/18 17:35:52 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 11:42:41 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	*find_path(char *cmd, t_list **envp)
 	char	*path;
 
 	path = NULL;
-	path = env_getval(*envp, "PATH");
+	path = env_getval(*envp, "PATH", 4);
 	if (!path)
 		return (0);
 	// printf("%s\n", path);

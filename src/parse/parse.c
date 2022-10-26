@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 13:12:32 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/14 16:50:29 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/25 19:31:01 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 #include "minishell.h"
 #include "libft.h"
 
-int	parse_tokens(t_simplecmd **cmd_table, t_list **tokens)
+int	parse_tokens(t_simplecmd **cmd_table, t_list **tokens, t_list *envp)
 {
 	int	error;
 
+	error = parse_expand(*tokens, envp);
+	if (error)
+		return (error);
 	error = parse_redir(cmd_table, tokens);
 	if (error)
 		return (error);

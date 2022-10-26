@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:18:51 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/24 14:51:13 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 11:22:35 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	builtin_cd(char *path, t_list **envp)
 	is_freeable = 0;
 	if (path == NULL)
 	{
-		path = ft_strdup(env_getval(*envp, "HOME"));
+		path = ft_strdup(env_getval(*envp, "HOME", 4));
 		is_freeable = 1;
 	}
 	if (path == NULL)
@@ -38,7 +38,7 @@ int	builtin_cd(char *path, t_list **envp)
 		perror("cd");
 		return (1);
 	}
-	env_setval(envp, "OLDPWD", env_getval(*envp, "PWD"));
+	env_setval(envp, "OLDPWD", env_getval(*envp, "PWD", 4));
 	env_setval(envp, "PWD", path);
 	if (is_freeable)
 		free(path);

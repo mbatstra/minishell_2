@@ -25,6 +25,7 @@ UNPREFIXED_SRC = main.c \
 	parse/parse_util.c \
 	parse/parse_redir.c \
 	parse/parse_word.c \
+	parse/parse_expand.c \
 	exec/execute.c\
 	exec/heredoc.c\
 	exec/protect.c\

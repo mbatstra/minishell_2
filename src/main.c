@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 13:06:34 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/18 14:08:58 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/26 11:10:38 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	main(int argc, char **av, char **env)
 		if (!error)
 		{
 			cmd_table = parse_cmd_init(tokens);
-			error = parse_tokens(cmd_table, &tokens);
+			error = parse_tokens(cmd_table, &tokens, new_env);
 			// db_ptcmd(cmd_table);
 			exit_code = execute(cmd_table, &new_env, exit_code);
 			parse_clear_cmd_table(cmd_table);
