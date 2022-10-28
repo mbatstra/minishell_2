@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 13:06:34 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/26 20:12:05 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/28 14:53:58 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,18 @@ void	db_ptcmd(t_simplecmd **cmd_table)
 // 	system("leaks minishell");
 // }
 
+static void	change_shlvl(t_list **envp)
+{
+	int		shlvl;
+	char	*level;
+
+	shlvl = ft_atoi(env_getval(*envp, "SHLVL", 5));
+	shlvl += 1;
+	level = protect_itoa(shlvl);
+	env_setval(envp, "SHLVL", level);
+	free(level);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_simplecmd	**cmd_table;
@@ -92,6 +104,7 @@ int	main(int argc, char **argv, char **env)
 	exit_code = 0;
 	new_env = NULL;
 	env_init(env, &new_env);
+	change_shlvl(&new_env);
 	while (1)
 	{
 		error = 0;
