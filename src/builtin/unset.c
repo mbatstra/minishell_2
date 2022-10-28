@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:11:42 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/26 19:43:27 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/28 11:56:32 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static int	invalid_name(char *name)
 	i = 0;
 	while (name[i])
 	{
-		if (!ft_isalnum(name[i]) && name[i] != '_')
+		if (ft_isdigit(name[0]) || \
+		(!ft_isalnum(name[i]) && name[i] != '_'))
 			return (1);
 		i++;
 	}

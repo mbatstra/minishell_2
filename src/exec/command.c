@@ -6,7 +6,7 @@
 /*   By: cicekyuzbas <cyuzbas@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/03 21:36:18 by cicekyuzbas   #+#    #+#                 */
-/*   Updated: 2022/10/26 20:40:25 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/28 13:39:16 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ void	ft_execve(t_simplecmd *simplecmd, t_list **envp)
 	if (ft_strchr(cmd_arr[0], '/') != 0)
 	{
 		execve(cmd_arr[0], cmd_arr, envp_arr);
-		error_exit(127, cmd_arr[0], ": No such file or directory\n");
+		if (errno == ENOENT)
+			error_exit(127, cmd_arr[0], ": No such file or directory\n");
+		else if (errno == EACCES)
+			error_exit(126, cmd_arr[0], ": Permission denied\n");
 	}
 	else if (envp[0])
 	{

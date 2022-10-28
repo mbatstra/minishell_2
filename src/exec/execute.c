@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/26 15:46:15 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/28 14:09:47 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	execute(t_simplecmd **cmds, t_list **envp, int exit_code)
 	out = *(cmds[0]->out);
 	if (!arg && !in && !out)
 		return (0);
-	if (!heredoc(cmds))
+	if (!heredoc(cmds, envp))
 		return (-1);
 	if (builtin_and_redirection(cmds) || !is_builtin(*cmds))
 	{

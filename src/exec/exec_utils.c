@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/26 20:35:16 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/28 13:35:02 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ void	print_error(char *command, char *arg, char *text)
 	if (arg != NULL)
 		ft_putstr_fd(arg, 2);
 	if (text == NULL)
+	{
+		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
+	}
 	else
 		ft_putstr_fd(text, 2);
 	ft_putstr_fd("\n", 2);

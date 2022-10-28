@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:21 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/26 20:34:48 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/28 14:12:13 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	print_error(char *command, char *arg, char *text);
 void	ft_execve(t_simplecmd *simplecmd, t_list **envp);
 
 //redirection
-int		heredoc(t_simplecmd **cmds);
+int		heredoc(t_simplecmd **cmds, t_list **envp);
 void	set_infile(t_simplecmd *cmds);
 void	set_outfile(t_simplecmd *cmds);
 

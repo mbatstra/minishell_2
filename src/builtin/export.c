@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 14:37:33 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/26 18:24:02 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/10/28 11:57:21 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ static int	invalid_name(char *name)
 	{
 		if (name[i] == '=' && i > 0)
 			break ;
-		if (ft_isdigit(name[0])
-			|| (!ft_isalpha(name[i]) && !ft_isdigit(name[i]) && name[i] != '_'))
+		if (ft_isdigit(name[0]) || \
+			(!ft_isalnum(name[i]) && name[i] != '_'))
 		{
 			print_error("export: `", name, "': not a valid identifier");
 			return (1);
