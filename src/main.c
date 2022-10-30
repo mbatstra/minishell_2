@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
+/*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
-/*                                                     +:+                    */
-/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/10/14 13:06:34 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/26 17:46:12 by mbatstra         ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/27 17:37:17 by mbatstra          #+#    #+#             */
+/*   Updated: 2022/10/30 03:31:01 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <signal.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <unistd.h>
@@ -84,6 +85,7 @@ int	main(int argc, char **av, char **env)
 	t_list		*tokens;
 	t_list		*new_env;
 	char		*input;
+	char		*exp_input;
 	int			error;
 	int			exit_code;
 
@@ -92,15 +94,18 @@ int	main(int argc, char **av, char **env)
 	exit_code = 0;
 	new_env = NULL;
 	env_init(env, &new_env);
+	signal(SIGQUIT, &catch_quit);
+	signal(SIGINT, &catch_int);
 	while (1)
 	{
 		error = 0;
 		input = readline("minishell-$ ");
-		if (input == NULL)
+		exp_input = parse_expand_env(input, new_env);
+		if (input == NULL || exp_input == NULL)
 			printf("error\n");
 		add_history(input);
 		tokens = NULL;
-		error = lexer_tokenize(&tokens, input);
+		error = lexer_tokenize(&tokens, exp_input);
 		if (!error)
 		{
 			cmd_table = parse_cmd_init(tokens);
@@ -111,6 +116,8 @@ int	main(int argc, char **av, char **env)
 		ft_lstclear(&tokens, &lexer_clear_token);
 		if (error == 1)
 			printf("Allocation failure\n");
+		if (exp_input != input)
+			free(exp_input);
 		free(input);
 	// atexit(check_leaks);
 	}

@@ -6,13 +6,12 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:20:25 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/26 16:26:07 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/10/30 03:29:10 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
 #include "minishell.h"
 #include "libft.h"
 
@@ -58,7 +57,7 @@ static int	count_quotes(char *str)
 	return (numq);
 }
 
-static char	*rm_quotes(char *str)
+static char	*parse_rm_quotes(char *str)
 {
 	char	*new_str;
 	char	lastq;
@@ -71,8 +70,9 @@ static char	*rm_quotes(char *str)
 	new_str = ft_calloc(ft_strlen(str) - count_quotes(str) + 1, sizeof(char));
 	while (str[i] != '\0' && new_str != NULL)
 	{
-		if ((str[i] == '"' || str[i] == '\'') && \
-			(lastq == '\0' || lastq == str[i]))
+		while ((str[i] == '"' || str[i] == '\'') && \
+			((lastq == '\0' && ft_strchr(str + i + 1, str[i])) \
+			 || lastq == str[i]))
 		{
 			if (lastq == str[i])
 				lastq = '\0';
@@ -94,6 +94,8 @@ char	*parse_expand_env(char *old_val, t_list *envp)
 	char	*new_sub;
 	int		old_sublen;
 
+	if (old_val == NULL)
+		return (NULL);
 	old_sublen = 1;
 	dllr = has_expansion(old_val);
 	if (dllr == NULL)
@@ -107,7 +109,7 @@ char	*parse_expand_env(char *old_val, t_list *envp)
 	return (parse_expand_env(new_val, envp));
 }
 
-int	parse_expand(t_list *tokens, t_list *envp)
+int	parse_expand(t_list *tokens)
 {
 	t_token	*tok;
 	char	*new_val;
@@ -117,15 +119,7 @@ int	parse_expand(t_list *tokens, t_list *envp)
 		tok = ((t_token *)tokens->content);
 		if (tok->type == WORD)
 		{
-			new_val = parse_expand_env(tok->value, envp);
-			if (new_val == NULL)
-				return (1);
-			if (new_val != tok->value)
-			{
-				free(tok->value);
-				tok->value = new_val;
-			}
-			new_val = rm_quotes(tok->value);
+			new_val = parse_rm_quotes(tok->value);
 			if (new_val == NULL)
 				return (1);
 			free(tok->value);

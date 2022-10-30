@@ -3,7 +3,7 @@ TEST_NAME = test/unit_test
 
 SRC_DIR = src/
 BUILD_DIR = build/
-BUILD_SUBDIRS = build/builtin build/env build/expand build/lexer build/parse build/exec
+BUILD_SUBDIRS = build/builtin build/env build/expand build/lexer build/parse build/exec build/signal
 
 UNPREFIXED_SRC = main.c \
 	builtin/env.c \
@@ -34,6 +34,7 @@ UNPREFIXED_SRC = main.c \
 	exec/fork.c\
 	exec/redirection.c\
 	exec/exec_utils.c\
+	signal/signal.c
 
 TEST_SRC = test/test.c
 
@@ -44,7 +45,9 @@ INC = inc/
 TEST_INC = test/criterion--git/include
 
 #FLAGS = -fsanitize=address -g 
-FLAGS = -Wall -Wextra -Werror
+#FLAGS = -Wall -Wextra -Werror
+#RL_OPTIONS = -I ~/.brew/opt/readline/include -L ~/.brew/opt/readline/lib -lreadline
+RL_OPTIONS = -L/Users/mbatstra/.brew/Cellar/readline/8.2.1/lib -lreadline
 
 LIB = lib/
 LIBFT = lib/libft/libft.a
@@ -70,7 +73,8 @@ $(BUILD_SUBDIRS):
 $(NAME): $(OBJ) $(INC)*
 	@echo $(YELLOW)"Object files created...!"$(RESET)
 	@echo $(GREEN)"Minishell is ready!\n"$(RESET)
-	@$(CC) $(FLAGS) $(OBJ) $(LIBFT) -lreadline -I$(INC) -o $(NAME)
+	@$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME) -I$(INC) $(RL_OPTIONS)
+
 	@echo $(GREEN)"               *------------------------------------------------------------------------------------------------------*"$(RESET)
 	@echo $(GREEN)"               | *--------------------------------------------------------------------------------------------------* |"$(RESET)
 	@echo $(GREEN)"               | |                  __  __    _____    _____   _    _   ______   _        _                         | |"$(RESET)
