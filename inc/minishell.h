@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 17:37:27 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/30 03:29:28 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/01 20:18:54 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		parse_clear_cmd_table(t_simplecmd **cmd_table);
 int			parse_tokens(t_simplecmd **cmd, t_list **tokens, t_list *envp);
 int			parse_redir(t_simplecmd **cmd_table, t_list **tokens);
 int			parse_word(t_simplecmd **cmd_table, t_list **tokens);
-int			parse_expand(t_list *tokens);
+int			parse_expand(t_list *tokens, t_list *env);
 
 // expansion
 char		*expand_relpath(char *relp);
@@ -87,6 +87,7 @@ int			builtin_echo(t_list *arg);
 int			builtin_env(t_list *envp);
 
 // signals
+void    	signal_suppress_output(void);
 void		catch_quit(int sig);
 void		catch_int(int sig);
 

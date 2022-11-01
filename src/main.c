@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 17:37:17 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/30 03:31:01 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/01 20:30:23 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@ int	main(int argc, char **av, char **env)
 	t_list		*tokens;
 	t_list		*new_env;
 	char		*input;
-	char		*exp_input;
 	int			error;
 	int			exit_code;
 
 	(void)argc;
 	(void)av;
 	exit_code = 0;
+	signal_suppress_output();
 	new_env = NULL;
 	env_init(env, &new_env);
 	signal(SIGQUIT, &catch_quit);
@@ -100,12 +100,14 @@ int	main(int argc, char **av, char **env)
 	{
 		error = 0;
 		input = readline("minishell-$ ");
-		exp_input = parse_expand_env(input, new_env);
-		if (input == NULL || exp_input == NULL)
-			printf("error\n");
+		if (input == NULL)
+		{
+			printf("exit\n");
+			exit(EXIT_FAILURE);
+		}
 		add_history(input);
 		tokens = NULL;
-		error = lexer_tokenize(&tokens, exp_input);
+		error = lexer_tokenize(&tokens, input);
 		if (!error)
 		{
 			cmd_table = parse_cmd_init(tokens);
@@ -116,8 +118,6 @@ int	main(int argc, char **av, char **env)
 		ft_lstclear(&tokens, &lexer_clear_token);
 		if (error == 1)
 			printf("Allocation failure\n");
-		if (exp_input != input)
-			free(exp_input);
 		free(input);
 	// atexit(check_leaks);
 	}

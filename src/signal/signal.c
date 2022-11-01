@@ -6,17 +6,29 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 17:42:50 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/28 16:35:56 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/01 20:39:00 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include <stdio.h>
+#include <termios.h>
 #include <sys/ioctl.h>
 #include "readline/readline.h"
 #include "readline/history.h"
 #include "minishell.h"
 #include "libft.h"
+
+void	signal_suppress_output(void)
+{
+	struct termios	s_termios;
+
+	if (tcgetattr(0, &s_termios))
+		perror("minishell: tcsetattr");
+	s_termios.c_lflag &= ~ECHOCTL;
+	if (tcsetattr(0, 0, &s_termios))
+		perror("minishell: tcsetattr");
+}
 
 void	catch_quit(int sig)
 {
@@ -28,6 +40,7 @@ void	catch_int(int sig)
 {
 	signal(sig, &catch_int);
 	ioctl(IN, TIOCSTI, "\n");
-	rl_replace_line("", 0);
 	rl_on_new_line();
+	rl_replace_line("", 0);
+	// rl_redisplay();
 }

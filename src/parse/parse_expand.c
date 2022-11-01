@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:20:25 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/30 03:29:10 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:55:27 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static char	*parse_rm_quotes(char *str)
 	{
 		while ((str[i] == '"' || str[i] == '\'') && \
 			((lastq == '\0' && ft_strchr(str + i + 1, str[i])) \
-			 || lastq == str[i]))
+			|| lastq == str[i]))
 		{
 			if (lastq == str[i])
 				lastq = '\0';
@@ -81,6 +81,8 @@ static char	*parse_rm_quotes(char *str)
 			i++;
 			offset++;
 		}
+		if (str[i] == '\0')
+			break ;
 		new_str[i - offset] = str[i];
 		i++;
 	}
@@ -109,7 +111,7 @@ char	*parse_expand_env(char *old_val, t_list *envp)
 	return (parse_expand_env(new_val, envp));
 }
 
-int	parse_expand(t_list *tokens)
+int	parse_expand(t_list *tokens, t_list *env)
 {
 	t_token	*tok;
 	char	*new_val;
@@ -119,6 +121,14 @@ int	parse_expand(t_list *tokens)
 		tok = ((t_token *)tokens->content);
 		if (tok->type == WORD)
 		{
+			new_val = parse_expand_env(tok->value, env);
+			if (new_val == NULL)
+				return (1);
+			if (new_val != tok->value)
+			{
+				free(tok->value);
+				tok->value = new_val;
+			}
 			new_val = parse_rm_quotes(tok->value);
 			if (new_val == NULL)
 				return (1);

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 13:12:32 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/30 03:29:18 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/01 14:11:25 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 int	parse_tokens(t_simplecmd **cmd_table, t_list **tokens, t_list *envp)
 {
 	int	error;
-	
-	error = parse_expand(*tokens);
+
+	error = parse_expand(*tokens, envp);
 	if (error)
 		return (error);
 	error = parse_redir(cmd_table, tokens);

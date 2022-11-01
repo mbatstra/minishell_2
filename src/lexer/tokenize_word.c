@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 16:41:52 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/14 13:21:04 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:51:22 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,26 @@ static int	lexer_quote_isclosed(char *cmd, int start)
 static void	lexer_tokenize_quote(t_token *token, char *cmd, \
 								int *i, t_lexer_flags *flags)
 {
-	if (cmd[*i] == '"')
+	while (cmd[*i] == '"' || cmd[*i] == '\'')
 	{
-		if (flags->is_double_quoted)
-			flags->is_double_quoted = 0;
-		else if (lexer_quote_isclosed(cmd, *i))
-			flags->is_double_quoted = 1;
-		flags->last_exit = lexer_value_append(token, "\"", 1);
-		*i += 1;
-	}
-	if (cmd[*i] == '\'')
-	{
-		if (flags->is_single_quoted)
-			flags->is_single_quoted = 0;
-		else if (lexer_quote_isclosed(cmd, *i))
-			flags->is_single_quoted = 1;
-		flags->last_exit = lexer_value_append(token, "'", 1);
-		*i += 1;
+		if (cmd[*i] == '"')
+		{
+			if (flags->is_double_quoted && !flags->is_single_quoted)
+				flags->is_double_quoted = 0;
+			else if (lexer_quote_isclosed(cmd, *i) && !flags->is_single_quoted)
+				flags->is_double_quoted = 1;
+			flags->last_exit = lexer_value_append(token, "\"", 1);
+			*i += 1;
+		}
+		if (cmd[*i] == '\'')
+		{
+			if (flags->is_single_quoted && !flags->is_double_quoted)
+				flags->is_single_quoted = 0;
+			else if (lexer_quote_isclosed(cmd, *i) && !flags->is_double_quoted)
+				flags->is_single_quoted = 1;
+			flags->last_exit = lexer_value_append(token, "'", 1);
+			*i += 1;
+		}
 	}
 }
 
@@ -80,9 +83,11 @@ void	lexer_tokenize_word(t_token *token, char *cmd, \
 		lexer_tokenize_delim(token, cmd, i, flags);
 		if (flags->is_delim)
 			return ;
-		flags->last_exit = lexer_value_append(token, cmd + *i, 1);
-		*i += 1;
-		if (cmd[*i] == '\0')
-			flags->is_delim = 1;
+		if (cmd[*i] != '\0')
+		{
+			flags->last_exit = lexer_value_append(token, cmd + *i, 1);
+			*i += 1;
+		}
 	}
+	flags->is_delim = 1;
 }
