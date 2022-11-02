@@ -1,5 +1,6 @@
 NAME = minishell
 TEST_NAME = test/unit_test
+USER = mbatstra
 
 SRC_DIR = src/
 BUILD_DIR = build/
@@ -44,8 +45,8 @@ SRC = $(addprefix $(SRC_DIR), $(UNPREFIXED_SRC))
 INC = inc/
 TEST_INC = test/criterion--git/include
 
-#FLAGS = -fsanitize=address -g 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -fsanitize=address -g 
+#FLAGS = -Wall -Wextra -Werror
 
 LIB = lib/
 LIBFT = lib/libft/libft.a
@@ -71,7 +72,7 @@ $(BUILD_SUBDIRS):
 $(NAME): $(OBJ) $(INC)*
 	@echo $(YELLOW)"Object files created...!"$(RESET)
 	@echo $(GREEN)"Minishell is ready!\n"$(RESET)
-	@$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME) -I$(INC) -L/Users/mbatstra/.brew/opt/readline/lib -lreadline
+	@$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME) -I$(INC) -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
 
 	@echo $(GREEN)"               *------------------------------------------------------------------------------------------------------*"$(RESET)
 	@echo $(GREEN)"               | *--------------------------------------------------------------------------------------------------* |"$(RESET)
@@ -88,7 +89,7 @@ $(NAME): $(OBJ) $(INC)*
 
 $(BUILD_DIR)%.o: $(SRC_DIR)%.c | $(BUILD_DIR) $(BUILD_SUBDIRS)
 	@printf $(YELLOW)"%-33.33s\r"$(RESET) $@
-	@$(CC) $(FLAGS) -I/Users/mbatstra/.brew/opt/readline/include -I$(INC) -c $< -o $@
+	@$(CC) $(FLAGS) -I/Users/$(USER)/.brew/opt/readline/include -I$(INC) -c $< -o $@
 
 $(TEST_NAME): $(LIBFT) $(TEST_SRC) $(filter-out main.c, $(SRC))
 	$(CC) $(TEST_SRC) $(LIBFT) $(filter-out src/main.c, $(SRC)) $(CRITERION) -I$(INC) -I$(TEST_INC) -o $(TEST_NAME) 
