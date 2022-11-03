@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:20:25 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/11/01 16:55:27 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:18:33 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,21 @@
 #include "minishell.h"
 #include "libft.h"
 
-static char	*has_expansion(char *str)
+extern int	g_exit_code;
+
+static char	*has_expansion(char *str, t_list *envp)
 {
 	int	dquote;
 	int	squote;
+	int	namelen;
 
 	dquote = 0;
 	squote = 0;
 	while (*str != '\0')
 	{
+		namelen = 0;
+		while (ft_isalnum(str[namelen + 1]))
+			namelen++;
 		if (*str == '\'' && squote)
 			squote = 0;
 		else if (*str == '\'' && !dquote && !squote && ft_strchr(str + 1, '\''))
@@ -32,7 +38,7 @@ static char	*has_expansion(char *str)
 			dquote = 0;
 		else if (*str == '"' && !squote && !dquote && ft_strchr(str + 1, '"'))
 			dquote = 1;
-		else if (*str == '$' && !squote)
+		else if (*str == '$' && !squote && env_getval(envp, str + 1, namelen))
 			return (str);
 		str++;
 	}
@@ -99,11 +105,13 @@ char	*parse_expand_env(char *old_val, t_list *envp)
 	if (old_val == NULL)
 		return (NULL);
 	old_sublen = 1;
-	dllr = has_expansion(old_val);
+	dllr = has_expansion(old_val, envp);
 	if (dllr == NULL)
 		return (old_val);
 	while (ft_isalnum(dllr[old_sublen]) || dllr[old_sublen] == '_')
 		old_sublen++;
+	if (dllr[1] == '?')
+		return (ft_itoa(g_exit_code));
 	new_sub = env_getval(envp, dllr + 1, old_sublen - 1);
 	new_val = ft_replsubstr(old_val, new_sub, dllr, old_sublen);
 	if (new_val == NULL)

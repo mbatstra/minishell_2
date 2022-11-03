@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 17:42:50 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/11/02 17:35:59 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:23:36 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,9 @@ void	catch_int(int sig)
 	ioctl(IN, TIOCSTI, "\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	// rl_redisplay();
+}
+
+void	catch_int_child(int sig)
+{
+	signal(sig, &catch_int_child);
 }

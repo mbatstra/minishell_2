@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 17:37:17 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/11/01 20:30:23 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/03 12:17:48 by mbatstra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include "minishell.h"
 #include "libft.h"
 #include "exec.h"
+
+extern int	g_exit_code = 0;
 
 void	db_ptlist(t_list **lst)
 {
