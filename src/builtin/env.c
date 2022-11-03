@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/16 14:22:40 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/09/19 17:16:38 by mbatstra         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   env.c                                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/09/16 14:22:40 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/11/03 13:29:10 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "libft.h"
 
-// error messages? should output be buffered?
 int	builtin_env(t_list *envp)
 {
 	while (envp != NULL)

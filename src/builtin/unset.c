@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   unset.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:11:42 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/26 19:02:45 by mbatstra         ###   ########.fr       */
+/*   Updated: 2022/11/03 12:57:01 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "exec.h"
 #include "libft.h"
 
 static int	invalid_name(char *name)
@@ -20,8 +20,13 @@ static int	invalid_name(char *name)
 	i = 0;
 	while (name[i])
 	{
-		if (!ft_isalnum(name[i]) && name[i] != '_')
+		if (ft_isdigit(name[0]) || \
+		(!ft_isalnum(name[i]) && name[i] != '_'))
+		{
+			print_error("unset: `", name, "': not a valid identifier");
+			g_exit_code = 1;
 			return (1);
+		}
 		i++;
 	}
 	return (0);
@@ -45,14 +50,6 @@ static void	match_node(t_list **node, t_list **prev, char *name)
 	}
 }
 
-static int	pt_name_error(char *name)
-{
-	ft_putstr_fd("minishell: unset: `", 2);
-	ft_putstr_fd(name, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (1);
-}
-
 int	builtin_unset(t_list **envp, t_list *arg)
 {
 	t_list	*node;
@@ -64,19 +61,19 @@ int	builtin_unset(t_list **envp, t_list *arg)
 	while (arg->next != NULL)
 	{
 		name = (char *)(arg->next->content);
+		arg = arg->next;
 		if (invalid_name(name))
-			return (pt_name_error(name));
+			continue ;
 		node = *envp;
 		prev = *envp;
 		match_node(&node, &prev, name);
 		if (node == NULL)
-			return (1);
+			return (0);
 		else if (node == prev)
 			(*envp)->next = node->next;
 		else
 			prev->next = node->next;
 		ft_lstdelone(node, &free);
-		arg = arg->next;
 	}
-	return (0);
+	return (g_exit_code);
 }

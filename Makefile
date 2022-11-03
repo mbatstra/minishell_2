@@ -1,6 +1,7 @@
 NAME = minishell
 TEST_NAME = test/unit_test
-USER = mbatstra
+USER = cyuzbas
+# USER = mbatstra
 
 SRC_DIR = src/
 BUILD_DIR = build/
@@ -13,6 +14,7 @@ UNPREFIXED_SRC = main.c \
 	builtin/echo.c \
 	builtin/exit.c \
 	builtin/export.c \
+	builtin/export_utils.c \
 	builtin/unset.c \
 	env/env.c \
 	expand/rel_path.c \
@@ -45,7 +47,7 @@ SRC = $(addprefix $(SRC_DIR), $(UNPREFIXED_SRC))
 INC = inc/
 TEST_INC = test/criterion--git/include
 
-FLAGS = -fsanitize=address -g 
+# FLAGS = -fsanitize=address -g 
 #FLAGS = -Wall -Wextra -Werror
 
 LIB = lib/

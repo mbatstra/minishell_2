@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 17:37:27 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/11/01 20:18:54 by mbatstra         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/27 17:37:27 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/11/03 13:28:42 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,9 @@ int			builtin_echo(t_list *arg);
 int			builtin_env(t_list *envp);
 
 // signals
-void    	signal_suppress_output(void);
+void		signal_suppress_output(void);
 void		catch_quit(int sig);
 void		catch_int(int sig);
+void		catch_int_child(int sig);
 
 #endif 

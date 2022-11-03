@@ -6,7 +6,7 @@
 /*   By: cicekyuzbas <cyuzbas@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/03 21:36:18 by cicekyuzbas   #+#    #+#                 */
-/*   Updated: 2022/10/26 11:42:41 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 12:58:45 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,46 +56,56 @@ static char	*find_path(char *cmd, t_list **envp)
 	path = env_getval(*envp, "PATH", 4);
 	if (!path)
 		return (0);
-	// printf("%s\n", path);
 	paths = ft_split(path, ':');
 	full_path = join_path(paths, cmd);
-	// printf("%s\n", full_path);
 	if (full_path)
 		return (full_path);
 	free(full_path);
 	return (0);
 }
 
-void ft_execve(t_simplecmd *simplecmd, t_list **envp)
+char	**change_if_expanded(char **cmd_arr)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (cmd_arr[0][i])
+	{
+		if (cmd_arr[0][i] != ' ' && \
+		(cmd_arr[0][i + 1] == ' ' || !cmd_arr[0][i + 1]))
+			count++;
+		i++;
+	}
+	if (count > 1)
+		cmd_arr = ft_split(cmd_arr[0], ' ');
+	if (!cmd_arr)
+		exit(-1);
+	return (cmd_arr);
+}
+
+void	ft_execve(t_simplecmd *simplecmd, t_list **envp)
 {
 	char	*path;
 	char	**envp_arr;
 	char	**cmd_arr;
-	t_list	**arg;
 
-	arg = simplecmd->arg;
-	cmd_arr = envp_array(*arg);
+	cmd_arr = envp_array(*(simplecmd->arg));
+	cmd_arr = change_if_expanded(cmd_arr);
 	envp_arr = envp_array(*envp);
-	if (simplecmd == NULL)
-	{
-		execve("", cmd_arr, envp_arr);
-		printf("Null path : error with execve\n");
-		return ;
-	}
-	else if (ft_strchr(cmd_arr[0], '/') != 0)
+	if (ft_strchr(cmd_arr[0], '/') != 0)
 	{
 		execve(cmd_arr[0], cmd_arr, envp_arr);
-		printf("error with execve\n");
-		perror(cmd_arr[0]);
-		// ft_putstr_fd(simplecmd->argv[0], 2);
-		// ft_putendl_fd(": No such file or directory", 2);
-		// exit (127);
+		if (errno == ENOENT)
+			error_exit(127, cmd_arr[0], ": No such file or directory\n");
+		else
+			error_exit(1, cmd_arr[0], NULL);
 	}
 	else if (envp[0])
 	{
 		path = find_path(cmd_arr[0], envp);
-		// printf("cmdarr=%s - path=%s\n", cmd_arr[0], path);
 		execve(path, cmd_arr, envp_arr);
-		printf("error with execve\n");
+		error_exit(127, cmd_arr[0], ": command not found\n");
 	}
 }

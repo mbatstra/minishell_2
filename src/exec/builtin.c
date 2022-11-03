@@ -6,24 +6,12 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/24 14:43:18 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 12:57:56 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
-
-// int	ft_strcmp(const char *s1, const char *s2)
-// {
-// 	while (*s1 != '\0' || *s2 != '\0')
-// 	{
-// 		if (*s1 != *s2)
-// 			return ((unsigned char)*s1 - (unsigned char)*s2);
-// 		s1++;
-// 		s2++;
-// 	}
-// 	return (0);
-// }
 
 int	is_builtin(t_simplecmd *cmds)
 {
@@ -52,7 +40,7 @@ int	is_builtin(t_simplecmd *cmds)
 	return (is_builtin);
 }
 
-int	execute_builtin(t_simplecmd *cmds, t_list **env, int exit_code)
+void	execute_builtin(t_simplecmd *cmds, t_list **env)
 {
 	t_list	*arg;
 	char	*command_next;
@@ -63,20 +51,19 @@ int	execute_builtin(t_simplecmd *cmds, t_list **env, int exit_code)
 	else
 		command_next = (char *)(arg->next->content);
 	if (ft_strcmp((char *)(arg->content), "cd") == 0)
-		exit_code = builtin_cd(command_next, env);
+		g_exit_code = builtin_cd(command_next, env);
 	else if (ft_strcmp((char *)(arg->content), "pwd") == 0)
-		exit_code = builtin_pwd();
+		g_exit_code = builtin_pwd();
 	else if (ft_strcmp((char *)(arg->content), "exit") == 0)
-		builtin_exit(arg, &exit_code);
+		builtin_exit(arg, &g_exit_code);
 	else if (ft_strcmp((char *)(arg->content), "echo") == 0)
-		exit_code = builtin_echo(arg);
+		g_exit_code = builtin_echo(arg);
 	else if (ft_strcmp((char *)(arg->content), "env") == 0)
-		exit_code = builtin_env(*env);
+		g_exit_code = builtin_env(*env);
 	else if (ft_strcmp((char *)(arg->content), "export") == 0)
-		exit_code = builtin_export(env, arg);
+		g_exit_code = builtin_export(env, arg);
 	else if (ft_strcmp((char *)(arg->content), "unset") == 0)
-		exit_code = builtin_unset(env, arg);
-	return (exit_code);
+		g_exit_code = builtin_unset(env, arg);
 }
 
 int	builtin_and_redirection(t_simplecmd **cmds)

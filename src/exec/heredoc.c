@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/24 14:43:55 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 14:51:29 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,33 @@ static void	set_heredoc(t_simplecmd **cmds)
 	}
 }
 
-static void	write_to_heredoc(t_list *lst, t_token *redirection)
+static void	write_to_heredoc(t_list *lst, t_token *redirection, t_list **envp)
 {
-	int		id;
+	int		fd;
 	char	new_line;
 
 	new_line = '\n';
-	id = open(redirection->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (id < 0)
+	fd = open(redirection->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd < 0)
 	{
-		print_error(redirection->value, NULL);
+		print_error(redirection->value, NULL, NULL);
 		exit(1);
 	}
 	while (lst)
 	{
-		write(id, lst->content, ft_strlen(lst->content));
-		write(id, &new_line, sizeof(new_line));
+		if (ft_strrchr(lst->content, '$'))
+			lst->content = parse_expand_env(lst->content, *envp);
+		if (!lst->content)
+			exit (1);
+		write(fd, lst->content, ft_strlen(lst->content));
+		write(fd, &new_line, sizeof(new_line));
 		lst = lst->next;
 	}
-	close(id);
+	close(fd);
 	ft_lstclear(&lst, free);
 }
 
-static void	handle_heredoc(t_token *redirection, char *eof)
+static void	handle_heredoc(t_token *redirection, char *eof, t_list **envp)
 {
 	t_list	*here_doc_input_list;
 	char	*read_txt;
@@ -81,10 +85,10 @@ static void	handle_heredoc(t_token *redirection, char *eof)
 		ft_lstadd_back(&here_doc_input_list, ft_lstnew(read_txt));
 	}
 	free(eof);
-	write_to_heredoc(here_doc_input_list, redirection);
+	write_to_heredoc(here_doc_input_list, redirection, envp);
 }
 
-static void	child_heredoc(t_simplecmd **cmds)
+static void	child_heredoc(t_simplecmd **cmds, t_list **envp)
 {
 	size_t	i;
 	int		j;
@@ -103,7 +107,7 @@ static void	child_heredoc(t_simplecmd **cmds)
 				delim = strdup_protect(((t_token *)in->content)->value);
 				((t_token *)in->content)->value = join_protect("/tmp/hdoc_", \
 				protect_itoa(i));
-				handle_heredoc(((t_token *)in->content), delim);
+				handle_heredoc(((t_token *)in->content), delim, envp);
 				i++;
 			}
 			in = in->next;
@@ -113,19 +117,20 @@ static void	child_heredoc(t_simplecmd **cmds)
 	exit (0);
 }
 
-int	heredoc(t_simplecmd **cmds)
+int	heredoc(t_simplecmd **cmds, t_list **envp)
 {
 	int	pid;
-	// int	exit_status;
+	int	status;
 
 	pid = fork();
 	if (pid == -1)
 		exit (-1);
 	if (pid == 0)
-		child_heredoc(cmds);
-	// exit_status = wait_children(pid);
-	wait_children(pid);
-	// g_interactive = 1;
+	{
+		signal(SIGINT, SIG_DFL);
+		child_heredoc(cmds, envp);
+	}
+	g_exit_code = wait_children(pid);
 	set_heredoc(cmds);
 	return (TRUE);
 }

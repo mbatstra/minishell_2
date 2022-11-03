@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/10/24 14:43:33 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 12:59:43 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,38 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-void	print_error(char *command, char *text)
+void	error_exit(int exit_code, char *cmd, char *message)
+{
+	ft_putstr_fd("minishell: ", 2);
+	if (cmd != NULL)
+		ft_putstr_fd(cmd, 2);
+	if (message == NULL)
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+		if (errno == ENOTDIR || errno == EACCES)
+			exit (126);
+	}
+	else
+		ft_putstr_fd(message, 2);
+	// if (exit_code == -1)
+	// 	g_exit_code = -1;
+	// else
+	exit(exit_code);
+}
+
+void	print_error(char *command, char *arg, char *text)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": ", 2);
+	if (arg != NULL)
+		ft_putstr_fd(arg, 2);
 	if (text == NULL)
+	{
+		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
+	}
 	else
 		ft_putstr_fd(text, 2);
 	ft_putstr_fd("\n", 2);
@@ -74,7 +99,7 @@ void	choose_execute(t_simplecmd *cmds, t_list **env)
 	if (arg)
 	{	
 		if (is_builtin(cmds))
-			execute_builtin(cmds, env, 0);
+			execute_builtin(cmds, env);
 		else
 			ft_execve(cmds, env);
 	}

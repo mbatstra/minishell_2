@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 14:20:54 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/24 14:51:57 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 12:54:24 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ void	builtin_exit(t_list *arg, int *exit_code)
 	}
 	else if (arg->next->next
 		&& check_valid_argument((char *)(arg->next->content)))
-		print_error("exit", "too many arguments");
+		print_error("exit: ", NULL, "too many arguments");
 	else
 	{
 		if (!check_valid_argument((char *)(arg->next->content)))
 		{
-			print_error("exit", "numeric argument required");
+			print_error("exit: ", (char *)(arg->next->content), \
+			": numeric argument required");
 			*exit_code = 255;
 			exit((unsigned char)255);
 		}

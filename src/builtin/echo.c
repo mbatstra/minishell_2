@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 14:16:25 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/24 14:51:38 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 14:07:49 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void	write_echo(t_list *arg, int i)
 	{
 		command = (char *)(arg->content);
 		x = 0;
+		if (ft_strcmp("$?", command) == 0)
+		{
+			printf("exit_code = %d\n", g_exit_code);
+			return ;
+		}
 		if (ft_strcmp("\"\"", command) != 0)
 		{
 			while (command[x])
