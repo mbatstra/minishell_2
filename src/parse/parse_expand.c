@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 16:20:25 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:38:42 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 15:06:31 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,30 @@
 #include "exec.h"
 #include "libft.h"
 
-static char	*has_expansion(char *str, t_list *envp)
+static char	*has_expansion(char *str)
 {
-	int	dquote;
-	int	squote;
-	int	namelen;
+	int	dqt;
+	int	sqt;
 
-	dquote = 0;
-	squote = 0;
+	dqt = 0;
+	sqt = 0;
 	while (*str != '\0')
 	{
-		while (*str != '\0')
-		{
-			namelen = 0;
-			while (ft_isalnum(str[namelen + 1]))
-				namelen++;
-			if (*str == '\'' && squote)
-				squote = 0;
-			else if (*str == '\'' && !dquote && !squote \
-			&& ft_strchr(str + 1, '\''))
-				squote = 1;
-			else if (*str == '"' && dquote)
-				dquote = 0;
-			else if (*str == '"' && !squote && !dquote \
-			&& ft_strchr(str + 1, '"'))
-				dquote = 1;
-			else if (*str == '$' && !squote \
-			&& env_getval(envp, str + 1, namelen))
-				return (str);
-			str++;
-		}
-		return (NULL);
+		if (*str == '\'' && sqt)
+			sqt = 0;
+		else if (*str == '\'' && !dqt && !sqt \
+		&& ft_strchr(str + 1, '\''))
+			sqt = 1;
+		else if (*str == '"' && dqt)
+			dqt = 0;
+		else if (*str == '"' && !sqt && !dqt \
+		&& ft_strchr(str + 1, '"'))
+			dqt = 1;
+		else if (*str == '$' && !sqt && (ft_isalnum(str[1]) || str[1] == '?'))
+			return (str);
+		str++;
 	}
+	return (NULL);
 }
 
 static int	count_quotes(char *str)
@@ -110,7 +102,7 @@ char	*parse_expand_env(char *old_val, t_list *envp)
 	if (old_val == NULL)
 		return (NULL);
 	old_sublen = 1;
-	dllr = has_expansion(old_val, envp);
+	dllr = has_expansion(old_val);
 	if (dllr == NULL)
 		return (old_val);
 	while (ft_isalnum(dllr[old_sublen]) || dllr[old_sublen] == '_')
