@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 16:20:25 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 18:28:38 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 19:58:55 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,26 @@
 #include "exec.h"
 #include "libft.h"
 
-static char	*has_expansion(char *str, t_list *envp)
+static char	*has_expansion(char *str)
 {
-	int	dquote;
-	int	squote;
+	int	dqt;
+	int	sqt;
 
-	dquote = 0;
-	squote = 0;
+	dqt = 0;
+	sqt = 0;
 	while (*str != '\0')
 	{
-		if (*str == '\'' && squote)
-			squote = 0;
-		else if (*str == '\'' && !dquote && !squote \
+		if (*str == '\'' && sqt)
+			sqt = 0;
+		else if (*str == '\'' && !dqt && !sqt \
 		&& ft_strchr(str + 1, '\''))
-			squote = 1;
-		else if (*str == '"' && dquote)
-			dquote = 0;
-		else if (*str == '"' && !squote && !dquote \
+			sqt = 1;
+		else if (*str == '"' && dqt)
+			dqt = 0;
+		else if (*str == '"' && !sqt && !dqt \
 		&& ft_strchr(str + 1, '"'))
-			dquote = 1;
-		else if (*str == '$' && !squote && (ft_isalnum(str[1]) || str[1] == '?'))
+			dqt = 1;
+		else if (*str == '$' && !sqt && (ft_isalnum(str[1]) || str[1] == '?'))
 			return (str);
 		str++;
 	}
@@ -102,7 +102,7 @@ char	*parse_expand_env(char *old_val, t_list *envp)
 	if (old_val == NULL)
 		return (NULL);
 	old_sublen = 1;
-	dllr = has_expansion(old_val, envp);
+	dllr = has_expansion(old_val);
 	if (dllr == NULL)
 		return (old_val);
 	while (ft_isalnum(dllr[old_sublen]) || dllr[old_sublen] == '_')

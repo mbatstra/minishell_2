@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/03 19:17:38 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 20:04:45 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	middle_command(t_simplecmd *cmds, t_list **env, int fd[2], int fd_end)
 		choose_execute(cmds, env);
 		exit(g_mini.exit_code);
 	}
-	if (*lastpid > 0)
+	if (pid > 0)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
@@ -59,7 +59,7 @@ void	last_command(t_simplecmd *cmds, t_list **env, int fd[2], int *lastid)
 		choose_execute(cmds, env);
 		exit(g_mini.exit_code);
 	}
-	if (*lastpid > 0)
+	if (*lastid > 0)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
@@ -84,7 +84,7 @@ void	first_command(t_simplecmd *cmds, t_list **env, int fd[2])
 		choose_execute(cmds, env);
 		exit(g_mini.exit_code);
 	}
-	if (*lastpid > 0)
+	if (pid > 0)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
