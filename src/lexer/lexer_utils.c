@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/27 19:22:51 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/14 13:19:03 by mbatstra         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   lexer_utils.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/09/27 19:22:51 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/11/03 19:00:28 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	lexer_value_append(t_token *token, char *value, int val_len)
 
 	new = (char *)malloc(ft_strlen(token->value) + val_len + 1);
 	if (new == NULL)
-		return (1);
+		return (12);
 	ft_strlcpy(new, token->value, ft_strlen(token->value) + 1);
 	ft_strlcat(new, value, ft_strlen(token->value) + val_len + 1);
 	free(token->value);

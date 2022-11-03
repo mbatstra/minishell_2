@@ -47,7 +47,7 @@ SRC = $(addprefix $(SRC_DIR), $(UNPREFIXED_SRC))
 INC = inc/
 TEST_INC = test/criterion--git/include
 
-# FLAGS = -fsanitize=address -g 
+FLAGS = -fsanitize=address -g 
 #FLAGS = -Wall -Wextra -Werror
 
 LIB = lib/

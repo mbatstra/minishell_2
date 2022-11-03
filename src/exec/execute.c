@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/03 13:24:27 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 17:20:03 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,28 @@ void	execute(t_simplecmd **cmds, t_list **envp)
 	out = *(cmds[0]->out);
 	// if (!arg && !in && !out)
 	// 	exit (0);
+	// g_mini.interactive = 0;
 	if (!heredoc(cmds, envp))
 	{
-		g_exit_code = -1;
+		g_mini.exit_code = -1;
 		exit (-1);
 	}
-	if (builtin_and_redirection(cmds) || !is_builtin(*cmds))
+	// printf("int=%d exit=%d\n", g_mini.interactive, g_mini.exit_code);
+	if (g_mini.interactive != 0)
 	{
-		last_pid = 0;
-		exec_pipe(cmds, envp, &last_pid);
-		g_exit_code = wait_children(last_pid);
+		if (builtin_and_redirection(cmds) || !is_builtin(*cmds))
+		{
+			last_pid = 0;
+			exec_pipe(cmds, envp, &last_pid);
+			g_mini.exit_code = wait_children(last_pid);
+		}
+		else
+			execute_builtin(*cmds, envp);
 	}
-	else
-		execute_builtin(*cmds, envp);
+	
+	// if (arg && ft_strcmp(arg->content, "./minishell") == 0)
+	// 	{
+	// 		signal(SIGINT, SIG_IGN);
+	// 		signal(SIGQUIT, SIG_IGN);
+	// 	}
 }

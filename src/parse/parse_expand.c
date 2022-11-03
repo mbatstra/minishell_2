@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 16:20:25 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:38:42 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 18:28:38 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,26 @@ static char	*has_expansion(char *str, t_list *envp)
 {
 	int	dquote;
 	int	squote;
-	int	namelen;
 
 	dquote = 0;
 	squote = 0;
 	while (*str != '\0')
 	{
-		while (*str != '\0')
-		{
-			namelen = 0;
-			while (ft_isalnum(str[namelen + 1]))
-				namelen++;
-			if (*str == '\'' && squote)
-				squote = 0;
-			else if (*str == '\'' && !dquote && !squote \
-			&& ft_strchr(str + 1, '\''))
-				squote = 1;
-			else if (*str == '"' && dquote)
-				dquote = 0;
-			else if (*str == '"' && !squote && !dquote \
-			&& ft_strchr(str + 1, '"'))
-				dquote = 1;
-			else if (*str == '$' && !squote \
-			&& env_getval(envp, str + 1, namelen))
-				return (str);
-			str++;
-		}
-		return (NULL);
+		if (*str == '\'' && squote)
+			squote = 0;
+		else if (*str == '\'' && !dquote && !squote \
+		&& ft_strchr(str + 1, '\''))
+			squote = 1;
+		else if (*str == '"' && dquote)
+			dquote = 0;
+		else if (*str == '"' && !squote && !dquote \
+		&& ft_strchr(str + 1, '"'))
+			dquote = 1;
+		else if (*str == '$' && !squote && (ft_isalnum(str[1]) || str[1] == '?'))
+			return (str);
+		str++;
 	}
+	return (NULL);
 }
 
 static int	count_quotes(char *str)
@@ -116,7 +108,7 @@ char	*parse_expand_env(char *old_val, t_list *envp)
 	while (ft_isalnum(dllr[old_sublen]) || dllr[old_sublen] == '_')
 		old_sublen++;
 	if (dllr[1] == '?')
-		return (ft_itoa(g_exit_code));
+		return (ft_itoa(g_mini.exit_code));
 	new_sub = env_getval(envp, dllr + 1, old_sublen - 1);
 	new_val = ft_replsubstr(old_val, new_sub, dllr, old_sublen);
 	if (new_val == NULL)

@@ -6,11 +6,12 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/03 14:51:29 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 17:32:35 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+#include "minishell.h"
 
 static void	set_heredoc(t_simplecmd **cmds)
 {
@@ -122,15 +123,31 @@ int	heredoc(t_simplecmd **cmds, t_list **envp)
 	int	pid;
 	int	status;
 
+	// g_mini.interactive = 0;
 	pid = fork();
 	if (pid == -1)
 		exit (-1);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
+		signal(SIGINT, catch_int_hrdc);
 		child_heredoc(cmds, envp);
 	}
-	g_exit_code = wait_children(pid);
+	if (pid > 0)
+	{
+		signal(SIGINT, catch_int_pr_hr);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	g_mini.exit_code = wait_children(pid);
+	// waitpid(pid, &status, 0);
+	// if (WIFEXITED(status))
+	// {	
+	// 	if (WEXITSTATUS(status) == 1)
+	// 	{
+	// 		g_mini.exit_code = 1;
+	// 		return (1);
+	// 	}
+	// }
 	set_heredoc(cmds);
+	// g_mini.interactive = 1;
 	return (TRUE);
 }

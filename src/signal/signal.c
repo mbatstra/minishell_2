@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:42:50 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 14:50:49 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 19:25:22 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "readline/history.h"
 #include "minishell.h"
 #include "libft.h"
+#include "exec.h"
 
 void	signal_suppress_output(void)
 {
@@ -38,6 +39,7 @@ void	catch_quit(int sig)
 
 void	catch_int(int sig)
 {
+	g_mini.exit_code = 1;
 	signal(sig, &catch_int);
 	ioctl(IN, TIOCSTI, "\n");
 	rl_on_new_line();
@@ -46,6 +48,22 @@ void	catch_int(int sig)
 
 void	catch_int_child(int sig)
 {
+	g_mini.exit_code = 1;
 	signal(sig, &catch_int_child);
 }
 
+void	catch_int_hrdc(int sig)
+{
+	(void)sig;
+	g_mini.exit_code = 1;
+	g_mini.interactive = 0;
+	printf(">\n");
+	exit(EXIT_FAILURE);
+}
+
+void	catch_parent_hrdc(int sig)
+{
+	g_mini.interactive = 0;
+	g_mini.exit_code = 1;
+	signal(sig, &catch_parent_hrdc);
+}

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:27 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:28:42 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/03 19:25:41 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,7 @@ void		signal_suppress_output(void);
 void		catch_quit(int sig);
 void		catch_int(int sig);
 void		catch_int_child(int sig);
+void		catch_int_hrdc(int sig);
+void		catch_parent_hrdc(int sig);
 
 #endif 
