@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/04 12:28:16 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 17:32:49 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,52 @@ void	exec_pipe(t_simplecmd **cmds, t_list **env, int *last_pid)
 	}
 }
 
-void	execute(t_simplecmd **cmds, t_list **envp)
+void	execute2(t_simplecmd **cmds, t_list **envp)
 {
 	int		last_pid;
+	t_list	*in;
+	t_list	*arg;
 
+	arg = *(*cmds)->arg;
+	in = *(*cmds)->in;
+	last_pid = 0;
+	exec_pipe(cmds, envp, &last_pid);
+	g_mini.exit_code = wait_children(last_pid);
+	if (g_mini.exit_code == 0 && in \
+	&& ft_strcmp((char *)(arg->content), "exit") == 0)
+		builtin_exit(arg, &g_mini.exit_code);
+	else if (g_mini.exit_code != 1 \
+	&& ft_strcmp((char *)(arg->content), "exit") == 0)
+		exit(g_mini.exit_code);
+}
+
+void	execute(t_simplecmd **cmds, t_list **envp)
+{
+	// int		last_pid;
+	// t_list	*in;
+	// t_list	*arg;
+
+	// arg = *(*cmds)->arg;
+	// in = *(*cmds)->in;
 	if (!heredoc(cmds, envp))
 	{
 		g_mini.exit_code = -1;
-		exit (-1);
+		return ;
 	}
 	if (g_mini.interactive != 0)
 	{
 		if (builtin_and_redirection(cmds) || !is_builtin(*cmds))
 		{
-			last_pid = 0;
-			exec_pipe(cmds, envp, &last_pid);
-			g_mini.exit_code = wait_children(last_pid);
+			execute2(cmds, envp);
+			// last_pid = 0;
+			// exec_pipe(cmds, envp, &last_pid);
+			// g_mini.exit_code = wait_children(last_pid);
+			// if (g_mini.exit_code == 0 && in \
+			// && ft_strcmp((char *)(arg->content), "exit") == 0)
+			// 	builtin_exit(arg, &g_mini.exit_code);
+			// else if (g_mini.exit_code != 1 \
+			// && ft_strcmp((char *)(arg->content), "exit") == 0)
+			// 	exit(g_mini.exit_code);
 		}
 		else
 			execute_builtin(*cmds, envp);

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:17 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 13:44:09 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:29:58 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,7 @@ static void	minishell(t_list *new_env)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_simplecmd	**cmd_table;
-	t_list		*tokens;
 	t_list		*new_env;
-	char		*input;
 
 	(void)argc;
 	(void)argv;

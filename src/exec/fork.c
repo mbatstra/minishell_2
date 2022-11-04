@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/04 12:13:31 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 17:27:28 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	first_command(t_simplecmd *cmds, t_list **env, int fd[2])
 void	single_command(t_simplecmd *cmds, t_list **env, int *lastpid)
 {
 	t_list	*arg;
+	int		status;
 
 	arg = *(cmds->arg);
 	*lastpid = fork();
@@ -103,6 +104,9 @@ void	single_command(t_simplecmd *cmds, t_list **env, int *lastpid)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, catch_quit_parent);
+		if (arg && (ft_strcmp((char *)(arg->content), "cd") == 0
+			|| ft_strcmp((char *)(arg->content), "unset") == 0))
+			execute_builtin(cmds, env);
 	}
 }
 
