@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:17 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 12:25:02 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 13:35:55 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,67 +19,6 @@
 #include "minishell.h"
 #include "libft.h"
 #include "exec.h"
-
-t_mini	g_mini;
-
-void	db_ptlist(t_list **lst)
-{
-	t_list	*node;
-
-	node = *lst;
-	while (node != NULL)
-	{
-		printf("%s: type: %d\n", \
-			((t_token *)node->content)->value, \
-			((t_token *)node->content)->type);
-		node = node->next;
-	}
-}
-
-void	db_ptcmd(t_simplecmd **cmd_table)
-{
-	int	i;
-
-	i = 0;
-	while (cmd_table[i] != NULL)
-	{
-		t_list	*arg = *(cmd_table[i]->arg);
-		t_list	*in = *(cmd_table[i]->in);
-		t_list	*out = *(cmd_table[i]->out);
-		printf("---\n%d\n---\n", i);
-		printf("arg: ");
-		while (arg != NULL)
-		{
-			printf("%s\t", (char *)(arg->content));
-			arg = arg->next;
-		}
-		printf("\n");
-		printf("in: ");
-		if (in == NULL)
-			printf("default");
-		else while (in != NULL)
-		{
-			printf("%s\t", ((t_token *)in->content)->value);
-			in = in->next;
-		}
-		printf("\n");
-		printf("out: ");
-		if (out == NULL)
-			printf("default");
-		else while (out != NULL)
-		{
-			printf("%s\t", ((t_token *)out->content)->value);
-			out = out->next;
-		}
-		printf("\n");
-		i++;
-	}
-}
-
-// void	check_leaks(void)
-// {
-// 	system("leaks minishell");
-// }
 
 static void	change_shlvl(t_list **envp)
 {
@@ -96,6 +35,40 @@ static void	change_shlvl(t_list **envp)
 	env_setval(envp, "SHELL", minipwd);
 	free(level);
 	free(minipwd);
+}
+
+static void	ft_exit(void)
+{
+	printf("exit\n");
+	exit(g_mini.exit_code);
+}
+
+static void	minishell(t_list *new_env)
+{
+	t_simplecmd	**cmd_table;
+	t_list		*tokens;
+	char		*input;
+
+	signal(SIGINT, &catch_int);
+	input = readline("minishell-$ ");
+	if (input == NULL)
+		ft_exit();
+	add_history(input);
+	tokens = NULL;
+	if (lexer_tokenize(&tokens, input))
+		g_mini.exit_code = 258;
+	else if (ft_strlen(input))
+	{
+		cmd_table = parse_cmd_init(tokens);
+		g_mini.exit_code = parse_tokens(cmd_table, &tokens, new_env);
+		execute(cmd_table, &new_env);
+		parse_clear_cmd_table(cmd_table);
+	}
+	ft_lstclear(&tokens, &lexer_clear_token);
+	if (g_mini.exit_code == 12)
+		ft_putendl_fd("Allocation failure", 2);
+	free(input);
+	g_mini.interactive = 1;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -116,30 +89,6 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGINT, &catch_int);
 	g_mini.interactive = 1;
 	while (1)
-	{
-		signal(SIGINT, &catch_int);
-		input = readline("minishell-$ ");
-		if (input == NULL)
-		{
-			printf("exit\n");
-			exit(g_mini.exit_code);
-		}
-		add_history(input);
-		tokens = NULL;
-		if (lexer_tokenize(&tokens, input))
-			g_mini.exit_code = 258;
-		else if (ft_strlen(input))
-		{
-			cmd_table = parse_cmd_init(tokens);
-			g_mini.exit_code = parse_tokens(cmd_table, &tokens, new_env);
-			execute(cmd_table, &new_env);
-			parse_clear_cmd_table(cmd_table);
-		}
-		ft_lstclear(&tokens, &lexer_clear_token);
-		if (g_mini.exit_code == 12)
-			ft_putendl_fd("Allocation failure", 2);
-		free(input);
-		g_mini.interactive = 1;
-	}
+		minishell(new_env);
 	return (0);
 }
