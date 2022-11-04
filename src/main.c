@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:17 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 11:20:10 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 11:25:12 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	main(int argc, char **av, char **env)
 	new_env = NULL;
 	env_init(env, &new_env);
 	change_shlvl(&new_env);
-	signal(SIGQUIT, &catch_quit);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &catch_int);
 	g_mini.interactive = 1;
 	while (1)
@@ -123,7 +123,7 @@ int	main(int argc, char **av, char **env)
 		if (input == NULL)
 		{
 			printf("exit\n");
-			exit(EXIT_SUCCESS);
+			exit(g_mini.exit_code);
 		}
 		add_history(input);
 		tokens = NULL;
