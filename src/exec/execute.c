@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/04 11:39:19 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 12:28:16 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,7 @@ void	exec_pipe(t_simplecmd **cmds, t_list **env, int *last_pid)
 void	execute(t_simplecmd **cmds, t_list **envp)
 {
 	int		last_pid;
-	t_list	*arg;
-	t_list	*in;
-	t_list	*out;
 
-	arg = *(cmds[0]->arg);
-	in = *(cmds[0]->in);
-	out = *(cmds[0]->out);
-	// if (!arg && !in && !out)
-	// 	exit (0);
-	// g_mini.interactive = 0;
 	if (!heredoc(cmds, envp))
 	{
 		g_mini.exit_code = -1;

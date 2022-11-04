@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/03 18:31:26 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 12:27:12 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,10 @@ void	error_exit(int exit_code, char *cmd, char *message)
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putstr_fd("\n", 2);
 		if (errno == ENOTDIR || errno == EACCES)
-		{
-			// g_mini.exit_code = 126;
 			exit (126);
-		}
 	}
 	else
 		ft_putstr_fd(message, 2);
-	// if (exit_code == -1)
-	// 	g_mini.exit_code = -1;
-	// else
 	exit(exit_code);
 }
 
