@@ -1,7 +1,7 @@
 NAME = minishell
 TEST_NAME = test/unit_test
-# USER = cyuzbas
-USER = mbatstra
+USER = cyuzbas
+# USER = mbatstra
 
 SRC_DIR = src/
 BUILD_DIR = build/
