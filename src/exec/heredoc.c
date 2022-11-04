@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/04 11:18:47 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 11:24:01 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ int	heredoc(t_simplecmd **cmds, t_list **envp)
 {
 	int	pid;
 
-	// g_mini.interactive = 0;
 	pid = fork();
 	if (pid == -1)
 		exit (-1);
@@ -138,6 +137,5 @@ int	heredoc(t_simplecmd **cmds, t_list **envp)
 	}
 	g_mini.exit_code = wait_children(pid);
 	set_heredoc(cmds);
-	// g_mini.interactive = 1;
 	return (TRUE);
 }

@@ -1,7 +1,7 @@
 NAME = minishell
 TEST_NAME = test/unit_test
-# USER = cyuzbas
-USER = mbatstra
+USER = cyuzbas
+# USER = mbatstra
 
 SRC_DIR = src/
 BUILD_DIR = build/
@@ -47,8 +47,8 @@ SRC = $(addprefix $(SRC_DIR), $(UNPREFIXED_SRC))
 INC = inc/
 TEST_INC = test/criterion--git/include
 
-# FLAGS = -fsanitize=address -g 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -fsanitize=address -g 
+#FLAGS = -Wall -Wextra -Werror
 
 LIB = lib/
 LIBFT = lib/libft/libft.a
