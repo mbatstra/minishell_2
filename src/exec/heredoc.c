@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/03 20:01:45 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 11:18:47 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ static void	child_heredoc(t_simplecmd **cmds, t_list **envp)
 int	heredoc(t_simplecmd **cmds, t_list **envp)
 {
 	int	pid;
-	int	status;
 
 	// g_mini.interactive = 0;
 	pid = fork();
@@ -138,15 +137,6 @@ int	heredoc(t_simplecmd **cmds, t_list **envp)
 		signal(SIGQUIT, SIG_IGN);
 	}
 	g_mini.exit_code = wait_children(pid);
-	// waitpid(pid, &status, 0);
-	// if (WIFEXITED(status))
-	// {	
-	// 	if (WEXITSTATUS(status) == 1)
-	// 	{
-	// 		g_mini.exit_code = 1;
-	// 		return (1);
-	// 	}
-	// }
 	set_heredoc(cmds);
 	// g_mini.interactive = 1;
 	return (TRUE);
