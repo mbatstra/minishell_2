@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/03 20:04:45 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 12:13:31 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,8 @@ void	middle_command(t_simplecmd *cmds, t_list **env, int fd[2], int fd_end)
 		exit(-1);
 	else if (pid == 0)
 	{
-		// signal(SIGINT, SIG_DFL);
-		// signal(SIGQUIT, SIG_DFL);
-		// signal(SIGINT, SIG_IGN);
-		// signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, catch_int_child);
+		signal(SIGQUIT, catch_quit);
 		protect_dup2(fd[1], STDOUT_FILENO);
 		protect_dup2(fd_end, STDIN_FILENO);
 		protect_close(fd[0]);
@@ -38,7 +35,7 @@ void	middle_command(t_simplecmd *cmds, t_list **env, int fd[2], int fd_end)
 	if (pid > 0)
 	{
 		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGQUIT, catch_quit_parent);
 	}
 }
 
@@ -49,11 +46,8 @@ void	last_command(t_simplecmd *cmds, t_list **env, int fd[2], int *lastid)
 		exit(-1);
 	else if (*lastid == 0)
 	{
-		// signal(SIGINT, SIG_DFL);
-		// signal(SIGQUIT, SIG_DFL);
-		// signal(SIGINT, SIG_IGN);
-		// signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, catch_int_child);
+		signal(SIGQUIT, catch_quit);
 		protect_dup2(fd[0], STDIN_FILENO);
 		protect_close(fd[0]);
 		choose_execute(cmds, env);
@@ -61,8 +55,8 @@ void	last_command(t_simplecmd *cmds, t_list **env, int fd[2], int *lastid)
 	}
 	if (*lastid > 0)
 	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, catch_int_child);
+		signal(SIGQUIT, catch_quit_parent);
 	}
 }
 
@@ -76,8 +70,7 @@ void	first_command(t_simplecmd *cmds, t_list **env, int fd[2])
 	else if (pid == 0)
 	{
 		signal(SIGINT, catch_int_child);
-		// signal(SIGINT, SIG_IGN);
-		// signal(SIGQUIT, SIG_IGN);
+		signal(SIGQUIT, catch_quit);
 		protect_close(fd[0]);
 		protect_dup2(fd[1], STDOUT_FILENO);
 		protect_close(fd[1]);
@@ -87,7 +80,7 @@ void	first_command(t_simplecmd *cmds, t_list **env, int fd[2])
 	if (pid > 0)
 	{
 		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGQUIT, catch_quit_parent);
 	}
 }
 
@@ -102,17 +95,14 @@ void	single_command(t_simplecmd *cmds, t_list **env, int *lastpid)
 	if (*lastpid == 0)
 	{
 		signal(SIGINT, catch_int_child);
-		// signal(SIGQUIT, SIG_IGN);
+		signal(SIGQUIT, catch_quit);
 		choose_execute(cmds, env);
 		exit(g_mini.exit_code);
 	}
 	if (*lastpid > 0)
 	{
-		// if (arg && ft_strcmp(arg->content, "./minishell") == 0)
-		// {
-			signal(SIGINT, SIG_IGN);
-			signal(SIGQUIT, SIG_IGN);
-		// }
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, catch_quit_parent);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:18:51 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/10/26 11:22:35 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 11:27:21 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 #include "minishell.h"
 #include "libft.h"
 #include "exec.h"
-
-// path == NULL means no arg
-// will not free if path was alloc'd outside this func
-// parent dir (..) env vars and relative paths should be expanded
-// 		*BEFORE* calling any builtin
 
 int	builtin_cd(char *path, t_list **envp)
 {

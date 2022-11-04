@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:42:50 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 12:01:05 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 12:12:29 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,11 @@ void	catch_quit(int sig)
 	signal(sig, &catch_quit);
 	g_mini.exit_code = 131;
 	exit(g_mini.exit_code);
+}
+
+void	catch_quit_parent(int sig)
+{
+	ft_putstr_fd("Quit: 3\n", 2);
+	g_mini.exit_code = 131;
+	signal(sig, &catch_parent_hrdc);
 }
