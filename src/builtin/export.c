@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 14:37:33 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 12:21:32 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 12:56:27 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	check_export(char *nameval, t_list **envp)
 
 	if (is_defined(envp, nameval))
 	{	
-		printf("buraya giriyorn\n");
 		spl_nameval = nameval_split(nameval);
 		env_setval(envp, spl_nameval[0], spl_nameval[1]);
 		free_spl_nameval(spl_nameval);
