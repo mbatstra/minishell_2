@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 14:37:33 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 17:09:16 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 12:03:09 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static char	**nameval_split(char *nameval)
 		free(name);
 		free(val);
 		exit (1);
-		// return (NULL);
 	}
 	spl_nameval[0] = name;
 	spl_nameval[1] = val;
