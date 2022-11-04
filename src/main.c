@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:17 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 13:35:55 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 13:44:09 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ static void	minishell(t_list *new_env)
 	input = readline("minishell-$ ");
 	if (input == NULL)
 		ft_exit();
-	add_history(input);
 	tokens = NULL;
 	if (lexer_tokenize(&tokens, input))
 		g_mini.exit_code = 258;
 	else if (ft_strlen(input))
 	{
+		add_history(input);
 		cmd_table = parse_cmd_init(tokens);
 		g_mini.exit_code = parse_tokens(cmd_table, &tokens, new_env);
 		execute(cmd_table, &new_env);
