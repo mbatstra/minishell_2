@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:27 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 19:25:41 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 11:55:16 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int			parse_word(t_simplecmd **cmd_table, t_list **tokens);
 int			parse_expand(t_list *tokens, t_list *env);
 
 // expansion
+char		*has_expansion(char *str);
 char		*expand_relpath(char *relp);
 char		*expand_parent_dir(t_list *envp);
 
