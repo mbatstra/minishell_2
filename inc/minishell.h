@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:27 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 11:55:16 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 12:13:45 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ void		catch_int(int sig);
 void		catch_int_child(int sig);
 void		catch_int_hrdc(int sig);
 void		catch_parent_hrdc(int sig);
+void		catch_quit_parent(int sig);
 
 #endif 

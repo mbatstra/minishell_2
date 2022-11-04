@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 17:07:01 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:30:15 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 11:28:50 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	env_init(char **envp, t_list **new_env)
 }
 
 // get the value for any env var by name
-
 char	*env_getval(t_list *envp, const char *name, int namelen)
 {
 	while (envp != NULL && ft_strncmp(envp->content, name, namelen))

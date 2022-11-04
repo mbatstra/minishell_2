@@ -6,7 +6,7 @@
 /*   By: cyuzbas <cyuzbas@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 10:26:25 by cyuzbas       #+#    #+#                 */
-/*   Updated: 2022/11/03 17:20:03 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 11:39:19 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	execute(t_simplecmd **cmds, t_list **envp)
 		g_mini.exit_code = -1;
 		exit (-1);
 	}
-	// printf("int=%d exit=%d\n", g_mini.interactive, g_mini.exit_code);
 	if (g_mini.interactive != 0)
 	{
 		if (builtin_and_redirection(cmds) || !is_builtin(*cmds))
@@ -71,10 +70,4 @@ void	execute(t_simplecmd **cmds, t_list **envp)
 		else
 			execute_builtin(*cmds, envp);
 	}
-	
-	// if (arg && ft_strcmp(arg->content, "./minishell") == 0)
-	// 	{
-	// 		signal(SIGINT, SIG_IGN);
-	// 		signal(SIGQUIT, SIG_IGN);
-	// 	}
 }
