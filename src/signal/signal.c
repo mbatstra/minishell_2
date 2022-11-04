@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:42:50 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 19:25:22 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 11:37:58 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,15 @@ void	signal_suppress_output(void)
 		perror("minishell: tcsetattr");
 }
 
+// only for running child-process
 void	catch_quit(int sig)
 {
 	signal(sig, &catch_quit);
-	rl_replace_line("", 0);
+	g_mini.exit_code = 131;
+	exit(g_mini.exit_code);
 }
 
+// handlers for SIGINT in different processes
 void	catch_int(int sig)
 {
 	g_mini.exit_code = 1;

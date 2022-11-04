@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:17 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 11:25:12 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 11:32:43 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ int	main(int argc, char **av, char **env)
 	g_mini.interactive = 1;
 	while (1)
 	{
-		signal(SIGQUIT, &catch_quit);
 		signal(SIGINT, &catch_int);
 		input = readline("minishell-$ ");
 		if (input == NULL)
