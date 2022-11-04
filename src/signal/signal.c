@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:42:50 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 11:37:58 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 12:01:05 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,36 +37,4 @@ void	catch_quit(int sig)
 	signal(sig, &catch_quit);
 	g_mini.exit_code = 131;
 	exit(g_mini.exit_code);
-}
-
-// handlers for SIGINT in different processes
-void	catch_int(int sig)
-{
-	g_mini.exit_code = 1;
-	signal(sig, &catch_int);
-	ioctl(IN, TIOCSTI, "\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
-
-void	catch_int_child(int sig)
-{
-	g_mini.exit_code = 1;
-	signal(sig, &catch_int_child);
-}
-
-void	catch_int_hrdc(int sig)
-{
-	(void)sig;
-	g_mini.exit_code = 1;
-	g_mini.interactive = 0;
-	printf(">\n");
-	exit(EXIT_FAILURE);
-}
-
-void	catch_parent_hrdc(int sig)
-{
-	g_mini.interactive = 0;
-	g_mini.exit_code = 1;
-	signal(sig, &catch_parent_hrdc);
 }
