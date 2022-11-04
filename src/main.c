@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:17 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 13:44:09 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 16:33:28 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,15 @@ static void	minishell(t_list *new_env)
 	t_simplecmd	**cmd_table;
 	t_list		*tokens;
 	char		*input;
+	int			lex_exit;
 
-	signal(SIGINT, &catch_int);
 	input = readline("minishell-$ ");
 	if (input == NULL)
 		ft_exit();
 	tokens = NULL;
-	if (lexer_tokenize(&tokens, input))
-		g_mini.exit_code = 258;
+	lex_exit = lexer_tokenize(&tokens, input);
+	if (lex_exit)
+		g_mini.exit_code = lex_exit;
 	else if (ft_strlen(input))
 	{
 		add_history(input);
@@ -73,10 +74,7 @@ static void	minishell(t_list *new_env)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_simplecmd	**cmd_table;
-	t_list		*tokens;
-	t_list		*new_env;
-	char		*input;
+	t_list	*new_env;
 
 	(void)argc;
 	(void)argv;
@@ -89,6 +87,9 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGINT, &catch_int);
 	g_mini.interactive = 1;
 	while (1)
+	{
+		signal(SIGINT, &catch_int);
 		minishell(new_env);
+	}
 	return (0);
 }
