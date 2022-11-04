@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:17 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 11:40:07 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 12:25:02 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	main(int argc, char **argv, char **env)
 		tokens = NULL;
 		if (lexer_tokenize(&tokens, input))
 			g_mini.exit_code = 258;
-		else
+		else if (ft_strlen(input))
 		{
 			cmd_table = parse_cmd_init(tokens);
 			g_mini.exit_code = parse_tokens(cmd_table, &tokens, new_env);
