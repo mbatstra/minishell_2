@@ -1,7 +1,7 @@
 NAME = minishell
 TEST_NAME = test/unit_test
-USER = cyuzbas
-# USER = mbatstra
+# USER = cyuzbas
+USER = mbatstra
 
 SRC_DIR = src/
 BUILD_DIR = build/
@@ -37,7 +37,8 @@ UNPREFIXED_SRC = main.c \
 	exec/fork.c\
 	exec/redirection.c\
 	exec/exec_utils.c\
-	signal/signal.c
+	signal/signal.c\
+	signal/sigint.c
 
 TEST_SRC = test/test.c
 

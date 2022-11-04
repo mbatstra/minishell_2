@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parent_dir.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbatstra <mbatstra@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/22 15:31:49 by mbatstra          #+#    #+#             */
-/*   Updated: 2022/10/25 14:51:30 by mbatstra         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parent_dir.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/09/22 15:31:49 by mbatstra      #+#    #+#                 */
+/*   Updated: 2022/11/04 11:55:47 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,30 @@ char	*expand_parent_dir(t_list *envp)
 	else
 		parent_dir = ft_strdup("/");
 	return (parent_dir);
+}
+
+char	*has_expansion(char *str)
+{
+	int	dqt;
+	int	sqt;
+
+	dqt = 0;
+	sqt = 0;
+	while (*str != '\0')
+	{
+		if (*str == '\'' && sqt)
+			sqt = 0;
+		else if (*str == '\'' && !dqt && !sqt \
+		&& ft_strchr(str + 1, '\''))
+			sqt = 1;
+		else if (*str == '"' && dqt)
+			dqt = 0;
+		else if (*str == '"' && !sqt && !dqt \
+		&& ft_strchr(str + 1, '"'))
+			dqt = 1;
+		else if (*str == '$' && !sqt && (ft_isalnum(str[1]) || str[1] == '?'))
+			return (str);
+		str++;
+	}
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 16:20:25 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/03 19:58:55 by cyuzbas       ########   odam.nl         */
+/*   Updated: 2022/11/04 11:55:51 by mbatstra      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,6 @@
 #include "minishell.h"
 #include "exec.h"
 #include "libft.h"
-
-static char	*has_expansion(char *str)
-{
-	int	dqt;
-	int	sqt;
-
-	dqt = 0;
-	sqt = 0;
-	while (*str != '\0')
-	{
-		if (*str == '\'' && sqt)
-			sqt = 0;
-		else if (*str == '\'' && !dqt && !sqt \
-		&& ft_strchr(str + 1, '\''))
-			sqt = 1;
-		else if (*str == '"' && dqt)
-			dqt = 0;
-		else if (*str == '"' && !sqt && !dqt \
-		&& ft_strchr(str + 1, '"'))
-			dqt = 1;
-		else if (*str == '$' && !sqt && (ft_isalnum(str[1]) || str[1] == '?'))
-			return (str);
-		str++;
-	}
-	return (NULL);
-}
 
 static int	count_quotes(char *str)
 {
@@ -60,16 +34,19 @@ static int	count_quotes(char *str)
 	return (numq);
 }
 
-static char	*parse_rm_quotes(char *str)
+static void	rm_quote_init_vars(char *lastq, int *offset)
+{
+	*lastq = 0;
+	*offset = 0;
+}
+
+static char	*parse_rm_quotes(char *str, int i)
 {
 	char	*new_str;
 	char	lastq;
-	int		i;
 	int		offset;
 
-	lastq = 0;
-	i = 0;
-	offset = 0;
+	rm_quote_init_vars(&lastq, &offset);
 	new_str = ft_calloc(ft_strlen(str) - count_quotes(str) + 1, sizeof(char));
 	while (str[i] != '\0' && new_str != NULL)
 	{
@@ -134,7 +111,7 @@ int	parse_expand(t_list *tokens, t_list *env)
 				free(tok->value);
 				tok->value = new_val;
 			}
-			new_val = parse_rm_quotes(tok->value);
+			new_val = parse_rm_quotes(tok->value, 0);
 			if (new_val == NULL)
 				return (1);
 			free(tok->value);
