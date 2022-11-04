@@ -6,7 +6,7 @@
 /*   By: mbatstra <mbatstra@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:37:17 by mbatstra      #+#    #+#                 */
-/*   Updated: 2022/11/04 11:20:10 by mbatstra      ########   odam.nl         */
+/*   Updated: 2022/11/04 11:24:15 by cyuzbas       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	change_shlvl(t_list **envp)
 	free(minipwd);
 }
 
-int	main(int argc, char **av, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_simplecmd	**cmd_table;
 	t_list		*tokens;
@@ -106,7 +106,7 @@ int	main(int argc, char **av, char **env)
 	char		*input;
 
 	(void)argc;
-	(void)av;
+	(void)argv;
 	g_mini.exit_code = 0;
 	signal_suppress_output();
 	new_env = NULL;
